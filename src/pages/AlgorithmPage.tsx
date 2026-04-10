@@ -343,7 +343,7 @@ function DijkstraPage() {
             </div>
 
             <div className="flex-1 flex flex-col bg-muted/5 divide-y divide-border overflow-hidden min-h-0 relative">
-              <div className="w-full flex flex-col relative overflow-y-auto group border-b" style={{ minHeight: '55%' }}>
+              <div className="w-full flex flex-col relative overflow-y-auto group border-b" style={{ minHeight: '45%' }}>
                 <DijkstraGraphCanvas
                   step={step} shortestEdges={shortestEdges}
                   customNodes={customNodes} customEdges={customEdges}
@@ -504,7 +504,7 @@ function AStarPage() {
             </div>
 
             <div className="flex-1 flex flex-col bg-muted/5 divide-y divide-border overflow-hidden min-h-0 relative">
-              <div className="w-full flex flex-col relative overflow-y-auto group border-b" style={{ minHeight: '60%' }}>
+              <div className="w-full flex flex-col relative overflow-y-auto group border-b" style={{ minHeight: '45%' }}>
                 <AStarGraphCanvas
                   step={step} shortestEdges={shortestEdges}
                   customNodes={customNodes} customEdges={customEdges}
@@ -520,28 +520,6 @@ function AStarPage() {
               </div>
               <div className="w-full flex-1 p-3 xl:p-5 overflow-auto flex flex-col gap-4">
                 <AStarScoreTable step={step} />
-                
-                {/* Stats Panel (A* vs Dijkstra) */}
-                {step.type === 'DONE' && (
-                  <div className="bg-white dark:bg-zinc-900 border rounded-xl p-4 shadow-sm animate-in fade-in-0 duration-500">
-                    <h4 className="text-sm font-bold mb-3">⚡ 탐색 효율 (Nodes Explored)</h4>
-                    <div className="space-y-3 relative">
-                      {/* AStar bar */}
-                      <div>
-                        <div className="flex justify-between text-xs mb-1">
-                          <span className="font-semibold text-purple-600 dark:text-purple-400">A* Algorithm</span>
-                          <span>{step.nodesExplored} 개 노드 참색</span>
-                        </div>
-                        <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-                          <div className="bg-purple-500 h-2 rounded-full transition-all duration-300" style={{ width: `${Math.min(100, (step.nodesExplored / (customNodes?.length || ASTAR_DEFAULT_GRAPH.nodes.length)) * 100)}%` }}></div>
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
-                      A*는 휴리스틱(h) 덕분에 목적지 방향을 우선 탐색합니다. 주변의 모든 노드를 퍼져나가듯 탐색하는 다익스트라(탐색 범위 원형)보다 <strong>탐색 횟수가 훨씬 적습니다.</strong>
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -572,6 +550,28 @@ function AStarPage() {
       <div className="w-full lg:w-[440px] flex flex-col gap-6">
         <AStarCodeViewer codeLine={mode === 'example' ? step.codeLine : 0} />
         <AStarProblemList />
+        
+        {/* Stats Panel (A* vs Dijkstra) */}
+        {mode === 'example' && step.type === 'DONE' && (
+          <div className="bg-white dark:bg-zinc-900 border rounded-xl p-4 shadow-sm animate-in fade-in-0 duration-500">
+            <h4 className="text-sm font-bold mb-3">⚡ 탐색 효율 (Nodes Explored)</h4>
+            <div className="space-y-3 relative">
+              {/* AStar bar */}
+              <div>
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="font-semibold text-purple-600 dark:text-purple-400">A* Algorithm</span>
+                  <span>총 {step.nodesExplored} 개 노드 탐색</span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+                  <div className="bg-purple-500 h-2 rounded-full transition-all duration-300" style={{ width: `${Math.min(100, (step.nodesExplored / (customNodes?.length || ASTAR_DEFAULT_GRAPH.nodes.length)) * 100)}%` }}></div>
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
+              A*는 휴리스틱(h) 덕분에 목적지 방향을 우선 탐색합니다. 주변의 모든 노드를 퍼져나가듯 먼저 탐색하는 다익스트라(탐색 범위 원형)보다 <strong>탐색 횟수가 훨씬 적습니다.</strong>
+            </p>
+          </div>
+        )}
       </div>
 
       <AStarInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}

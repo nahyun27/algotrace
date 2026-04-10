@@ -1,4 +1,5 @@
 import type { AStarStep } from './types';
+import { Lock, Eye } from 'lucide-react';
 
 export default function ScoreTable({ step }: { step: AStarStep }) {
   const N = step.f.length;
@@ -14,7 +15,10 @@ export default function ScoreTable({ step }: { step: AStarStep }) {
       <div className="border rounded-xl overflow-hidden shadow-sm bg-card">
         <div className="p-3 border-b bg-muted/30 flex items-center justify-between">
           <h3 className="font-semibold text-sm">비용 테이블 Score Table</h3>
-          <span className="text-[10px] text-muted-foreground font-mono">f(x) = g(x) + h(x)</span>
+          <div className="flex gap-4 text-xs font-medium text-muted-foreground">
+            <span className="flex items-center gap-1.5"><Eye size={14} className="text-blue-500" /> Open Set</span>
+            <span className="flex items-center gap-1.5"><Lock size={14} className="text-zinc-500" /> Closed Set</span>
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -31,7 +35,7 @@ export default function ScoreTable({ step }: { step: AStarStep }) {
             <tbody>
               {/* g(x) */}
               <tr>
-                <td className="px-3 py-2 text-xs font-semibold text-blue-600 dark:text-blue-400">g(x)</td>
+                <td className="px-3 py-2 text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20">g(x)</td>
                 {step.g.map((val, i) => {
                   const isUpdated = isImprovement && activeEdge && activeEdge[1] === i;
                   let cellClass = '';
@@ -45,7 +49,7 @@ export default function ScoreTable({ step }: { step: AStarStep }) {
               </tr>
               {/* h(x) */}
               <tr className="border-t">
-                <td className="px-3 py-2 text-xs font-semibold text-orange-600 dark:text-orange-400">h(x)</td>
+                <td className="px-3 py-2 text-xs font-semibold text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20">h(x)</td>
                 {step.h.map((val, i) => (
                   <td key={i} className={`px-4 py-2 text-center font-mono text-xs border-l text-muted-foreground transition-colors duration-300`}>
                     {val === Infinity ? '∞' : val}
@@ -54,14 +58,14 @@ export default function ScoreTable({ step }: { step: AStarStep }) {
               </tr>
               {/* f(x) */}
               <tr className="border-t">
-                <td className="px-3 py-3 text-xs font-bold text-purple-600 dark:text-purple-400">f(x)</td>
+                <td className="px-3 py-2 text-xs font-semibold text-purple-600 dark:text-purple-400 bg-purple-50/50 dark:bg-purple-900/20">f(x)</td>
                 {step.f.map((val, i) => {
                   const isUpdated = isImprovement && activeEdge && activeEdge[1] === i;
                   let cellClass = '';
                   if (currentProcessingNode === i) cellClass = 'bg-blue-50/50 dark:bg-blue-900/20';
                   if (isUpdated && type === 'RELAX') cellClass = 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 font-bold';
                   return (
-                    <td key={i} className={`px-4 py-3 text-center font-mono font-bold text-sm border-l transition-colors duration-300 ${cellClass}`}>
+                    <td key={i} className={`px-4 py-2 text-center font-mono text-xs border-l transition-colors duration-300 ${cellClass}`}>
                       {val === Infinity ? '∞' : typeof val === 'number' ? (val % 1 === 0 ? val : val.toFixed(1)) : val}
                     </td>
                   );
@@ -71,13 +75,13 @@ export default function ScoreTable({ step }: { step: AStarStep }) {
               <tr className="border-t">
                 <td className="px-3 py-2 text-center text-xs font-semibold text-muted-foreground">상태</td>
                 {Array.from({ length: N }).map((_, i) => (
-                  <td key={i} className="px-4 py-2 text-center text-xs border-l">
+                  <td key={i} className="px-4 py-2 text-center align-middle border-l">
                     {step.closedSet.includes(i) ? (
-                      <span className="inline-block w-4 h-4 rounded-full bg-zinc-400 dark:bg-zinc-600 mx-auto" title="Closed" />
+                      <Lock size={14} className="text-zinc-400 mx-auto" />
                     ) : step.openSet.includes(i) ? (
-                      <span className="inline-block w-4 h-4 rounded-full bg-sky-300 dark:bg-sky-500 mx-auto" title="Open" />
+                      <Eye size={14} className="text-blue-500 mx-auto" />
                     ) : (
-                      <span className="inline-block w-4 h-4 rounded-full bg-zinc-200 dark:bg-zinc-800 mx-auto" title="미방문" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700 mx-auto mt-1.5" />
                     )}
                   </td>
                 ))}
@@ -85,10 +89,15 @@ export default function ScoreTable({ step }: { step: AStarStep }) {
             </tbody>
           </table>
         </div>
+        <div className="p-3 border-t bg-muted/10 text-[11px] text-muted-foreground flex flex-col gap-1">
+          <div><span className="font-bold text-blue-600 dark:text-blue-400">g(x)</span>: 출발점에서 노드까지의 실 탐색 비용</div>
+          <div><span className="font-bold text-orange-600 dark:text-orange-400">h(x)</span>: 노드에서 도착점까지의 예상 비용 (휴리스틱)</div>
+          <div><span className="font-bold text-purple-600 dark:text-purple-400">f(x)</span>: 총 예상 비용 (g + h)</div>
+        </div>
       </div>
 
       {/* Priority Queue (Open Set) */}
-      <div className="border rounded-xl overflow-hidden shadow-sm bg-card">
+      <div className="border rounded-xl overflow-hidden shadow-sm bg-card mt-1">
         <div className="p-3 border-b bg-muted/30">
           <h3 className="font-semibold text-sm">우선순위 큐 (Open Set)</h3>
         </div>
@@ -120,9 +129,6 @@ export default function ScoreTable({ step }: { step: AStarStep }) {
               );
             })
           )}
-        </div>
-        <div className="px-3 pb-2 text-[10px] text-muted-foreground">
-          f(x) 오름차순 정렬 | 형식: (f: 비용, N: 노드 번호)
         </div>
       </div>
     </div>
