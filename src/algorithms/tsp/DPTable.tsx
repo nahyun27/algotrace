@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { CITIES } from './solver';
 
 interface DPTableProps {
@@ -8,20 +9,30 @@ interface DPTableProps {
 
 export default function DPTable({ dpTable, currentMask, currentCity }: DPTableProps) {
   const N = CITIES;
+  const [hideUnreachable, setHideUnreachable] = useState(false);
   
   return (
-    <div className="border rounded-xl bg-card shadow-sm overflow-hidden flex flex-col lg:h-full">
-      <div className="p-3 border-b bg-muted/30">
+    <div className="border rounded-xl bg-card shadow-sm overflow-hidden flex flex-col h-full w-full">
+      <div className="p-3 border-b bg-muted/30 flex flex-wrap gap-2 items-center justify-between">
         <h2 className="font-semibold tracking-tight text-sm">DP Table: dp[mask][curr]</h2>
+        <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors bg-muted/50 px-2 py-1 rounded">
+          <input 
+            type="checkbox" 
+            className="rounded border-border accent-primary cursor-pointer w-3.5 h-3.5"
+            checked={hideUnreachable}
+            onChange={(e) => setHideUnreachable(e.target.checked)}
+          />
+          불가능 상태(짝수) 숨기기
+        </label>
       </div>
-      <div className="flex-1 overflow-auto p-4 bg-muted/5">
-        <div className="rounded-lg overflow-hidden border">
+      <div className="flex-1 overflow-auto p-4 bg-muted/5 relative">
+        <div className="rounded-lg overflow-hidden border inline-block min-w-full">
           <table className="w-full text-xs text-center border-collapse bg-card">
-            <thead>
+            <thead className="sticky top-0 z-20 outline outline-1 outline-border">
               <tr>
-                <th className="border-b border-r p-2 bg-muted/30 font-semibold text-muted-foreground whitespace-nowrap">Mask \\ City</th>
+                <th className="border-b border-r p-2 bg-muted/80 font-semibold text-muted-foreground whitespace-nowrap shadow-sm backdrop-blur-sm">Mask \\ City</th>
                 {Array.from({length: N}).map((_, i) => (
-                  <th key={i} className="border-b border-r p-2 bg-muted/30 font-semibold text-muted-foreground w-16">
+                  <th key={i} className="border-b border-r p-2 bg-muted/80 font-semibold text-muted-foreground w-16 shadow-sm backdrop-blur-sm">
                     {i}
                   </th>
                 ))}
@@ -30,8 +41,12 @@ export default function DPTable({ dpTable, currentMask, currentCity }: DPTablePr
             <tbody>
               {dpTable.map((row, mask) => {
                 const isCurrentMaskRow = mask === currentMask;
+                const isUnreachable = (mask & 1) === 0;
+
+                if (hideUnreachable && isUnreachable) return null;
+
                 return (
-                  <tr key={mask} className={isCurrentMaskRow ? 'bg-primary/5' : ''}>
+                  <tr key={mask} className={`${isCurrentMaskRow ? 'bg-primary/5' : ''} ${isUnreachable ? 'opacity-30 dark:opacity-20 grayscale bg-muted/50' : ''} hover:bg-muted/30 transition-colors`}>
                     <td className={`border-b border-r p-2 font-mono text-[11px] ${isCurrentMaskRow ? 'font-bold text-primary' : 'text-muted-foreground'}`}>
                       {mask.toString(2).padStart(N, '0')}
                     </td>
@@ -42,7 +57,7 @@ export default function DPTable({ dpTable, currentMask, currentCity }: DPTablePr
                         <td key={c} className={`border-b border-r p-2 transition-all duration-300 ${
                           isActive ? 'bg-yellow-200 dark:bg-yellow-500/30 font-bold outline outline-2 outline-yellow-400 dark:outline-yellow-500 z-10 relative'
                             : hasValue ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 font-medium'
-                            : 'text-muted-foreground/30'
+                            : 'text-muted-foreground/50'
                         }`}>
                           {val === 1e9 ? '∞' : val}
                         </td>
