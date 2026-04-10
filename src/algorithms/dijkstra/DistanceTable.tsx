@@ -19,7 +19,7 @@ export default function DistanceTable({ step }: DistanceTableProps) {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-muted/20">
+              <tr className="bg-muted/20 border-b">
                 <th className="px-3 py-2 text-left text-xs text-muted-foreground font-semibold">노드</th>
                 {dist.map((_, i) => (
                   <th key={i} className="px-4 py-2 text-center text-xs font-semibold text-muted-foreground min-w-[64px]">{i}</th>
@@ -74,22 +74,26 @@ export default function DistanceTable({ step }: DistanceTableProps) {
           ) : (
             pq.map((item, idx) => (
               <div key={idx}
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-lg border text-xs font-mono font-semibold shadow-sm transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-sm transition-all ${
                   idx === 0
                     ? 'bg-blue-100 dark:bg-blue-900/40 border-blue-300 dark:border-blue-700 text-blue-800 dark:text-blue-200'
                     : 'bg-card border-border text-muted-foreground'
                 }`}
               >
-                <span className="opacity-60">(</span>
-                <span className={idx === 0 ? 'text-blue-700 dark:text-blue-300' : ''}>{item.cost}</span>
-                <span className="opacity-60">, d{item.node})</span>
+                <span className="opacity-50">(</span>
+                <span>비용:&nbsp;</span>
+                <span className={`font-mono font-bold ${idx === 0 ? 'text-blue-700 dark:text-blue-300' : ''}`}>{item.cost}</span>
+                <span className="opacity-50">,</span>
+                <span>&nbsp;노드:&nbsp;</span>
+                <span className={`font-mono font-bold ${idx === 0 ? 'text-blue-700 dark:text-blue-300' : ''}`}>{item.node}</span>
+                <span className="opacity-50">)</span>
                 {idx === 0 && <span className="ml-1 text-[9px] text-blue-600 dark:text-blue-400 font-bold">← next</span>}
               </div>
             ))
           )}
         </div>
         <div className="px-3 pb-2 text-[10px] text-muted-foreground">
-          형식: (비용, 노드) — 비용 오름차순 정렬
+          비용 오름차순 정렬 | 형식: (비용: 숫자, 노드: 번호)
         </div>
       </div>
     </div>

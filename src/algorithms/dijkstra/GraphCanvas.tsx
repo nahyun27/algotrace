@@ -58,13 +58,17 @@ export default function DijkstraGraphCanvas({ step, shortestEdges }: GraphCanvas
                 fill="none" stroke={stroke} strokeWidth={strokeW} strokeOpacity={opacity}
                 className="transition-all duration-300" markerEnd={marker}
               />
-              <rect x={midX - 10} y={midY - 8} width={20} height={16} rx={3}
-                fill={isActive ? '#fff7ed' : isShortest ? '#f0fdf4' : 'white'} fillOpacity={0.85}
-                className="dark:fill-zinc-900" />
+              {/* Weight label */}
               <text x={midX} y={midY} textAnchor="middle" dy=".35em"
                 fontSize={isActive ? 12 : 11} fontWeight={isActive || isShortest ? 700 : 500}
-                fill={isActive ? '#ea580c' : isShortest ? '#16a34a' : 'currentColor'}
-                fillOpacity={isActive || isShortest ? 1 : 0.7} className="font-mono transition-all duration-300">
+                className={`font-mono transition-all duration-300 ${
+                  isActive
+                    ? 'fill-orange-500 dark:fill-orange-400'
+                    : isShortest
+                      ? 'fill-green-600 dark:fill-green-400'
+                      : 'fill-zinc-600 dark:fill-white'
+                }`}
+              >
                 {w}
               </text>
             </g>

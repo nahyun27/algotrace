@@ -63,17 +63,7 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
                   className="transition-all duration-300"
                   markerEnd={isActive ? 'url(#arrowhead-active)' : 'url(#arrowhead)'}
                 />
-                {/* Label backdrop for readability */}
-                <rect
-                  x={midX - 10}
-                  y={midY - 8}
-                  width={20}
-                  height={16}
-                  rx={3}
-                  fill={isActive ? '#fff7ed' : 'white'}
-                  fillOpacity={isActive ? 0.95 : 0.7}
-                  className="dark:fill-zinc-900"
-                />
+                {/* Weight label */}
                 <text
                   x={midX}
                   y={midY}
@@ -81,9 +71,11 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
                   dy=".35em"
                   fontSize={isActive ? 12 : 11}
                   fontWeight={isActive ? 700 : 500}
-                  fill={isActive ? '#ea580c' : 'currentColor'}
-                  fillOpacity={isActive ? 1 : 0.7}
-                  className="font-mono transition-all duration-300"
+                  className={`font-mono transition-all duration-300 ${
+                    isActive
+                      ? 'fill-orange-500 dark:fill-orange-400'
+                      : 'fill-zinc-600 dark:fill-white'
+                  }`}
                 >
                   {weight}
                 </text>
