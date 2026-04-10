@@ -9,6 +9,7 @@ export default function Sidebar() {
     { name: 'TSP',        path: '/algorithm/tsp',    icon: FileCode2  },
     { name: 'Dijkstra',   path: '/algorithm/dijkstra', icon: FileCode2 },
     { name: 'A* Search',  path: '/algorithm/astar',  icon: FileCode2 },
+    { name: 'BFS / DFS',  path: '/algorithm/bfsdfs', icon: FileCode2 },
   ];
 
   return (

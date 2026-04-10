@@ -35,6 +35,17 @@ import { generateAStarSteps } from '../algorithms/astar/solver';
 import type { AStarStep } from '../algorithms/astar/types';
 import { ASTAR_DEFAULT_GRAPH } from '../types/graph';
 
+// BFS/DFS
+import BFSDFSGraphCanvas from '../algorithms/bfsdfs/GraphCanvas';
+import BFSDFSCodeViewer from '../algorithms/bfsdfs/CodeViewer';
+import BFSDFSProblemList from '../algorithms/bfsdfs/ProblemList';
+import QueueStackDisplay from '../algorithms/bfsdfs/QueueStackDisplay';
+import VisitOrderDisplay from '../algorithms/bfsdfs/VisitOrderDisplay';
+import BFSDFSInfoModal from '../algorithms/bfsdfs/InfoModal';
+import { generateBFSSteps } from '../algorithms/bfsdfs/solverBFS';
+import { generateDFSSteps } from '../algorithms/bfsdfs/solverDFS';
+import { BFS_DFS_DEFAULT_GRAPH } from '../algorithms/bfsdfs/types';
+import type { BaseStep } from '../algorithms/bfsdfs/types';
 
 /* ─────────────── helpers ─────────────── */
 
@@ -580,11 +591,182 @@ function AStarPage() {
   );
 }
 
+/* ─────────────── BFS/DFS Page ─────────────── */
+
+type BFSDFSMode = 'BFS' | 'DFS';
+
+function graphDataToBFSDFS(data: GraphData): {
+  edges: [number, number, number][];
+  N: number;
+} {
+  const sorted = [...data.nodes].sort((a, b) => a.id - b.id);
+  const N = sorted.length;
+  const idMap = new Map(sorted.map((n, i) => [n.id, i]));
+  const edges: [number, number, number][] = data.edges.map(e => [
+    idMap.get(e.from)!, idMap.get(e.to)!, e.weight
+  ]);
+  return { edges, N };
+}
+
+function BFSDFSPage() {
+  const [algoMode, setAlgoMode] = useState<BFSDFSMode>('BFS');
+  const [mode, setMode] = useState<PageMode>('example');
+  const [currentStepIdx, setCurrentStepIdx] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [customSteps, setCustomSteps] = useState<BaseStep[] | null>(null);
+  const [customN, setCustomN] = useState<number | null>(null);
+
+  const defaultSteps = useMemo(() => {
+    return algoMode === 'BFS' ? generateBFSSteps() : generateDFSSteps();
+  }, [algoMode]);
+
+  const steps = customSteps ?? defaultSteps;
+  const numNodes = customN ?? BFS_DFS_DEFAULT_GRAPH.nodes.length;
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    if (currentStepIdx >= steps.length - 1) {
+      const t = window.setTimeout(() => setIsPlaying(false), 0);
+      return () => clearTimeout(t);
+    }
+    const t = window.setTimeout(() => setCurrentStepIdx(p => p + 1), Math.max(300, 700 - steps.length * 3));
+    return () => clearTimeout(t);
+  }, [isPlaying, currentStepIdx, steps.length]);
+
+  const step = steps[currentStepIdx] || steps[0];
+
+  const handleRun = useCallback((data: GraphData): string | null => {
+    const { edges, N } = graphDataToBFSDFS(data);
+    const newSteps = algoMode === 'BFS' ? generateBFSSteps(edges, N) : generateDFSSteps(edges, N);
+    setCustomSteps(newSteps);
+    setCustomN(N);
+    setCurrentStepIdx(0);
+    setIsPlaying(true);
+    setMode('example');
+    return null;
+  }, [algoMode]);
+
+  const handleAlgorithmChange = (newMode: BFSDFSMode) => {
+    setAlgoMode(newMode);
+    setCustomSteps(null);
+    setCustomN(null);
+    setCurrentStepIdx(0);
+    setIsPlaying(false);
+  };
+
+  const bannerClass = step.type === 'INIT' ? 'bg-sky-500/10 text-sky-700 dark:text-sky-300'
+    : step.type === 'DONE' ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
+    : step.isImprovement ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300'
+    : 'bg-muted text-muted-foreground';
+
+  return (
+    <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex-1 flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden min-h-[600px] lg:h-[calc(100vh-140px)]">
+        
+        {/* Header Tabs */}
+        <div className="flex border-b bg-muted/20 px-4 py-2 gap-4">
+          <button
+            onClick={() => handleAlgorithmChange('BFS')}
+            className={`px-4 py-2 font-bold text-sm rounded-lg transition-colors ${algoMode === 'BFS' ? 'bg-white dark:bg-zinc-800 shadow-sm text-sky-600 dark:text-sky-400' : 'text-muted-foreground hover:bg-white/50 dark:hover:bg-zinc-800/50'}`}
+          >
+            너비 우선 탐색 (BFS)
+          </button>
+          <button
+            onClick={() => handleAlgorithmChange('DFS')}
+            className={`px-4 py-2 font-bold text-sm rounded-lg transition-colors ${algoMode === 'DFS' ? 'bg-white dark:bg-zinc-800 shadow-sm text-emerald-600 dark:text-emerald-400' : 'text-muted-foreground hover:bg-white/50 dark:hover:bg-zinc-800/50'}`}
+          >
+            깊이 우선 탐색 (DFS)
+          </button>
+        </div>
+
+        <div className="p-4 border-b flex justify-between items-center bg-white dark:bg-zinc-900 shrink-0">
+          <div>
+            <h1 className="text-xl font-bold tracking-tight mb-1 flex items-center gap-2">
+              {algoMode === 'BFS' ? '너비 우선 탐색 (BFS)' : '깊이 우선 탐색 (DFS)'}
+            </h1>
+            <p className="text-sm text-muted-foreground line-clamp-1">
+              {algoMode === 'BFS' ? '큐(Queue)를 이용하여 가장 가까운 주변 노드부터 차례대로 탐색합니다.' : '스택(Stack)을 이용하여 연결된 한 갈래를 끝까지 깊게 탐색합니다.'}
+            </p>
+          </div>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-4 py-1.5 text-sm font-semibold border rounded-md hover:bg-muted transition-colors text-zinc-700 dark:text-zinc-300 whitespace-nowrap"
+          >
+            {algoMode} 란?
+          </button>
+        </div>
+
+        {mode === 'example' ? (
+          <>
+            <div className={`px-4 py-2.5 border-b font-medium text-sm text-center min-h-[42px] flex items-center justify-center transition-colors ${bannerClass}`}>
+              {step.description}
+            </div>
+
+            <div className="flex-1 flex flex-col bg-muted/5 divide-y divide-border overflow-hidden min-h-0 relative">
+              <div className="w-full flex flex-col relative overflow-y-auto group border-b" style={{ minHeight: '50%' }}>
+                <BFSDFSGraphCanvas
+                  step={step} mode={algoMode}
+                />
+                <button
+                  onClick={() => { setMode('editor'); setIsPlaying(false); }}
+                  className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-zinc-800/80 backdrop-blur border rounded-lg shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-zinc-800 transition-all text-muted-foreground hover:text-primary flex items-center gap-2 text-xs font-bold"
+                  title="그래프 직접 만들기"
+                >
+                  <Edit2 size={14} />
+                  <span>직접 만들기</span>
+                </button>
+              </div>
+              <div className="w-full h-[50%] p-3 flex flex-row gap-4 overflow-auto">
+                <div className="flex-1 min-w-[300px]">
+                  <QueueStackDisplay step={step} mode={algoMode} />
+                </div>
+                <div className="flex-1 min-w-[300px]">
+                  <VisitOrderDisplay step={step} totalNodes={numNodes} />
+                </div>
+              </div>
+            </div>
+
+            <StepController
+              currentStep={currentStepIdx} totalSteps={steps.length} isPlaying={isPlaying}
+              onPlayPause={() => setIsPlaying(p => !p)}
+              onNext={() => { setIsPlaying(false); setCurrentStepIdx(p => Math.min(steps.length - 1, p + 1)); }}
+              onPrev={() => { setIsPlaying(false); setCurrentStepIdx(p => Math.max(0, p - 1)); }}
+              onFirst={() => { setIsPlaying(false); setCurrentStepIdx(0); }}
+              onLast={() => { setIsPlaying(false); setCurrentStepIdx(steps.length - 1); }}
+            />
+          </>
+        ) : (
+          <div className="flex-1 overflow-hidden flex flex-col">
+            <GraphEditor
+              initialData={BFS_DFS_DEFAULT_GRAPH}
+              maxNodes={10}
+              algorithmType="bfsdfs"
+              onRun={handleRun}
+              presets={[
+                { label: '트리 예제 (7노드)', data: BFS_DFS_DEFAULT_GRAPH },
+              ]}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="w-full lg:w-[440px] flex flex-col gap-6">
+        <BFSDFSCodeViewer codeLine={mode === 'example' ? step.codeLine : 0} mode={algoMode} />
+        <BFSDFSProblemList />
+      </div>
+
+      <BFSDFSInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} mode={algoMode} />
+    </div>
+  );
+}
+
 /* ─────────────── Router ─────────────── */
 export default function AlgorithmPage() {
   const { slug } = useParams();
   if (slug === 'tsp')      return <TSPPage />;
   if (slug === 'dijkstra') return <DijkstraPage />;
   if (slug === 'astar')    return <AStarPage />;
+  if (slug === 'bfsdfs')   return <BFSDFSPage />;
   return <div className="p-8 text-center text-muted-foreground">알고리즘을 찾을 수 없습니다.</div>;
 }
