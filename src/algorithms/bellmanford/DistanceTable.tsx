@@ -68,11 +68,11 @@ export default function BFDistanceTable({ step }: Props) {
 
       {/* Round update history bar chart */}
       {roundUpdatesHistory.length > 0 && (
-        <div className="border rounded-xl overflow-hidden shadow-sm">
+        <div className="border rounded-xl overflow-hidden shadow-sm bg-card">
           <div className="p-3 border-b bg-muted/30">
             <h3 className="font-semibold text-sm">라운드별 갱신 횟수</h3>
           </div>
-          <div className="p-4 flex items-end gap-3">
+          <div className="p-4 flex items-end gap-3 min-h-[100px]">
             {roundUpdatesHistory.map((cnt, i) => (
               <div key={i} className="flex flex-col items-center gap-1 flex-1">
                 <span className="text-[10px] font-bold text-muted-foreground">{cnt}</span>
@@ -105,25 +105,6 @@ export default function BFDistanceTable({ step }: Props) {
             V번째 라운드에서 거리가 추가로 갱신되었습니다. 이 그래프에는 음수 사이클이 존재하여 최단 경로가 정의되지 않습니다.
             벨만-포드는 이를 감지하고 알림을 반환합니다.
           </p>
-        </div>
-      )}
-
-      {/* Dijkstra vs BF comparison */}
-      {type === 'DONE' && (
-        <div className="border rounded-xl overflow-hidden shadow-sm">
-          <div className="p-3 border-b bg-muted/30">
-            <h3 className="font-semibold text-sm">다익스트라 vs 벨만-포드</h3>
-          </div>
-          <div className="p-4 text-[12px] space-y-2 text-muted-foreground">
-            <div className="p-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-              <span className="font-bold text-amber-700 dark:text-amber-400">다익스트라:</span>
-              {' '}그리디 방식으로 음수 간선이 있으면 틀린 결과를 낼 수 있습니다.
-            </div>
-            <div className="p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-              <span className="font-bold text-blue-700 dark:text-blue-400">벨만-포드:</span>
-              {' '}모든 간선을 V-1번 반복하여 음수 간선도 올바르게 처리합니다. O(VE)
-            </div>
-          </div>
         </div>
       )}
     </div>

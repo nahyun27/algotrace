@@ -52,6 +52,7 @@ import BFGraphCanvas   from '../algorithms/bellmanford/GraphCanvas';
 import BFCodeViewer    from '../algorithms/bellmanford/CodeViewer';
 import BFProblemList   from '../algorithms/bellmanford/ProblemList';
 import BFDistanceTable from '../algorithms/bellmanford/DistanceTable';
+import BFExtraInfo     from '../algorithms/bellmanford/ExtraInfo';
 import BFInfoModal     from '../algorithms/bellmanford/InfoModal';
 import { generateBellmanFordSteps } from '../algorithms/bellmanford/solver';
 import {
@@ -883,6 +884,7 @@ function BellmanFordPage() {
       <div className="w-full lg:w-[440px] flex flex-col gap-6">
         <BFCodeViewer codeLine={step.codeLine} />
         <BFProblemList />
+        <BFExtraInfo step={step} />
       </div>
 
       <BFInfoModal
