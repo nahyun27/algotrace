@@ -5,8 +5,9 @@ export default function Sidebar() {
   const location = useLocation();
 
   const links = [
-    { name: 'Home', path: '/', icon: Home },
-    { name: 'TSP', path: '/algorithm/tsp', icon: FileCode2 },
+    { name: 'Home',       path: '/',                 icon: Home       },
+    { name: 'TSP',        path: '/algorithm/tsp',    icon: FileCode2  },
+    { name: 'Dijkstra',   path: '/algorithm/dijkstra', icon: FileCode2 },
   ];
 
   return (
