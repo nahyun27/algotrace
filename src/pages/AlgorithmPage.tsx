@@ -85,11 +85,13 @@ export default function AlgorithmPage() {
           </div>
         </div>
 
-        {/* Status banner — green on improvement, blue otherwise */}
+        {/* Status banner — green: improvement, blue: final answer, gray: no change */}
         <div className={`px-4 py-2.5 border-b font-medium text-sm text-center min-h-[42px] flex items-center justify-center transition-colors ${
-          currentStep.isImprovement
-            ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border-green-100 dark:border-green-900/50'
-            : 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border-blue-100 dark:border-blue-900/50'
+          currentStep.description.startsWith('[종료]')
+            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border-blue-100 dark:border-blue-900/50'
+            : currentStep.isImprovement
+              ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border-green-100 dark:border-green-900/50'
+              : 'bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'
         }`}>
           {currentStep.description}
         </div>
@@ -126,7 +128,7 @@ export default function AlgorithmPage() {
       </div>
 
       {/* Right panel: Code viewer + Problem list */}
-      <div className="w-full lg:w-96 flex flex-col gap-6">
+      <div className="w-full lg:w-[440px] flex flex-col gap-6">
         <CodeViewer codeLine={currentStep.codeLine} solverType={solverType} />
         <ProblemList />
       </div>
