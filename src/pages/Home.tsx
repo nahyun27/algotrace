@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 
-type Paradigm    = "DP" | "Greedy" | "탐색";
+type Paradigm    = "DP" | "Greedy" | "exploration";
 type ProblemType = "Shortest Path" | "Traversal" | "Optimization" | "MST";
 
 interface AlgoCard {
@@ -62,7 +62,7 @@ const ALGORITHMS: AlgoCard[] = [
     slug: "bfsdfs",
     description: "그래프를 층별(BFS) 또는 경로별(DFS)로 탐색하는 가장 기본적인 알고리즘입니다.",
     difficulty: "Easy",
-    paradigm: "탐색",
+    paradigm: "exploration",
     problemType: "Traversal",
     timeComplexity: "O(V + E)",
     spaceComplexity: "O(V)",
@@ -108,9 +108,9 @@ const ALGORITHMS: AlgoCard[] = [
     name: "Topological Sort",
     korName: "위상정렬",
     slug: "topological",
-    description: "DAG에서 선행 관계를 만족하는 노드 순서를 결정합니다. 칸의 알고리즘(BFS)과 DFS 방식 두 가지를 비교합니다.",
+    description: "DAG에서 선행 관계를 만족하는 노드 순서를 결정합니다. 칸의 알고리즘(BFS)과 DFS 방식 비교 가능.",
     difficulty: "Medium",
-    paradigm: "탐색",
+    paradigm: "exploration",
     problemType: "Traversal",
     timeComplexity: "O(V + E)",
     spaceComplexity: "O(V + E)",
@@ -126,7 +126,7 @@ const difficultyStyles = {
 const paradigmTagStyles: Record<Paradigm, string> = {
   DP:     "bg-sky-100    text-sky-700    dark:bg-sky-900/40    dark:text-sky-300",
   Greedy: "bg-amber-100  text-amber-700  dark:bg-amber-900/40  dark:text-amber-300",
-  탐색:   "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300",
+  exploration:   "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300",
 };
 
 const problemTypeTagStyles: Record<ProblemType, string> = {
@@ -135,6 +135,74 @@ const problemTypeTagStyles: Record<ProblemType, string> = {
   "Optimization":  "bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400",
   "MST":           "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400",
 };
+
+// ── Per-algorithm mini symbols ──────────────────────────────────────────────
+function AlgoIcon({ id }: { id: string }) {
+  const cls = "w-8 h-8";
+  switch (id) {
+    case "tsp":
+      return (
+        <svg viewBox="0 0 32 32" className={cls} fill="none">
+          <circle cx="6"  cy="16" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="16" cy="6"  r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="26" cy="16" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="16" cy="26" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M9 16h4M19 16h4M16 9v4M16 19v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M8 13l6-5M18 8l6 5M24 19l-6 5M10 19l6 5" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" opacity=".5"/>
+        </svg>
+      );
+    case "dijkstra":
+    case "astar":
+    case "bellmanford":
+    case "floydwarshall":
+      return (
+        <svg viewBox="0 0 32 32" className={cls} fill="none">
+          <circle cx="6"  cy="16" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="16" cy="6"  r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="26" cy="10" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="26" cy="24" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M9 15l5-7M19 7l4 1M24 13l0 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M8 17l14 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".7"/>
+          <circle cx="22" cy="23" r="1.5" fill="currentColor" opacity=".6"/>
+        </svg>
+      );
+    case "bfsdfs":
+    case "topological":
+      return (
+        <svg viewBox="0 0 32 32" className={cls} fill="none">
+          <circle cx="16" cy="5"  r="2.5" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="8"  cy="15" r="2.5" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="24" cy="15" r="2.5" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="4"  cy="25" r="2.5" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="12" cy="25" r="2.5" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="28" cy="25" r="2.5" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M16 7.5l-6 5M16 7.5l6 5M8 17.5l-3 5M8 17.5l3 5M24 17.5l3 5" stroke="currentColor" strokeWidth="1.5"/>
+        </svg>
+      );
+    case "kruskal":
+      return (
+        <svg viewBox="0 0 32 32" className={cls} fill="none">
+          <circle cx="6"  cy="10" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="16" cy="4"  r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="26" cy="10" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="10" cy="24" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="22" cy="24" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M9 10h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M7 13l2 8M25 13l-3 8M13 24h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M15 4L8 9M17 4L24 9" stroke="currentColor" strokeWidth="1.5" opacity=".4" strokeDasharray="2 2"/>
+        </svg>
+      );
+    default:
+      return (
+        <svg viewBox="0 0 32 32" className={cls} fill="none">
+          <rect x="4"  y="4"  width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+          <rect x="18" y="4"  width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+          <rect x="4"  y="18" width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+          <rect x="18" y="18" width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+        </svg>
+      );
+  }
+}
 
 export default function Home() {
   const [query, setQuery]           = useState("");
@@ -206,7 +274,7 @@ export default function Home() {
             <option value="">패러다임 전체</option>
             <option value="DP">DP</option>
             <option value="Greedy">Greedy</option>
-            <option value="탐색">탐색</option>
+            <option value="exploration">탐색</option>
           </select>
           <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 9l6 6 6-6" />
@@ -272,11 +340,22 @@ export default function Home() {
               </div>
 
               {/* Name */}
-              <h3 className="font-bold text-base leading-tight">{algo.name}</h3>
-              <p className="text-xs text-muted-foreground mt-0.5 mb-3">{algo.korName}</p>
+              <div className="flex items-center gap-2.5 mb-0.5">
+                <div className={`shrink-0 rounded-lg p-1.5 ${
+                  algo.paradigm === 'DP'     ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300' :
+                  algo.paradigm === 'Greedy' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' :
+                                               'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300'
+                }`}>
+                  <AlgoIcon id={algo.id} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-base leading-tight">{algo.name}</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">{algo.korName}</p>
+                </div>
+              </div>
 
               {/* Description */}
-              <p className="text-sm text-muted-foreground leading-relaxed flex-grow line-clamp-3">
+              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 min-h-[4.875rem]">
                 {algo.description}
               </p>
 
