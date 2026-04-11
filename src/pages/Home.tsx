@@ -318,7 +318,7 @@ export default function Home() {
         {filtered.map(algo => {
           const card = (
             <div
-              className={`group flex flex-col rounded-xl border bg-card text-card-foreground shadow-sm p-5 transition-all duration-200 ${
+              className={`group h-full flex flex-col rounded-xl border bg-card text-card-foreground shadow-sm p-5 transition-all duration-200 ${
                 algo.comingSoon
                   ? "opacity-50 cursor-not-allowed select-none"
                   : "hover:-translate-y-1 hover:shadow-md hover:border-primary/40 cursor-pointer"
@@ -355,7 +355,7 @@ export default function Home() {
               </div>
 
               {/* Description */}
-              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 min-h-[4.875rem]">
+              <p className="text-sm text-muted-foreground leading-relaxed flex-grow line-clamp-3 mt-3">
                 {algo.description}
               </p>
 
@@ -383,9 +383,9 @@ export default function Home() {
           );
 
           return algo.comingSoon ? (
-            <div key={algo.id}>{card}</div>
+            <div key={algo.id} className="h-full">{card}</div>
           ) : (
-            <Link key={algo.id} to={`/algorithm/${algo.slug}`} className="block">
+            <Link key={algo.id} to={`/algorithm/${algo.slug}`} className="block h-full">
               {card}
             </Link>
           );
