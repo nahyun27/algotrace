@@ -1478,7 +1478,7 @@ function KruskalPage() {
           ) : (
             <>
               {/* Top: Graph (full width) */}
-              <div className="flex-1 flex flex-col overflow-hidden min-h-0">
+              <div className="h-[240px] shrink-0 flex flex-col overflow-hidden">
                 <PrimGraphCanvas step={pStep} nodes={KRUSKAL_NODES} edges={KRUSKAL_EDGES} />
               </div>
 
