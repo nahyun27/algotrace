@@ -32,8 +32,8 @@ function buildChildren(parent: number[], N: number): Map<number, number[]> {
 }
 
 // SVG Tree view
-const TREE_SVG_W = 400;
-const TREE_SVG_H = 160;
+const TREE_SVG_W = 560;
+const TREE_SVG_H = 150;
 const NR = 18;
 
 function TreeView({ step, N }: { step: KruskalStep; N: number }) {
@@ -110,7 +110,7 @@ function TreeView({ step, N }: { step: KruskalStep; N: number }) {
 
   return (
     <div className="w-full overflow-x-auto">
-      <svg viewBox={`0 0 ${TREE_SVG_W} ${TREE_SVG_H}`} className="w-full" style={{ height: TREE_SVG_H }}>
+      <svg viewBox={`0 0 ${TREE_SVG_W} ${TREE_SVG_H}`} className="w-full" style={{ maxHeight: 150 }}>
         {lines}
         {nodeEls}
       </svg>

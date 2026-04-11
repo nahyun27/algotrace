@@ -1349,24 +1349,24 @@ function KruskalPage() {
           {step.description}
         </div>
 
-        {/* Main content: 상단 그래프+UnionFind / 하단 EdgeList+MST요약 */}
+        {/* Main content: 상단 그래프+간선목록 / 하단 UnionFind+MST요약 */}
         <div className="flex-1 flex flex-col overflow-hidden min-h-0">
-          {/* Top: Graph (left) + UnionFind (right) */}
+          {/* Top: Graph (left) + EdgeList (right, scrollable) */}
           <div className="flex-1 flex flex-row divide-x divide-border overflow-hidden min-h-0">
             <div className="flex-1 flex flex-col overflow-hidden">
               <KruskalGraphCanvas step={step} nodes={KRUSKAL_NODES} edges={KRUSKAL_EDGES} />
             </div>
-            <div className="w-[300px] shrink-0 overflow-hidden">
-              <UnionFindDisplay step={step} N={KRUSKAL_N} />
+            <div className="w-[240px] shrink-0 overflow-y-auto">
+              <KruskalEdgeList step={step} />
             </div>
           </div>
 
-          {/* Bottom: EdgeList (left) + MST Summary (right) */}
-          <div className="h-[200px] shrink-0 flex flex-row divide-x divide-border border-t overflow-hidden">
+          {/* Bottom: UnionFind (left, flex-1) + MST Summary (right, w-[200px]) */}
+          <div className="h-[220px] shrink-0 flex flex-row divide-x divide-border border-t overflow-hidden">
             <div className="flex-1 overflow-hidden">
-              <KruskalEdgeList step={step} />
+              <UnionFindDisplay step={step} N={KRUSKAL_N} />
             </div>
-            <div className="w-[220px] shrink-0 p-3 overflow-y-auto bg-card/30 flex flex-col gap-2">
+            <div className="w-[200px] shrink-0 p-3 overflow-y-auto bg-card/30 flex flex-col gap-2">
               <p className="text-xs font-semibold text-muted-foreground">MST 결과</p>
               {step.mstEdges.length === 0 ? (
                 <p className="text-xs text-muted-foreground italic">아직 간선 없음...</p>
