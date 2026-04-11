@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { KruskalStep } from './types';
 import { findRoot } from './types';
