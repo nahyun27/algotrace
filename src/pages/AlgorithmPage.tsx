@@ -46,7 +46,7 @@ import BFSDFSInfoModal from '../algorithms/bfsdfs/InfoModal';
 import { generateBFSSteps } from '../algorithms/bfsdfs/solverBFS';
 import { generateDFSSteps } from '../algorithms/bfsdfs/solverDFS';
 import { BFS_DFS_DEFAULT_GRAPH } from '../algorithms/bfsdfs/types';
-import type { BaseStep } from '../algorithms/bfsdfs/types';
+import type { BaseStep, DataItem } from '../algorithms/bfsdfs/types';
 
 // Bellman-Ford
 import BFGraphCanvas   from '../algorithms/bellmanford/GraphCanvas';
@@ -1220,16 +1220,35 @@ function TopologicalPage() {
 
         {/* Main content */}
         <div className="flex-1 flex flex-col bg-muted/5 divide-y divide-border overflow-hidden min-h-0 relative">
-          <div className="w-full flex-1 flex flex-col relative overflow-hidden border-b">
-            <TopoGraphCanvas step={step} mode={algoMode} nodes={nodes} edges={edges} />
-          </div>
-          <div className="w-full p-3 xl:p-4 overflow-auto">
-            {algoMode === 'Kahn' ? (
-              <InDegreeDisplay step={step as KahnStep} nodes={nodes} />
-            ) : (
-              <ResultOrder step={step} mode={algoMode} nodes={nodes} />
-            )}
-          </div>
+          {algoMode === 'Kahn' ? (
+            <>
+              <div className="w-full flex-1 flex flex-col relative overflow-hidden border-b">
+                <TopoGraphCanvas step={step} mode={algoMode} nodes={nodes} edges={edges} />
+              </div>
+              <div className="w-full p-3 xl:p-4 overflow-auto">
+                <InDegreeDisplay step={step as KahnStep} nodes={nodes} />
+              </div>
+            </>
+          ) : (
+            <>
+              {/* DFS: 그래프(좌) + 스택(우) 나란히 */}
+              <div className="flex-1 flex flex-row min-h-0 divide-x divide-border">
+                <div className="flex-1 flex flex-col relative overflow-hidden">
+                  <TopoGraphCanvas step={step} mode={algoMode} nodes={nodes} edges={edges} />
+                </div>
+                <div className="w-[310px] h-full p-3 overflow-y-auto bg-card/30">
+                  <QueueStackDisplay
+                    step={{ stack: (step as DFSTopoStep).stack.map((nodeId, i) => ({ id: `${nodeId}-${i}`, value: nodeId } as DataItem)) } as unknown as BaseStep}
+                    mode="DFS"
+                  />
+                </div>
+              </div>
+              {/* DFS: 하단 결과 순서 */}
+              <div className="h-[120px] p-3 bg-card/10 border-t shrink-0 overflow-auto">
+                <ResultOrder step={step} mode={algoMode} nodes={nodes} />
+              </div>
+            </>
+          )}
         </div>
 
         <StepController
@@ -1244,7 +1263,7 @@ function TopologicalPage() {
 
       <RightPanel>
         <TopoCodeViewer codeLine={step.codeLine} mode={algoMode} />
-        {algoMode === 'Kahn' && <ResultOrder step={step} mode={algoMode} nodes={nodes} />}
+        <ResultOrder step={step} mode={algoMode} nodes={nodes} />
         <TopoProblemList />
       </RightPanel>
 
