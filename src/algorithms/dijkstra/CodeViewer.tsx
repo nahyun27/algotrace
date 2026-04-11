@@ -22,6 +22,16 @@ def dijkstra(graph, start):
 
     return dist`;
 
+function isHighlighted(lineNum: number, codeLine: number): boolean {
+  if (codeLine === 1  && lineNum >= 3  && lineNum <= 6)  return true; // INIT
+  if (codeLine === 4  && lineNum >= 8  && lineNum <= 10) return true; // DEQUEUE
+  if (codeLine === 6  && lineNum === 11)                 return true; // VISITED
+  if (codeLine === 9  && (lineNum === 13 || lineNum === 14)) return true; // RELAX no-improve
+  if (codeLine === 10 && lineNum >= 13 && lineNum <= 16) return true; // RELAX improve
+  if (codeLine === 12 && lineNum === 18)                 return true; // DONE
+  return false;
+}
+
 export default function DijkstraCodeViewer({ codeLine }: { codeLine: number }) {
   const [copied, setCopied] = useState(false);
 
@@ -52,12 +62,12 @@ export default function DijkstraCodeViewer({ codeLine }: { codeLine: number }) {
           language="python"
           style={vscDarkPlus}
           showLineNumbers
-          wrapLines={false}
+          wrapLines={true}
           lineProps={(lineNumber) => ({
             style: {
               display: 'block',
-              backgroundColor: lineNumber === codeLine ? 'var(--code-highlight)' : 'transparent',
-              borderLeft: lineNumber === codeLine ? '3px solid #3b82f6' : '3px solid transparent',
+              backgroundColor: isHighlighted(lineNumber, codeLine) ? 'var(--code-highlight)' : 'transparent',
+              borderLeft: isHighlighted(lineNumber, codeLine) ? '3px solid #3b82f6' : '3px solid transparent',
               paddingLeft: '10px',
               whiteSpace: 'pre',
             }

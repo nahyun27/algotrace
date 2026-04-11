@@ -35,18 +35,45 @@ for mask in range(1, 1 << N):
             if i != j and (mask & (1 << j)) and W[j][i]:
                 res = dp[mask ^ (1 << i)][j] + W[j][i]
                 dp[mask][i] = min(dp[mask][i], res)
-http://localhost:5173/algorithm/astar
+
 ans = INF
 for i in range(1, N):
     if dp[(1 << N) - 1][i] != INF and W[i][0]:
         ans = min(ans, dp[(1 << N) - 1][i] + W[i][0])
 return ans`;
 
+function isHighlightedTopDown(lineNum: number, codeLine: number): boolean {
+  if (codeLine === 1  && (lineNum === 1 || lineNum === 2))  return true; // function call
+  if (codeLine === 3  && (lineNum === 2 || lineNum === 3))  return true; // base case return
+  if (codeLine === 6  && (lineNum === 5 || lineNum === 6))  return true; // memo return
+  if (codeLine === 8  && (lineNum === 8 || lineNum === 9))  return true; // start loop
+  if (codeLine === 11 && (lineNum === 10 || lineNum === 11)) return true; // recurse
+  if ((codeLine === 12 || codeLine === 13) && lineNum === 12) return true; // min update
+  if (codeLine === 15 && (lineNum === 14 || lineNum === 15)) return true; // save & return
+  return false;
+}
+
+function isHighlightedBottomUp(lineNum: number, codeLine: number): boolean {
+  if (codeLine === 1  && lineNum === 1)                                          return true; // init
+  if (codeLine === 5  && lineNum >= 3  && lineNum <= 6)                          return true; // outer loop
+  if (codeLine === 10 && lineNum >= 8  && lineNum <= 10)                         return true; // transition
+  if (codeLine === 11 && lineNum === 11)                                          return true; // update
+  if (codeLine === 14 && (lineNum === 13 || lineNum === 14))                      return true; // final phase
+  if (codeLine === 16 && (lineNum === 15 || lineNum === 16))                      return true; // last city
+  if (codeLine === 17 && lineNum === 16)                                          return true; // update min
+  if (codeLine === 18 && lineNum === 17)                                          return true; // done
+  return false;
+}
+
 export default function CodeViewer({ codeLine, solverType }: CodeViewerProps) {
   const [copied, setCopied] = useState(false);
 
   const codeStr = solverType === 'topDown' ? TSP_CODE_TOP_DOWN : TSP_CODE_BOTTOM_UP;
   const title = solverType === 'topDown' ? 'Source Code (Top-down DP)' : 'Source Code (Bottom-up DP)';
+  const isHighlighted = (lineNum: number) =>
+    solverType === 'topDown'
+      ? isHighlightedTopDown(lineNum, codeLine)
+      : isHighlightedBottomUp(lineNum, codeLine);
 
   const handleCopy = async () => {
     try {
@@ -54,7 +81,6 @@ export default function CodeViewer({ codeLine, solverType }: CodeViewerProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // fallback for older browsers
       const ta = document.createElement('textarea');
       ta.value = codeStr;
       document.body.appendChild(ta);
@@ -88,18 +114,18 @@ export default function CodeViewer({ codeLine, solverType }: CodeViewerProps) {
         </button>
       </div>
 
-      {/* Code — overflow-x: auto for horizontal scroll, no wrapping */}
+      {/* Code */}
       <div className="dark flex-1 overflow-auto text-[13px] bg-[var(--code-bg)]" style={{ overflowX: 'auto' }}>
         <SyntaxHighlighter
           language="python"
           style={vscDarkPlus}
           showLineNumbers
-          wrapLines={false}
+          wrapLines={true}
           lineProps={(lineNumber) => ({
             style: {
               display: 'block',
-              backgroundColor: lineNumber === codeLine ? 'var(--code-highlight)' : 'transparent',
-              borderLeft: lineNumber === codeLine
+              backgroundColor: isHighlighted(lineNumber) ? 'var(--code-highlight)' : 'transparent',
+              borderLeft: isHighlighted(lineNumber)
                 ? '3px solid #3b82f6'
                 : '3px solid transparent',
               paddingLeft: '10px',
