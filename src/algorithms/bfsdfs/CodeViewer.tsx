@@ -75,7 +75,7 @@ export default function CodeViewer({ codeLine, mode }: CodeViewerProps) {
       </div>
 
       {/* Code Area */}
-      <div className="flex-1 overflow-auto text-[13px] bg-[#1e1e1e]" style={{ overflowX: 'auto' }}>
+      <div className="flex-1 overflow-auto text-[13px] bg-[var(--code-bg)]" style={{ overflowX: 'auto' }}>
         <SyntaxHighlighter
           language="python"
           style={vscDarkPlus}
@@ -85,7 +85,7 @@ export default function CodeViewer({ codeLine, mode }: CodeViewerProps) {
             style: {
               display: 'block',
               backgroundColor: isHighlighted(lineNumber)
-                ? 'rgba(147, 197, 253, 0.18)' // A* uses 0.18 blue
+                ? 'var(--code-highlight)'
                 : 'transparent',
               borderLeft: isHighlighted(lineNumber)
                 ? '3px solid #3b82f6'

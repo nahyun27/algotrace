@@ -99,7 +99,7 @@ export default function QueueStackDisplay({ step, mode }: QueueStackDisplayProps
             </div>
 
             {/* Container bounds */}
-            <div className="flex flex-col-reverse items-center justify-start gap-2 border-x-2 border-b-2 border-t-0 border-zinc-300 dark:border-zinc-700 px-6 py-2 min-h-[180px] w-32 relative">
+            <div className="flex flex-col-reverse items-center justify-start gap-1.5 border-x-2 border-b-2 border-t-0 border-zinc-300 dark:border-zinc-700 px-6 py-2 min-h-[220px] w-28 relative">
               <AnimatePresence mode="popLayout">
                 {items.length === 0 ? (
                   <motion.div
@@ -120,7 +120,7 @@ export default function QueueStackDisplay({ step, mode }: QueueStackDisplayProps
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -80, scale: 0.9 }}
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      className="w-16 h-10 shrink-0 bg-sky-100 dark:bg-sky-900/40 border-2 border-sky-300 dark:border-sky-600 rounded flex items-center justify-center font-bold text-sky-800 dark:text-sky-200 shadow-sm"
+                      className="w-14 h-8 shrink-0 bg-sky-100 dark:bg-sky-900/40 border-2 border-sky-300 dark:border-sky-600 rounded flex items-center justify-center font-bold text-sky-800 dark:text-sky-200 text-xs shadow-sm"
                     >
                       {item.value}
                     </motion.div>

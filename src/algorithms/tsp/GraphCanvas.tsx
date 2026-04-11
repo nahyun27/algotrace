@@ -30,7 +30,7 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
       >
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="26" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" fill="currentColor" className="text-border dark:text-muted-foreground/30" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="currentColor" className="text-zinc-400 dark:text-accent" />
           </marker>
           <marker id="arrowhead-active" markerWidth="10" markerHeight="7" refX="26" refY="3.5" orient="auto">
             <polygon points="0 0, 10 3.5, 0 7" fill="#f97316" />
@@ -62,7 +62,7 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
                 <path
                   d={`M ${n1.x},${n1.y} A ${dr},${dr} 0 0,1 ${n2.x},${n2.y}`}
                   fill="none"
-                  stroke={isActive ? '#f97316' : 'currentColor'}
+                  stroke={isActive ? '#f97316' : 'var(--border)'}
                   strokeWidth={isActive ? 2.5 : 1.5}
                   strokeOpacity={isActive ? 1 : 0.4}
                   className="transition-all duration-300"
@@ -79,7 +79,7 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
                   className={`font-mono transition-all duration-300 ${
                     isActive
                       ? 'fill-orange-500 dark:fill-orange-400'
-                      : 'fill-zinc-600 dark:fill-white'
+                      : 'fill-zinc-600 dark:fill-foreground'
                   }`}
                 >
                   {weight}
@@ -95,9 +95,13 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
           const isNext    = n.id === nextCity;
           const isVisited = (currentMask & (1 << n.id)) !== 0 && !isCurrent;
 
-          let fill   = '#e4e4e7'; // muted (unvisited)
-          let stroke = '#a1a1aa';
-          let textFill = '#3f3f46';
+          let fill   = '#e4e4e7', stroke = '#a1a1aa', textFill = '#3f3f46';
+          if (document.documentElement.classList.contains('dark')) {
+            fill = '#2a2d3e'; // --border
+            stroke = '#383b52'; // --accent
+            textFill = '#e2e4ed'; // --foreground
+          }
+          
           let r = 22;
 
           if (isCurrent) {

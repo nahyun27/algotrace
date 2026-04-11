@@ -42,7 +42,7 @@ export default function GraphCanvas({ step, shortestEdges, customNodes, customEd
       const isActive =
         step.activeEdge?.[0] === parent && step.activeEdge?.[1] === child;
 
-      let edgeColor = 'text-zinc-300 dark:text-zinc-700';
+      let edgeColor = 'text-zinc-300 dark:text-accent';
       let strokeWidth = 2;
       let isAnimated = false;
 
@@ -103,7 +103,7 @@ export default function GraphCanvas({ step, shortestEdges, customNodes, customEd
             <text
               textAnchor="middle"
               alignmentBaseline="central"
-              className="text-base font-bold fill-white dark:fill-zinc-950 stroke-white dark:stroke-zinc-950"
+              className="text-base font-bold fill-white dark:fill-background stroke-white dark:stroke-background"
               strokeWidth="4"
             >
               {w}
@@ -112,7 +112,7 @@ export default function GraphCanvas({ step, shortestEdges, customNodes, customEd
               textAnchor="middle"
               alignmentBaseline="central"
               className={`text-base font-extrabold transition-colors ${
-                isActive ? 'fill-orange-600 dark:fill-orange-400' : 'fill-zinc-700 dark:fill-zinc-200'
+                isActive ? 'fill-orange-600 dark:fill-orange-400' : 'fill-zinc-700 dark:fill-foreground'
               }`}
             >
               {w}
@@ -129,15 +129,15 @@ export default function GraphCanvas({ step, shortestEdges, customNodes, customEd
       const isGoal = n.id === GOAL_NODE;
       const isStart = n.id === 0;
 
-      let bgColor = 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300';
-      let ring = 'ring-zinc-300 dark:ring-zinc-600';
+      let bgColor = 'bg-zinc-200 dark:bg-border text-zinc-700 dark:text-foreground';
+      let ring = 'ring-zinc-300 dark:ring-accent';
 
       if (step.currentProcessingNode === n.id) {
         bgColor = 'bg-blue-500 text-white shadow-lg shadow-blue-500/50';
         ring = 'ring-blue-300 dark:ring-blue-500/30 ring-4';
       } else if (step.closedSet.includes(n.id)) {
-        bgColor = 'bg-zinc-400 dark:bg-zinc-600 text-white';
-        ring = 'ring-zinc-300 dark:ring-zinc-700';
+        bgColor = 'bg-zinc-400 dark:bg-accent text-white';
+        ring = 'ring-zinc-300 dark:ring-border';
       } else if (step.openSet.includes(n.id)) {
         bgColor = 'bg-sky-200 dark:bg-sky-900/60 text-sky-800 dark:text-sky-200';
         ring = 'ring-sky-300 dark:ring-sky-700';
@@ -180,7 +180,7 @@ export default function GraphCanvas({ step, shortestEdges, customNodes, customEd
             </div>
             
             {/* f, g, h values underneath */}
-            <div className="absolute top-[60px] flex flex-col items-center pointer-events-none bg-white/95 dark:bg-zinc-900/95 rounded px-3 py-1.5 whitespace-nowrap shadow-sm border border-zinc-200 dark:border-zinc-800 z-20">
+            <div className="absolute top-[60px] flex flex-col items-center pointer-events-none bg-white/95 dark:bg-card/95 rounded px-3 py-1.5 whitespace-nowrap shadow-sm border border-zinc-200 dark:border-accent z-20">
               <span className="text-base font-extrabold text-purple-600 dark:text-purple-400 leading-tight mb-0.5">f={fStr}</span>
               <span className="text-sm font-semibold text-muted-foreground leading-tight">g={gStr} h={hStr}</span>
             </div>

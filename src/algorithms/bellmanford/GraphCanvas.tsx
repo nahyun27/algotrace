@@ -44,7 +44,7 @@ export default function BFGraphCanvas({ step, nodes, edges }: Props) {
           const midX = (n1.x + n2.x) / 2 + (dy / len) * perp;
           const midY = (n1.y + n2.y) / 2 - (dx / len) * perp;
 
-          let stroke = 'currentColor';
+          let stroke = 'var(--border)';
           let strokeW = 1.5;
           let opacity = 0.35;
           let marker = 'url(#bf-arrow)';
@@ -79,7 +79,7 @@ export default function BFGraphCanvas({ step, nodes, edges }: Props) {
                   isImproved ? 'fill-green-600 dark:fill-green-400' :
                   isActive ? 'fill-orange-500 dark:fill-orange-400' :
                   isNegEdge ? 'fill-red-500 dark:fill-red-400 opacity-80' :
-                  'fill-zinc-600 dark:fill-white'
+                  'fill-zinc-600 dark:fill-foreground'
                 }`}
               >{w}</text>
             </g>
@@ -93,6 +93,12 @@ export default function BFGraphCanvas({ step, nodes, edges }: Props) {
           const r = isCurrent || isNeighbor ? 24 : 22;
 
           let fill = '#e4e4e7', stroke = '#a1a1aa', textFill = '#3f3f46';
+          if (document.documentElement.classList.contains('dark')) {
+            fill = '#2a2d3e'; // --border
+            stroke = '#383b52'; // --accent
+            textFill = '#e2e4ed'; // --foreground
+          }
+          
           if (isCurrent)       { fill = '#3b82f6'; stroke = '#1d4ed8'; textFill = '#fff'; }
           else if (isNeighbor) { fill = '#fb923c'; stroke = '#c2410c'; textFill = '#fff'; }
           else if (step.type === 'DONE' && dist[nd.id] < INF) {

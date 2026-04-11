@@ -184,7 +184,7 @@ function TSPPage() {
                 ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border-blue-100 dark:border-blue-900/50'
                 : step.isImprovement
                   ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border-green-100 dark:border-green-900/50'
-                  : 'bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'
+                  : 'bg-zinc-100 dark:bg-accent/50 text-zinc-700 dark:text-muted-foreground border-zinc-200 dark:border-accent'
             }`}>{step.description}</div>
 
             <div className="flex-1 flex flex-col xl:flex-row bg-muted/5 divide-y xl:divide-y-0 xl:divide-x divide-border overflow-hidden min-h-0 relative">
@@ -314,7 +314,7 @@ function DijkstraPage() {
       ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border-green-100 dark:border-green-900/50'
       : step.isImprovement
         ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border-green-100 dark:border-green-900/50'
-        : 'bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700';
+        : 'bg-zinc-100 dark:bg-accent/50 text-zinc-700 dark:text-muted-foreground border-zinc-200 dark:border-accent';
 
   const handleRun = useCallback((data: GraphData): string | null => {
     const { edges, N, nodePositions } = graphDataToDijkstra(data);
@@ -375,7 +375,7 @@ function DijkstraPage() {
                 />
                 <button
                   onClick={() => { setMode('editor'); setIsPlaying(false); }}
-                  className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-zinc-800/80 backdrop-blur border rounded-lg shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-zinc-800 transition-all text-muted-foreground hover:text-primary flex items-center gap-2 text-xs font-bold"
+                  className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-accent/80 backdrop-blur border rounded-lg shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-accent transition-all text-muted-foreground hover:text-primary flex items-center gap-2 text-xs font-bold"
                   title="그래프 직접 만들기"
                 >
                   <Edit2 size={14} />
@@ -472,7 +472,7 @@ function AStarPage() {
   const bannerClass = step.type === 'DONE' && step.description.includes('도달했습니다')
     ? 'bg-purple-50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 border-purple-100 dark:border-purple-900/50'
     : step.type === 'CLOSE'
-      ? 'bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'
+      ? 'bg-zinc-100 dark:bg-accent/50 text-zinc-700 dark:text-muted-foreground border-zinc-200 dark:border-accent'
       : step.isImprovement
         ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border-green-100 dark:border-green-900/50'
         : 'bg-blue-50 dark:bg-blue-900/10 text-blue-800 dark:text-blue-300 border-blue-100 dark:border-blue-900/30';
@@ -506,7 +506,7 @@ function AStarPage() {
               <div className={`text-xs font-bold px-3 py-1 rounded-full border ${
                 step.type === 'DEQUEUE' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700' :
                 step.type === 'RELAX'   ? 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-700' :
-                step.type === 'CLOSE'   ? 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-300 dark:border-zinc-700' :
+                step.type === 'CLOSE'   ? 'bg-zinc-200 dark:bg-accent text-zinc-700 dark:text-muted-foreground border-zinc-300 dark:border-accent' :
                 step.type === 'DONE'    ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700' :
                 'bg-muted text-muted-foreground border-border'
               }`}>{step.type}</div>
@@ -536,7 +536,7 @@ function AStarPage() {
                 />
                 <button
                   onClick={() => { setMode('editor'); setIsPlaying(false); }}
-                  className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-zinc-800/80 backdrop-blur border rounded-lg shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-zinc-800 transition-all text-muted-foreground hover:text-primary flex items-center gap-2 text-xs font-bold"
+                  className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-accent/80 backdrop-blur border rounded-lg shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-accent transition-all text-muted-foreground hover:text-primary flex items-center gap-2 text-xs font-bold"
                   title="그래프 직접 만들기"
                 >
                   <Edit2 size={14} />
@@ -578,7 +578,7 @@ function AStarPage() {
         
         {/* Stats Panel (A* vs Dijkstra) */}
         {mode === 'example' && step.type === 'DONE' && (
-          <div className="bg-white dark:bg-zinc-900 border rounded-xl p-4 shadow-sm animate-in fade-in-0 duration-500">
+          <div className="bg-white dark:bg-card border rounded-xl p-4 shadow-sm animate-in fade-in-0 duration-500">
             <h4 className="text-sm font-bold mb-3">⚡ 탐색 효율 (Nodes Explored)</h4>
             <div className="space-y-3 relative">
               {/* AStar bar */}
@@ -705,7 +705,7 @@ function BFSDFSPage() {
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-4 py-1.5 text-sm font-semibold border rounded-md hover:bg-muted transition-colors text-zinc-700 dark:text-zinc-300 whitespace-nowrap"
+            className="px-4 py-1.5 text-sm font-semibold border rounded-md hover:bg-muted transition-colors text-zinc-700 dark:text-muted-foreground whitespace-nowrap"
           >
             {algoMode} 란?
           </button>
@@ -718,27 +718,53 @@ function BFSDFSPage() {
             </div>
 
             <div className="flex-1 flex flex-col bg-muted/5 divide-y divide-border overflow-hidden min-h-0 relative">
-              <div className="w-full flex flex-col relative overflow-y-auto group border-b" style={{ minHeight: '50%' }}>
-                <BFSDFSGraphCanvas
-                  step={step} mode={algoMode}
-                />
-                <button
-                  onClick={() => { setMode('editor'); setIsPlaying(false); }}
-                  className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-zinc-800/80 backdrop-blur border rounded-lg shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-zinc-800 transition-all text-muted-foreground hover:text-primary flex items-center gap-2 text-xs font-bold"
-                  title="그래프 직접 만들기"
-                >
-                  <Edit2 size={14} />
-                  <span>직접 만들기</span>
-                </button>
-              </div>
-              <div className="w-full h-[50%] p-3 flex flex-row gap-4 overflow-auto">
-                <div className="flex-1 min-w-[300px]">
-                  <QueueStackDisplay step={step} mode={algoMode} />
-                </div>
-                <div className="flex-1 min-w-[300px]">
-                  <VisitOrderDisplay step={step} totalNodes={numNodes} />
-                </div>
-              </div>
+              {algoMode === 'BFS' ? (
+                <>
+                  {/* BFS Layout: Classical 50/50 split */}
+                  <div className="w-full h-[55%] flex flex-col相对 relative overflow-y-auto group border-b">
+                    <BFSDFSGraphCanvas step={step} mode={algoMode} />
+                    <button
+                      onClick={() => { setMode('editor'); setIsPlaying(false); }}
+                      className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-accent/80 backdrop-blur border rounded-lg shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-accent transition-all text-muted-foreground hover:text-primary flex items-center gap-2 text-xs font-bold"
+                      title="그래프 직접 만들기"
+                    >
+                      <Edit2 size={14} />
+                      <span>직접 만들기</span>
+                    </button>
+                  </div>
+                  <div className="w-full h-[45%] p-3 flex flex-row gap-4 overflow-auto">
+                    <div className="flex-1 min-w-[300px]">
+                      <QueueStackDisplay step={step} mode={algoMode} />
+                    </div>
+                    <div className="flex-1 min-w-[300px]">
+                      <VisitOrderDisplay step={step} totalNodes={numNodes} />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* DFS Layout: Stack on the Right for more height */}
+                  <div className="flex-1 flex flex-row min-h-0 divide-x divide-border">
+                    <div className="flex-1 flex flex-col relative overflow-y-auto group h-full">
+                      <BFSDFSGraphCanvas step={step} mode={algoMode} />
+                      <button
+                        onClick={() => { setMode('editor'); setIsPlaying(false); }}
+                        className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-accent/80 backdrop-blur border rounded-lg shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-accent transition-all text-muted-foreground hover:text-primary flex items-center gap-2 text-xs font-bold"
+                        title="그래프 직접 만들기"
+                      >
+                        <Edit2 size={14} />
+                        <span>직접 만들기</span>
+                      </button>
+                    </div>
+                    <div className="w-[320px] h-full p-3 overflow-y-auto bg-card/30">
+                      <QueueStackDisplay step={step} mode={algoMode} />
+                    </div>
+                  </div>
+                  <div className="h-[130px] p-3 bg-card/10 border-t shrink-0">
+                    <VisitOrderDisplay step={step} totalNodes={numNodes} />
+                  </div>
+                </>
+              )}
             </div>
 
             <StepController
@@ -819,7 +845,7 @@ function BellmanFordPage() {
         ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border-blue-100 dark:border-blue-900/50'
         : step.isImprovement
           ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border-green-100 dark:border-green-900/50'
-          : 'bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700';
+          : 'bg-zinc-100 dark:bg-accent/50 text-zinc-700 dark:text-muted-foreground border-zinc-200 dark:border-accent';
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
@@ -841,7 +867,7 @@ function BellmanFordPage() {
                   onClick={() => handleExampleChange(ex)}
                   className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${
                     example === ex
-                      ? 'bg-white dark:bg-zinc-800 shadow-sm text-foreground'
+                      ? 'bg-white dark:bg-accent shadow-sm text-foreground'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >{ex === 'ex1' ? '기본 예제 (음수 간선)' : '음수 사이클 예제'}</button>

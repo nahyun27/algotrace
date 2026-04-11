@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import type { BaseStep, BFSStep, DFSStep } from './types';
+import { useMemo } from 'react';
+import type { BaseStep, BFSStep, DFSStep, DataItem } from './types';
 import { BFS_DFS_DEFAULT_GRAPH } from './types';
 
 interface BFSDFSGraphCanvasProps {
@@ -51,7 +51,7 @@ export default function BFSDFSGraphCanvas({ step, mode }: BFSDFSGraphCanvasProps
       // Check if it's a tree edge
       const isTreeEdge = step.treeEdges.some(te => (te[0] === e.from && te[1] === e.to) || (te[0] === e.to && te[1] === e.from));
 
-      let strokeColor = 'stroke-zinc-300 dark:stroke-zinc-700';
+      let strokeColor = 'stroke-zinc-300 dark:stroke-accent';
       let strokeWidth = 2;
 
       if (isActive) {
@@ -92,10 +92,10 @@ export default function BFSDFSGraphCanvas({ step, mode }: BFSDFSGraphCanvasProps
     return nodes.map((n) => {
       const isCurrent = step.currentNode === n.id;
       const isVisited = step.visitedSet.includes(n.id);
-      const isScheduled = scheduledNodes.includes(n.id);
+      const isScheduled = (scheduledNodes as DataItem[]).some(item => item.value === n.id);
 
-      let bgColor = 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300';
-      let ring = 'ring-zinc-300 dark:ring-zinc-600';
+      let bgColor = 'bg-zinc-200 dark:bg-border text-zinc-700 dark:text-foreground';
+      let ring = 'ring-zinc-300 dark:ring-accent';
 
       if (isCurrent) {
         bgColor = 'bg-blue-500 text-white shadow-lg shadow-blue-500/50';
@@ -131,7 +131,7 @@ export default function BFSDFSGraphCanvas({ step, mode }: BFSDFSGraphCanvasProps
             >
               {n.id}
               {orderNum !== null && (
-                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold ring-2 ring-white dark:ring-zinc-900 shadow-sm animate-in zoom-in duration-300">
+                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold ring-2 ring-white dark:ring-background shadow-sm animate-in zoom-in duration-300">
                   {orderNum}
                 </div>
               )}

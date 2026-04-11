@@ -176,7 +176,7 @@ export default function Home() {
                   {algo.category}
                 </span>
                 {algo.comingSoon && (
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-500 dark:bg-accent dark:text-muted-foreground">
                     Coming Soon
                   </span>
                 )}

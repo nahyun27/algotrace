@@ -10,6 +10,10 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-hint: var(--hint);
+  --color-accent: var(--accent);
+  --color-code-bg: var(--code-bg);
+  --color-code-highlight: var(--code-highlight);
 }
 
 @layer base {
@@ -26,15 +30,21 @@
   }
   
   .dark {
-    --background: #09090b;
-    --foreground: #fafafa;
-    --border: #27272a;
-    --primary: #6366f1;
+    --background: #0f1117;
+    --foreground: #e2e4ed;
+    --border: #2a2d3e;
+    --primary: #4c6ef5;
     --primary-foreground: #ffffff;
-    --muted: #18181b;
-    --muted-foreground: #a1a1aa;
-    --card: #09090b;
-    --card-foreground: #fafafa;
+    --muted: #20243a;
+    --muted-foreground: #8b8fa8;
+    --card: #1a1d27;
+    --card-foreground: #e2e4ed;
+    
+    /* Extra aesthetic tokens */
+    --hint: #555875;
+    --accent: #383b52;
+    --code-bg: #13151f;
+    --code-highlight: #1e2235;
   }
 
   body {

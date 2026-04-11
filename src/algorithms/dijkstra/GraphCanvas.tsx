@@ -49,7 +49,7 @@ export default function DijkstraGraphCanvas({ step, shortestEdges, customNodes, 
           const midX = (n1.x + n2.x) / 2 + (dy / len) * perp;
           const midY = (n1.y + n2.y) / 2 - (dx / len) * perp;
 
-          const stroke = isActive ? '#f97316' : isShortest ? '#22c55e' : 'currentColor';
+          const stroke = isActive ? '#f97316' : isShortest ? '#22c55e' : 'var(--border)';
           const strokeW = isActive || isShortest ? 2.5 : 1.5;
           const opacity = isActive || isShortest ? 1 : 0.35;
           const marker  = isActive ? 'url(#dij-arrow-active)' : isShortest ? 'url(#dij-arrow-short)' : 'url(#dij-arrow)';
@@ -69,7 +69,7 @@ export default function DijkstraGraphCanvas({ step, shortestEdges, customNodes, 
                     ? 'fill-orange-500 dark:fill-orange-400'
                     : isShortest
                       ? 'fill-green-600 dark:fill-green-400'
-                      : 'fill-zinc-600 dark:fill-white'
+                      : 'fill-zinc-600 dark:fill-foreground'
                 }`}
               >
                 {w}
@@ -86,6 +86,12 @@ export default function DijkstraGraphCanvas({ step, shortestEdges, customNodes, 
           const r = isCurrent || isNeighbor ? 24 : 22;
 
           let fill = '#e4e4e7', stroke = '#a1a1aa', textFill = '#3f3f46';
+          if (document.documentElement.classList.contains('dark')) {
+            fill = '#2a2d3e'; // --border
+            stroke = '#383b52'; // --accent
+            textFill = '#e2e4ed'; // --foreground
+          }
+          
           if (isCurrent)  { fill = '#3b82f6'; stroke = '#1d4ed8'; textFill = '#fff'; }
           else if (isNeighbor) { fill = '#fb923c'; stroke = '#c2410c'; textFill = '#fff'; }
           else if (isVisited)  { fill = '#bbf7d0'; stroke = '#16a34a'; textFill = '#14532d'; }

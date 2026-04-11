@@ -51,7 +51,7 @@ export default function BFCodeViewer({ codeLine }: { codeLine: number }) {
           {copied ? <><Check className="w-3 h-3" /> 복사됨!</> : <><Copy className="w-3 h-3" /> 복사</>}
         </button>
       </div>
-      <div className="flex-1 overflow-auto text-[13px] bg-[#1e1e1e]" style={{ overflowX: 'auto' }}>
+      <div className="flex-1 overflow-auto text-[13px] bg-[var(--code-bg)]" style={{ overflowX: 'auto' }}>
         <SyntaxHighlighter
           language="python"
           style={vscDarkPlus}
@@ -60,7 +60,7 @@ export default function BFCodeViewer({ codeLine }: { codeLine: number }) {
           lineProps={(lineNumber) => ({
             style: {
               display: 'block',
-              backgroundColor: isHighlighted(lineNumber) ? 'rgba(59, 130, 246, 0.18)' : 'transparent',
+              backgroundColor: isHighlighted(lineNumber) ? 'var(--code-highlight)' : 'transparent',
               borderLeft: isHighlighted(lineNumber) ? '3px solid #3b82f6' : '3px solid transparent',
               paddingLeft: '10px',
               whiteSpace: 'pre',
