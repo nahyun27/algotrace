@@ -1356,14 +1356,14 @@ function KruskalPage() {
             <div className="flex-1 flex flex-col overflow-hidden">
               <KruskalGraphCanvas step={step} nodes={KRUSKAL_NODES} edges={KRUSKAL_EDGES} />
             </div>
-            <div className="w-[240px] shrink-0 overflow-y-auto">
+            <div className="w-[260px] shrink-0 overflow-y-auto p-3">
               <KruskalEdgeList step={step} />
             </div>
           </div>
 
           {/* Bottom: UnionFind (left, flex-1) + MST Summary (right, w-[200px]) */}
-          <div className="h-[220px] shrink-0 flex flex-row divide-x divide-border border-t overflow-hidden">
-            <div className="flex-1 overflow-hidden">
+          <div className="h-[270px] shrink-0 flex flex-row divide-x divide-border border-t overflow-hidden">
+            <div className="flex-1 overflow-auto p-3">
               <UnionFindDisplay step={step} N={KRUSKAL_N} />
             </div>
             <div className="w-[200px] shrink-0 p-3 overflow-y-auto bg-card/30 flex flex-col gap-2">
