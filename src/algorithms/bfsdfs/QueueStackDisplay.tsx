@@ -23,35 +23,35 @@ export default function QueueStackDisplay({ step, mode }: QueueStackDisplayProps
   }, [step, mode]);
 
   return (
-    <div className="bg-card rounded-xl border p-4 shadow-sm flex flex-col w-full overflow-hidden">
-      <div className="flex flex-col mb-4">
-        <h3 className="font-semibold tracking-tight text-sm flex items-center gap-2">
+    <div className="bg-card rounded-xl border p-2 sm:p-4 shadow-sm flex flex-col w-full overflow-hidden">
+      <div className="flex flex-col mb-2 sm:mb-4">
+        <h3 className="font-semibold tracking-tight text-[13px] sm:text-sm flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
           {isBFS ? (
             <>
-              📦 큐 (Queue)
-              <span className="text-xs font-normal text-muted-foreground bg-muted px-2 py-0.5 rounded ml-2">FIFO (First-In, First-Out)</span>
+              <span>📦 큐 (Queue)</span>
+              <span className="text-[10px] sm:text-xs font-normal text-muted-foreground bg-muted px-1.5 sm:px-2 py-0.5 rounded sm:ml-2 w-fit">FIFO (First-In, First-Out)</span>
             </>
           ) : (
             <>
-              📚 스택 (Stack)
-              <span className="text-xs font-normal text-muted-foreground bg-muted px-2 py-0.5 rounded ml-2">LIFO (Last-In, First-Out)</span>
+              <span>📚 스택 (Stack)</span>
+              <span className="text-[10px] sm:text-xs font-normal text-muted-foreground bg-muted px-1.5 sm:px-2 py-0.5 rounded sm:ml-2 w-fit">LIFO (Last-In, First-Out)</span>
             </>
           )}
         </h3>
       </div>
 
-      <div className="flex-1 flex items-center justify-center bg-muted/20 border rounded-lg p-6 overflow-x-auto min-h-[140px] relative">
+      <div className="flex-1 flex items-center justify-center bg-muted/20 border rounded-lg p-2 sm:p-6 overflow-x-auto min-h-[112px] sm:min-h-[140px] relative">
         {isBFS ? (
           // QUEUE VISUALIZATION (Horizontal, Enqueue Right, Dequeue Left)
-          <div className="flex items-center gap-2 relative min-w-max">
+          <div className="flex items-center gap-1 sm:gap-2 relative min-w-max">
             {/* Output arrow (Dequeue) */}
-            <div className="flex flex-col items-center justify-center mr-2 text-muted-foreground">
-              <span className="text-[10px] font-bold uppercase mb-1">Pop</span>
-              <ArrowRight size={16} />
+            <div className="flex flex-col items-center justify-center mr-1 sm:mr-2 text-muted-foreground">
+              <span className="text-[9px] sm:text-[10px] font-bold uppercase mb-0.5 sm:mb-1">Pop</span>
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
 
-            {/* Container bounds */}
-            <div className="flex items-center gap-2 border-y-2 border-l-0 border-r-0 border-zinc-300 dark:border-zinc-700 py-3 px-2 min-w-[200px]">
+            {/* Container bounds — consistent size whether empty or filled */}
+            <div className="flex items-center gap-1.5 sm:gap-2 border-y-2 border-l-0 border-r-0 border-zinc-300 dark:border-zinc-700 py-2 sm:py-3 px-2 min-w-[160px] sm:min-w-[200px] min-h-[56px] sm:min-h-[72px]">
               <AnimatePresence mode="popLayout">
                 {items.length === 0 ? (
                   <motion.div
@@ -59,7 +59,7 @@ export default function QueueStackDisplay({ step, mode }: QueueStackDisplayProps
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-xs text-muted-foreground italic w-full text-center"
+                    className="text-[11px] sm:text-xs text-muted-foreground italic w-full text-center"
                   >
                     큐가 비어있습니다
                   </motion.div>
@@ -72,7 +72,7 @@ export default function QueueStackDisplay({ step, mode }: QueueStackDisplayProps
                       animate={{ opacity: 1, x: 0, scale: 1 }}
                       exit={{ opacity: 0, x: -100, scale: 0.8 }}
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      className="w-12 h-12 shrink-0 bg-sky-100 dark:bg-sky-900/40 border-2 border-sky-300 dark:border-sky-600 rounded-lg flex items-center justify-center font-bold text-sky-800 dark:text-sky-200 shadow-sm"
+                      className="w-9 h-9 sm:w-12 sm:h-12 shrink-0 bg-sky-100 dark:bg-sky-900/40 border-2 border-sky-300 dark:border-sky-600 rounded-lg flex items-center justify-center font-bold text-[13px] sm:text-base text-sky-800 dark:text-sky-200 shadow-sm"
                     >
                       {item.value}
                     </motion.div>
@@ -82,9 +82,9 @@ export default function QueueStackDisplay({ step, mode }: QueueStackDisplayProps
             </div>
 
             {/* Input arrow (Enqueue) */}
-            <div className="flex flex-col items-center justify-center ml-2 text-muted-foreground">
-              <span className="text-[10px] font-bold uppercase mb-1">Push</span>
-              <ArrowRight size={16} />
+            <div className="flex flex-col items-center justify-center ml-1 sm:ml-2 text-muted-foreground">
+              <span className="text-[9px] sm:text-[10px] font-bold uppercase mb-0.5 sm:mb-1">Push</span>
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
           </div>
         ) : (

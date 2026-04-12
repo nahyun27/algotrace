@@ -103,7 +103,7 @@ export default function CodeViewer({ codeLine }: { codeLine: number }) {
       </div>
 
       {/* Code — overflow-x: auto for horizontal scroll, no wrapping */}
-      <div className="dark flex-1 overflow-auto text-[13px] bg-[var(--code-bg)]" style={{ overflowX: 'auto' }}>
+      <div className="dark flex-1 overflow-auto text-[11px] sm:text-[13px] bg-[var(--code-bg)]" style={{ overflowX: 'auto' }}>
         <SyntaxHighlighter
           language="python"
           style={vscDarkPlus}

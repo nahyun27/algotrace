@@ -75,7 +75,7 @@ export default function CodeViewer({ codeLine, mode }: CodeViewerProps) {
       </div>
 
       {/* Code Area */}
-      <div className="dark flex-1 overflow-auto text-[13px] bg-[var(--code-bg)]" style={{ overflowX: 'auto' }}>
+      <div className="dark flex-1 overflow-auto text-[11px] sm:text-[13px] bg-[var(--code-bg)]" style={{ overflowX: 'auto' }}>
         <SyntaxHighlighter
           language="python"
           style={vscDarkPlus}

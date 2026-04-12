@@ -187,7 +187,7 @@ function TSPPage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
-      <div className="flex-1 min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
+      <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
         <div className="p-3 lg:p-4 border-b flex justify-between items-center bg-muted/30 flex-wrap gap-3">
@@ -373,7 +373,7 @@ function DijkstraPage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
-      <div className="flex-1 min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
+      <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
         <div className="p-3 lg:p-4 border-b flex justify-between items-center bg-muted/30 flex-wrap gap-3">
@@ -534,7 +534,7 @@ function AStarPage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
-      <div className="flex-1 min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
+      <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
         <div className="p-3 lg:p-4 border-b flex justify-between items-center bg-muted/30 flex-wrap gap-3">
@@ -720,7 +720,7 @@ function BFSDFSPage() {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
-      <div className="flex-1 min-w-[600px] flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden min-h-[600px] lg:h-[calc(100vh-140px)]">
+      <div className="flex-1 w-full lg:min-w-[600px] flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden min-h-[600px] lg:h-[calc(100vh-140px)]">
         
         {/* Header Tabs */}
         <div className="flex border-b bg-muted/20 px-4 py-2 gap-4">
@@ -776,19 +776,19 @@ function BFSDFSPage() {
                       <span>직접 만들기</span>
                     </button>
                   </div>
-                  <div className="w-full h-[45%] p-3 flex flex-row gap-4 overflow-auto">
-                    <div className="flex-1 min-w-[300px]">
+                  <div className="w-full h-[45%] p-3 flex flex-col lg:flex-row gap-3 lg:gap-4 overflow-auto">
+                    <div className="flex-1 lg:min-w-[300px]">
                       <QueueStackDisplay step={step} mode={algoMode} />
                     </div>
-                    <div className="flex-1 min-w-[300px]">
+                    <div className="flex-1 lg:min-w-[300px]">
                       <VisitOrderDisplay step={step} totalNodes={numNodes} />
                     </div>
                   </div>
                 </>
               ) : (
                 <>
-                  {/* DFS Layout: Stack on the Right for more height */}
-                  <div className="flex-1 flex flex-row min-h-0 divide-x divide-border">
+                  {/* === Desktop: graph + stack on right, visit order bottom === */}
+                  <div className="hidden lg:flex flex-1 flex-row min-h-0 divide-x divide-border">
                     <div className="flex-1 flex flex-col relative overflow-y-auto group h-full">
                       <BFSDFSGraphCanvas step={step} mode={algoMode} />
                       <button
@@ -804,7 +804,29 @@ function BFSDFSPage() {
                       <QueueStackDisplay step={step} mode={algoMode} />
                     </div>
                   </div>
-                  <div className="h-[130px] p-3 bg-card/10 border-t shrink-0">
+
+                  {/* === Mobile: graph top / stack + visit order bottom side-by-side === */}
+                  <div className="lg:hidden flex-1 flex flex-col relative overflow-y-auto group min-h-[260px] border-b">
+                    <BFSDFSGraphCanvas step={step} mode={algoMode} />
+                    <button
+                      onClick={() => { setMode('editor'); setIsPlaying(false); }}
+                      className="absolute top-3 right-3 z-10 p-2 bg-white/80 dark:bg-accent/80 backdrop-blur border rounded-lg shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-accent transition-all text-muted-foreground hover:text-primary flex items-center gap-1.5 text-[11px] font-bold"
+                      title="그래프 직접 만들기"
+                    >
+                      <Edit2 size={12} />
+                      <span>직접 만들기</span>
+                    </button>
+                  </div>
+                  <div className="lg:hidden shrink-0 flex flex-row divide-x divide-border border-t">
+                    <div className="flex-1 min-w-0 p-2 bg-card/30 max-h-[360px] overflow-y-auto">
+                      <QueueStackDisplay step={step} mode={algoMode} />
+                    </div>
+                    <div className="flex-1 min-w-0 p-2 max-h-[360px] overflow-y-auto">
+                      <VisitOrderDisplay step={step} totalNodes={numNodes} />
+                    </div>
+                  </div>
+
+                  <div className="hidden lg:block h-[130px] p-3 bg-card/10 border-t shrink-0">
                     <VisitOrderDisplay step={step} totalNodes={numNodes} />
                   </div>
                 </>
@@ -893,7 +915,7 @@ function BellmanFordPage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
-      <div className="flex-1 min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
+      <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
         <div className="p-3 lg:p-4 border-b flex justify-between items-center bg-muted/30 flex-wrap gap-3">
@@ -1008,7 +1030,7 @@ function FloydWarshallPage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
-      <div className="flex-1 min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
+      <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
         <div className="p-3 lg:p-4 border-b flex justify-between items-center bg-muted/30 flex-wrap gap-3">
@@ -1174,7 +1196,7 @@ function TopologicalPage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
-      <div className="flex-1 min-w-[600px] flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden min-h-[650px] lg:h-[calc(100vh-140px)]">
+      <div className="flex-1 w-full lg:min-w-[600px] flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden min-h-[650px] lg:h-[calc(100vh-140px)]">
 
         {/* Algorithm Tabs */}
         <div className="flex border-b bg-muted/20 px-4 py-2 gap-4">
@@ -1244,8 +1266,8 @@ function TopologicalPage() {
             </>
           ) : (
             <>
-              {/* DFS: 그래프(좌) + 스택(우) 나란히 */}
-              <div className="flex-1 flex flex-row min-h-0 divide-x divide-border">
+              {/* === Desktop: 그래프(좌) + 스택(우) + 하단 결과 === */}
+              <div className="hidden lg:flex flex-1 flex-row min-h-0 divide-x divide-border">
                 <div className="flex-1 flex flex-col relative overflow-hidden">
                   <TopoGraphCanvas step={step} mode={algoMode} nodes={nodes} edges={edges} />
                 </div>
@@ -1256,9 +1278,24 @@ function TopologicalPage() {
                   />
                 </div>
               </div>
-              {/* DFS: 하단 결과 순서 */}
-              <div className="h-[120px] p-3 bg-card/10 border-t shrink-0 overflow-auto">
+              <div className="hidden lg:block h-[120px] p-3 bg-card/10 border-t shrink-0 overflow-auto">
                 <ResultOrder step={step} mode={algoMode} nodes={nodes} />
+              </div>
+
+              {/* === Mobile: 그래프 상단 / 스택 + 정렬결과 하단 좌우 === */}
+              <div className="lg:hidden flex-1 flex flex-col relative overflow-hidden min-h-[260px] border-b">
+                <TopoGraphCanvas step={step} mode={algoMode} nodes={nodes} edges={edges} />
+              </div>
+              <div className="lg:hidden shrink-0 flex flex-row divide-x divide-border border-t">
+                <div className="flex-1 min-w-0 p-2 bg-card/30 max-h-[360px] overflow-y-auto">
+                  <QueueStackDisplay
+                    step={{ stack: (step as DFSTopoStep).stack.map((nodeId, i) => ({ id: `${nodeId}-${i}`, value: nodeId } as DataItem)) } as unknown as BaseStep}
+                    mode="DFS"
+                  />
+                </div>
+                <div className="flex-1 min-w-0 p-2 max-h-[360px] overflow-y-auto">
+                  <ResultOrder step={step} mode={algoMode} nodes={nodes} vertical />
+                </div>
               </div>
             </>
           )}
@@ -1366,9 +1403,37 @@ function KruskalPage() {
   const activeTotalCost = tab === 'kruskal' ? kStep.totalCost : pStep.totalCost;
   const isDone = tab === 'kruskal' ? kType === 'DONE' : pType === 'DONE';
 
+  /* Shared MST result panel (used in both desktop & mobile positions) */
+  const kruskalMstPanel = (
+    <>
+      <p className="text-[11px] sm:text-xs font-semibold text-muted-foreground">MST 결과</p>
+      {activeMstEdges.length === 0 ? (
+        <p className="text-[11px] sm:text-xs text-muted-foreground italic">아직 간선 없음...</p>
+      ) : (
+        <div className="flex flex-col gap-1">
+          {activeMstEdges.map((e, i) => (
+            <div key={i} className="flex items-center justify-between text-[11px] sm:text-xs bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded px-1.5 sm:px-2 py-0.5 sm:py-1">
+              <span className="font-mono font-semibold">{e.u}–{e.v}</span>
+              <span className="font-bold text-emerald-700 dark:text-emerald-300">w={e.weight}</span>
+            </div>
+          ))}
+          <div className="mt-1 pt-1 border-t flex justify-between text-[11px] sm:text-xs font-bold">
+            <span className="text-muted-foreground">총 비용</span>
+            <span className="text-emerald-700 dark:text-emerald-300">{activeTotalCost}</span>
+          </div>
+        </div>
+      )}
+      {isDone && (
+        <div className="mt-1 text-[9px] sm:text-[10px] font-semibold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-2 py-1 rounded-full text-center">
+          ✓ MST 완성
+        </div>
+      )}
+    </>
+  );
+
   return (
     <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
-      <div className="flex-1 min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
+      <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* ── Tab bar ── */}
         <div className="flex border-b bg-muted/20 px-4 py-2 gap-2">
@@ -1435,57 +1500,49 @@ function KruskalPage() {
 
           {tab === 'kruskal' ? (
             <>
-              {/* Top: Graph + EdgeList */}
-              <div className="flex-1 flex flex-row divide-x divide-border overflow-hidden min-h-0">
-                <div className="flex-1 flex flex-col overflow-hidden">
+              {/* Top: Graph (+ EdgeList on desktop only) */}
+              <div className="flex-1 flex flex-col lg:flex-row lg:divide-x divide-border overflow-hidden min-h-0">
+                <div className="flex-1 flex flex-col overflow-hidden min-h-[200px]">
                   <KruskalGraphCanvas step={kStep} nodes={KRUSKAL_NODES} edges={KRUSKAL_EDGES} />
                 </div>
-                <div className="w-[260px] shrink-0 overflow-y-auto p-3">
+                {/* EdgeList — desktop position (right of graph) */}
+                <div className="hidden lg:block w-[260px] shrink-0 overflow-y-auto p-3">
                   <KruskalEdgeList step={kStep} />
                 </div>
               </div>
-              {/* Bottom: UnionFind + MST summary */}
-              <div className="h-[270px] shrink-0 flex flex-row divide-x divide-border border-t overflow-hidden">
-                <div className="flex-1 overflow-auto p-3">
+
+              {/* Middle: UnionFind (full on mobile, with MST on desktop) */}
+              <div className="lg:h-[270px] shrink-0 flex flex-col lg:flex-row lg:divide-x divide-border border-t overflow-hidden">
+                <div className="flex-1 overflow-auto p-3 min-h-[220px]">
                   <UnionFindDisplay step={kStep} N={KRUSKAL_N} />
                 </div>
-                <div className="w-[220px] shrink-0 p-3 overflow-y-auto bg-card/30 flex flex-col gap-2">
-                  <p className="text-xs font-semibold text-muted-foreground">MST 결과</p>
-                  {activeMstEdges.length === 0 ? (
-                    <p className="text-xs text-muted-foreground italic">아직 간선 없음...</p>
-                  ) : (
-                    <div className="flex flex-col gap-1">
-                      {activeMstEdges.map((e, i) => (
-                        <div key={i} className="flex items-center justify-between text-xs bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded px-2 py-1">
-                          <span className="font-mono font-semibold">{e.u} – {e.v}</span>
-                          <span className="font-bold text-emerald-700 dark:text-emerald-300">w={e.weight}</span>
-                        </div>
-                      ))}
-                      <div className="mt-1 pt-1 border-t flex justify-between text-xs font-bold">
-                        <span className="text-muted-foreground">총 비용</span>
-                        <span className="text-emerald-700 dark:text-emerald-300">{activeTotalCost}</span>
-                      </div>
-                    </div>
-                  )}
-                  {isDone && (
-                    <div className="mt-1 text-[10px] font-semibold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-2 py-1 rounded-full text-center">
-                      ✓ MST 완성
-                    </div>
-                  )}
+                {/* MST — desktop position (right of UnionFind) */}
+                <div className="hidden lg:flex w-[220px] shrink-0 p-3 overflow-y-auto bg-card/30 flex-col gap-2">
+                  {kruskalMstPanel}
+                </div>
+              </div>
+
+              {/* Mobile only: EdgeList (left) | MST 결과 (right) side-by-side */}
+              <div className="lg:hidden flex flex-row border-t divide-x divide-border">
+                <div className="flex-1 min-w-0 p-2 max-h-[260px] overflow-y-auto">
+                  <KruskalEdgeList step={kStep} />
+                </div>
+                <div className="flex-1 min-w-0 p-2 overflow-y-auto bg-card/30 flex flex-col gap-1.5 max-h-[260px]">
+                  {kruskalMstPanel}
                 </div>
               </div>
             </>
           ) : (
             <>
               {/* Top: Graph (full width) */}
-              <div className="h-[300px] shrink-0 flex flex-col overflow-hidden">
+              <div className="h-[220px] sm:h-[300px] shrink-0 flex flex-col overflow-hidden">
                 <PrimGraphCanvas step={pStep} nodes={KRUSKAL_NODES} edges={KRUSKAL_EDGES} />
               </div>
 
               {/* Bottom: Key/Parent + PQ (left) | MST 결과 (right) */}
-              <div className="h-[370px] shrink-0 flex flex-row divide-x divide-border border-t overflow-hidden">
+              <div className="lg:h-[370px] shrink-0 flex flex-col lg:flex-row lg:divide-x divide-border border-t overflow-hidden">
                 {/* 하단 좌측: Key/Parent 배열 + 우선순위 큐 */}
-                <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-3">
+                <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-3 min-h-[280px]">
                   <PrimKeyTable step={pStep} N={KRUSKAL_N} />
 
                   {/* Priority Queue */}
@@ -1521,7 +1578,7 @@ function KruskalPage() {
                 </div>
 
                 {/* 하단 우측: MST 결과 */}
-                <div className="w-[220px] shrink-0 p-3 overflow-y-auto bg-card/30 flex flex-col gap-2">
+                <div className="w-full lg:w-[220px] shrink-0 p-3 overflow-y-auto bg-card/30 flex flex-col gap-2 border-t lg:border-t-0">
                   <p className="text-xs font-semibold text-muted-foreground">MST 결과</p>
                   {activeMstEdges.length === 0 ? (
                     <p className="text-xs text-muted-foreground italic">아직 간선 없음...</p>

@@ -22,7 +22,7 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
   const nodes = customNodes ?? defaultNodes.slice(0, N);
 
   return (
-    <div className="w-full min-h-[400px] h-full flex flex-col relative p-4 bg-muted/10 items-center justify-center">
+    <div className="w-full min-h-[280px] sm:min-h-[400px] h-full flex flex-col relative p-2 sm:p-4 bg-muted/10 items-center justify-center">
       <svg
         viewBox="0 0 480 380"
         className="overflow-visible w-full max-w-[480px]"
@@ -128,7 +128,7 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
       </svg>
 
       {/* Legend */}
-      <div className="mt-4 xl:mt-3 border text-[11px] font-medium text-muted-foreground bg-card p-3 rounded-lg shadow-sm grid grid-cols-2 gap-x-6 gap-y-2 w-fit mx-auto">
+      <div className="mt-3 xl:mt-3 border text-[11px] font-medium text-muted-foreground bg-card p-2 sm:p-3 rounded-lg shadow-sm grid grid-cols-2 gap-x-3 sm:gap-x-6 gap-y-1.5 sm:gap-y-2 max-w-full mx-auto">
         <div className="flex items-center gap-2">
           <div className="w-3.5 h-3.5 rounded-full bg-blue-500 border border-blue-700 shadow-sm" />
           <span>현재 위치 (curr)</span>

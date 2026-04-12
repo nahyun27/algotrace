@@ -52,7 +52,7 @@ function LayoutInner() {
         </AnimatePresence>
 
         {/* ── Main content ── */}
-        <main className="flex-1 py-6 lg:py-8 px-4 overflow-x-auto">
+        <main className="flex-1 py-3 sm:py-6 lg:py-8 px-2 sm:px-4 overflow-x-hidden min-w-0">
           <Outlet />
         </main>
       </div>
