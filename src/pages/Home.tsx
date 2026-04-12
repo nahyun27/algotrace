@@ -227,20 +227,20 @@ export default function Home() {
   }, [query, paradigm, problemType]);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6 sm:space-y-10">
       {/* ── Hero ── */}
-      <section className="rounded-2xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+      <section className="rounded-xl sm:rounded-2xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 p-5 sm:p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
         <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none" />
         <div className="relative z-10">
-          <span className="inline-block mb-4 text-xs font-semibold tracking-widest uppercase bg-white/20 rounded-full px-3 py-1">
+          <span className="inline-block mb-2 sm:mb-4 text-[10px] sm:text-xs font-semibold tracking-widest uppercase bg-white/20 rounded-full px-2.5 sm:px-3 py-0.5 sm:py-1">
             Algorithm Visualizer
           </span>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">AlgoTrace</h1>
-          <p className="mt-3 text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">AlgoTrace</h1>
+          <p className="mt-2 sm:mt-3 text-sm sm:text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
             복잡한 알고리즘을 한 단계씩 눈으로 이해하는 인터랙티브 시각화 플랫폼
           </p>
-          <div className="mt-5 flex gap-3 flex-wrap text-sm font-medium text-white/70">
+          <div className="mt-3 sm:mt-5 flex gap-x-3 gap-y-1 flex-wrap text-[11px] sm:text-sm font-medium text-white/70">
             <span>✦ 단계별 재생 제어</span>
             <span>✦ Top-down / Bottom-up 비교</span>
             <span>✦ 실시간 DP 테이블</span>
@@ -249,8 +249,8 @@ export default function Home() {
       </section>
 
       {/* ── Search + Filters ── */}
-      <div className="flex items-center gap-3">
-        {/* Search — flex:1 */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+        {/* Search — full width on mobile */}
         <div className="relative flex-1">
           <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
@@ -264,68 +264,71 @@ export default function Home() {
           />
         </div>
 
-        {/* Paradigm select */}
-        <div className="relative shrink-0 w-40">
-          <select
-            value={paradigm}
-            onChange={e => setParadigm(e.target.value as Paradigm | "")}
-            className="w-full h-11 appearance-none rounded-lg border border-border bg-card pl-3 pr-8 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition cursor-pointer"
-          >
-            <option value="">패러다임 전체</option>
-            <option value="DP">DP</option>
-            <option value="Greedy">Greedy</option>
-            <option value="exploration">탐색</option>
-          </select>
-          <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 9l6 6 6-6" />
-          </svg>
-        </div>
-
-        {/* Problem type select */}
-        <div className="relative shrink-0 w-40">
-          <select
-            value={problemType}
-            onChange={e => setProblemType(e.target.value as ProblemType | "")}
-            className="w-full h-11 appearance-none rounded-lg border border-border bg-card pl-3 pr-8 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition cursor-pointer"
-          >
-            <option value="">문제 유형 전체</option>
-            <option value="Shortest Path">Shortest Path</option>
-            <option value="Traversal">Traversal</option>
-            <option value="Optimization">Optimization</option>
-            <option value="MST">MST</option>
-          </select>
-          <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 9l6 6 6-6" />
-          </svg>
-        </div>
-
-        {/* Reset — only visible when a filter is active */}
-        {hasActiveFilters && (
-          <button
-            onClick={resetFilters}
-            aria-label="필터 초기화"
-            className="shrink-0 h-11 w-11 flex items-center justify-center rounded-lg border border-border bg-card text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-all"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        {/* Filter row — 2 selects split 1:1 on mobile */}
+        <div className="flex gap-2 sm:gap-3 sm:contents">
+          {/* Paradigm select */}
+          <div className="relative flex-1 sm:shrink-0 sm:flex-none sm:w-40">
+            <select
+              value={paradigm}
+              onChange={e => setParadigm(e.target.value as Paradigm | "")}
+              className="w-full h-11 appearance-none rounded-lg border border-border bg-card pl-3 pr-8 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition cursor-pointer"
+            >
+              <option value="">패러다임 전체</option>
+              <option value="DP">DP</option>
+              <option value="Greedy">Greedy</option>
+              <option value="exploration">탐색</option>
+            </select>
+            <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 9l6 6 6-6" />
             </svg>
-          </button>
-        )}
+          </div>
+
+          {/* Problem type select */}
+          <div className="relative flex-1 sm:shrink-0 sm:flex-none sm:w-40">
+            <select
+              value={problemType}
+              onChange={e => setProblemType(e.target.value as ProblemType | "")}
+              className="w-full h-11 appearance-none rounded-lg border border-border bg-card pl-3 pr-8 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition cursor-pointer"
+            >
+              <option value="">문제 유형 전체</option>
+              <option value="Shortest Path">Shortest Path</option>
+              <option value="Traversal">Traversal</option>
+              <option value="Optimization">Optimization</option>
+              <option value="MST">MST</option>
+            </select>
+            <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 9l6 6 6-6" />
+            </svg>
+          </div>
+
+          {/* Reset — only visible when a filter is active */}
+          {hasActiveFilters && (
+            <button
+              onClick={resetFilters}
+              aria-label="필터 초기화"
+              className="shrink-0 h-11 w-11 flex items-center justify-center rounded-lg border border-border bg-card text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-all"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* ── Cards Grid ── */}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-3 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map(algo => {
           const card = (
             <div
-              className={`group h-full flex flex-col rounded-xl border bg-card text-card-foreground shadow-sm p-5 transition-all duration-200 ${
+              className={`group h-full flex flex-col rounded-xl border bg-card text-card-foreground shadow-sm p-3.5 sm:p-5 transition-all duration-200 ${
                 algo.comingSoon
                   ? "opacity-50 cursor-not-allowed select-none"
                   : "hover:-translate-y-1 hover:shadow-md hover:border-primary/40 cursor-pointer"
               }`}
             >
               {/* Top row: paradigm tag + problem type tag + coming soon */}
-              <div className="flex items-center gap-1.5 mb-3 flex-wrap">
+              <div className="flex items-center gap-1.5 mb-2 sm:mb-3 flex-wrap">
                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${paradigmTagStyles[algo.paradigm]}`}>
                   {algo.paradigm}
                 </span>
@@ -340,28 +343,28 @@ export default function Home() {
               </div>
 
               {/* Name */}
-              <div className="flex items-center gap-2.5 mb-0.5">
-                <div className={`shrink-0 rounded-lg p-1.5 ${
+              <div className="flex items-center gap-2 sm:gap-2.5 mb-0.5">
+                <div className={`shrink-0 rounded-lg p-1 sm:p-1.5 ${
                   algo.paradigm === 'DP'     ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300' :
                   algo.paradigm === 'Greedy' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' :
                                                'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300'
                 }`}>
                   <AlgoIcon id={algo.id} />
                 </div>
-                <div>
-                  <h3 className="font-bold text-base leading-tight">{algo.name}</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">{algo.korName}</p>
+                <div className="min-w-0">
+                  <h3 className="font-bold text-[15px] sm:text-base leading-tight truncate">{algo.name}</h3>
+                  <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5 truncate">{algo.korName}</p>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-sm text-muted-foreground leading-relaxed flex-grow line-clamp-3 mt-3">
+              <p className="text-[12px] sm:text-sm text-muted-foreground leading-relaxed flex-grow line-clamp-2 sm:line-clamp-3 mt-2 sm:mt-3">
                 {algo.description}
               </p>
 
               {/* Footer */}
-              <div className="mt-4 pt-4 border-t flex items-center justify-between gap-2 flex-wrap">
-                <div className="flex flex-col gap-1">
+              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex flex-col gap-0.5 sm:gap-1">
                   <span className="text-[10px] text-muted-foreground font-mono">
                     Time: <span className="text-foreground font-semibold">{algo.timeComplexity}</span>
                   </span>
@@ -375,7 +378,7 @@ export default function Home() {
               </div>
 
               {!algo.comingSoon && (
-                <div className="mt-3 text-xs font-semibold text-primary group-hover:gap-2 flex items-center gap-1 transition-all">
+                <div className="mt-2 sm:mt-3 text-[11px] sm:text-xs font-semibold text-primary group-hover:gap-2 flex items-center gap-1 transition-all">
                   시각화 보기 <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
               )}
