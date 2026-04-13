@@ -187,7 +187,7 @@ function TSPPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
+    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6 pb-16">
       <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
@@ -374,7 +374,7 @@ function DijkstraPage() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
+    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6 pb-16">
       <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
@@ -536,7 +536,7 @@ function AStarPage() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
+    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6 pb-16">
       <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
@@ -723,7 +723,7 @@ function BFSDFSPage() {
     : 'bg-muted text-muted-foreground';
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6">
+    <div className="flex flex-col lg:flex-row gap-6 pb-16">
       <div className="flex-1 w-full lg:min-w-[600px] flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden min-h-[600px] lg:h-[calc(100vh-140px)]">
         
         {/* Header Tabs */}
@@ -919,7 +919,7 @@ function BellmanFordPage() {
           : 'bg-zinc-100 dark:bg-accent/50 text-zinc-700 dark:text-muted-foreground border-zinc-200 dark:border-accent';
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
+    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6 pb-16">
       <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
@@ -1035,7 +1035,7 @@ function FloydWarshallPage() {
   const nodeOptions = Array.from({ length: FW_N }, (_, i) => i);
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
+    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6 pb-16">
       <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* Header */}
@@ -1202,7 +1202,7 @@ function TopologicalPage() {
           : 'bg-zinc-100 dark:bg-accent/50 text-zinc-700 dark:text-muted-foreground border-zinc-200 dark:border-accent';
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
+    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6 pb-16">
       <div className="flex-1 w-full lg:min-w-[600px] flex flex-col bg-card border rounded-xl shadow-sm overflow-hidden min-h-[650px] lg:h-[calc(100vh-140px)]">
 
         {/* Algorithm Tabs */}
@@ -1440,7 +1440,7 @@ function KruskalPage() {
   );
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6">
+    <div className="flex flex-col min-h-[calc(100vh-8rem)] lg:flex-row gap-6 pb-16">
       <div className="flex-1 w-full lg:min-w-[600px] border rounded-xl overflow-hidden bg-card text-card-foreground shadow-sm flex flex-col min-h-[650px] lg:min-h-0">
 
         {/* ── Tab bar ── */}
