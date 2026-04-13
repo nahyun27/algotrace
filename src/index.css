@@ -18,6 +18,13 @@
   --color-accent: var(--accent);
   --color-code-bg: var(--code-bg);
   --color-code-highlight: var(--code-highlight);
+
+  /* Modern Shadow Tokens */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-glow: 0 0 20px 0 var(--primary);
 }
 
 @layer base {
@@ -36,30 +43,64 @@
     --code-bg: #1e1e2e;
     --code-highlight: #2d2d44;
     --popover: #ffffff;
+    
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(228, 228, 231, 0.4);
   }
   
   .dark {
-    --background: #0f1117;
-    --foreground: #e2e4ed;
-    --border: #2a2d3e;
-    --primary: #4c6ef5;
+    --background: #09090b;
+    --foreground: #fafafa;
+    --border: #27272a;
+    --primary: #6366f1;
     --primary-foreground: #ffffff;
-    --muted: #20243a;
-    --muted-foreground: #8b8fa8;
-    --card: #1a1d27;
-    --card-foreground: #e2e4ed;
+    --muted: #18181b;
+    --muted-foreground: #a1a1aa;
+    --card: #09090b;
+    --card-foreground: #fafafa;
     
     /* Extra aesthetic tokens */
-    --hint: #555875;
-    --accent: #383b52;
-    --code-bg: #13151f;
+    --hint: #52525b;
+    --accent: #27272a;
+    --code-bg: #0c0e14;
     --code-highlight: #1e2235;
-    --popover: #1a1d27;
+    --popover: #09090b;
+
+    --glass-bg: rgba(9, 9, 11, 0.7);
+    --glass-border: rgba(39, 39, 42, 0.6);
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
-    @apply antialiased transition-colors duration-200;
+    @apply antialiased transition-colors duration-300;
+    background-image: 
+      radial-gradient(at 0% 0%, var(--primary) 0, transparent 25%),
+      radial-gradient(at 100% 0%, var(--primary) 0, transparent 25%);
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    opacity: 0.98;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-md border border-[--glass-border] bg-[--glass-bg];
+  }
+  
+  .spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), var(--primary) 0%, transparent 60%);
+    opacity: 0.15;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
   }
 }
