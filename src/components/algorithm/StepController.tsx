@@ -50,8 +50,8 @@ export default function StepController({
   }, [handleKey]);
 
   return (
-    <div className="fixed bottom-0 left-0 nw:left-[260px] right-0 z-50 border-t bg-card/95 backdrop-blur-md text-card-foreground shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
-      <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-2">
+    <div className="w-full border-t border-border/40 bg-card/85 backdrop-blur-lg text-card-foreground shrink-0">
+      <div className="w-full px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-2">
 
         {/* Left: step count */}
         <div className="text-[11px] sm:text-xs font-medium text-muted-foreground whitespace-nowrap shrink-0">
@@ -69,7 +69,7 @@ export default function StepController({
             <SkipBack className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
           </button>
           <button onClick={onPlayPause} aria-label={isPlaying ? '일시정지 (Space)' : '재생 (Space)'}
-            className="p-2.5 sm:p-2 min-w-[44px] min-h-[44px] sm:min-w-[36px] sm:min-h-[36px] mx-0.5 sm:mx-1 rounded-full hover:bg-primary/90 bg-primary text-primary-foreground shadow flex items-center justify-center transition-all">
+            className="p-2.5 sm:p-2 min-w-[44px] min-h-[44px] sm:min-w-[36px] sm:min-h-[36px] mx-0.5 sm:mx-1 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 flex items-center justify-center transition-all">
             {isPlaying ? <Pause className="w-4 h-4 sm:w-[18px] sm:h-[18px]" /> : <Play className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
           </button>
           <button onClick={onNext} disabled={currentStep === totalSteps - 1} aria-label="다음 (→)"

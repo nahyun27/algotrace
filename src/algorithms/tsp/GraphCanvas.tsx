@@ -62,7 +62,7 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
                 <path
                   d={`M ${n1.x},${n1.y} A ${dr},${dr} 0 0,1 ${n2.x},${n2.y}`}
                   fill="none"
-                  stroke={isActive ? '#f97316' : 'var(--muted-foreground)'}
+                  stroke={isActive ? '#f97316' : 'var(--graph-edge)'}
                   strokeWidth={isActive ? 2.5 : 1.5}
                   strokeOpacity={isActive ? 1 : 0.4}
                   className="transition-all duration-300"
@@ -76,11 +76,8 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
                   dy=".35em"
                   fontSize={isActive ? 12 : 11}
                   fontWeight={isActive ? 700 : 500}
-                  className={`font-mono transition-all duration-300 ${
-                    isActive
-                      ? 'fill-orange-500 dark:fill-orange-400'
-                      : 'fill-zinc-600 dark:fill-foreground'
-                  }`}
+                  fill={isActive ? '#f97316' : 'var(--graph-edge)'}
+                  className="font-mono transition-all duration-300"
                 >
                   {weight}
                 </text>

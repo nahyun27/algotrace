@@ -44,7 +44,7 @@ export default function BFGraphCanvas({ step, nodes, edges }: Props) {
           const midX = (n1.x + n2.x) / 2 + (dy / len) * perp;
           const midY = (n1.y + n2.y) / 2 - (dx / len) * perp;
 
-          let stroke = 'var(--muted-foreground)';
+          let stroke = 'var(--graph-edge)';
           let strokeW = 1.5;
           let opacity = 0.35;
           let marker = 'url(#bf-arrow)';
@@ -74,13 +74,8 @@ export default function BFGraphCanvas({ step, nodes, edges }: Props) {
               />
               <text x={midX} y={midY} textAnchor="middle" dy=".35em"
                 fontSize={isActive ? 13 : 11} fontWeight={isActive ? 700 : 500}
-                className={`font-mono transition-all duration-300 ${
-                  isNegCycleEdge ? 'fill-red-500 dark:fill-red-400' :
-                  isImproved ? 'fill-green-600 dark:fill-green-400' :
-                  isActive ? 'fill-orange-500 dark:fill-orange-400' :
-                  isNegEdge ? 'fill-red-500 dark:fill-red-400 opacity-80' :
-                  'fill-zinc-600 dark:fill-foreground'
-                }`}
+                fill={stroke}
+                className="font-mono transition-all duration-300"
               >{w}</text>
             </g>
           );

@@ -78,7 +78,7 @@ export default function FWGraphCanvas({ step, pathNodes = [] }: Props) {
           const midX = (n1.x + n2.x) / 2 + (dy / len) * perp;
           const midY = (n1.y + n2.y) / 2 - (dx / len) * perp;
 
-          let stroke = 'var(--border)';
+          let stroke = 'var(--graph-edge)';
           let strokeW = 1.5;
           let opacity = 0.35;
           let marker = 'url(#fw-arrow)';
@@ -111,13 +111,8 @@ export default function FWGraphCanvas({ step, pathNodes = [] }: Props) {
               <text x={midX} y={midY} textAnchor="middle" dy=".35em"
                 fontSize={role !== 'normal' ? 13 : 11}
                 fontWeight={role !== 'normal' ? 700 : 500}
-                className={`font-mono transition-all duration-300 ${
-                  role === 'path'   ? 'fill-violet-500 dark:fill-violet-400' :
-                  role === 'ij'     ? 'fill-zinc-400 dark:fill-zinc-500' :
-                  (role === 'ik' || role === 'kj') && isUpdate ? 'fill-green-600 dark:fill-green-400' :
-                  (role === 'ik' || role === 'kj') ? 'fill-blue-500 dark:fill-blue-400' :
-                  'fill-zinc-600 dark:fill-foreground'
-                }`}
+                fill={role === 'ij' ? 'var(--muted-foreground)' : stroke}
+                className="font-mono transition-all duration-300"
               >{w}</text>
             </g>
           );

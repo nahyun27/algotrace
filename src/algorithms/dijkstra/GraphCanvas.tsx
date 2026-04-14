@@ -49,7 +49,7 @@ export default function DijkstraGraphCanvas({ step, shortestEdges, customNodes, 
           const midX = (n1.x + n2.x) / 2 + (dy / len) * perp;
           const midY = (n1.y + n2.y) / 2 - (dx / len) * perp;
 
-          const stroke = isActive ? '#f97316' : isShortest ? '#22c55e' : 'var(--muted-foreground)';
+          const stroke = isActive ? '#f97316' : isShortest ? '#22c55e' : 'var(--graph-edge)';
           const strokeW = isActive || isShortest ? 2.5 : 1.5;
           const opacity = isActive || isShortest ? 1 : 0.35;
           const marker  = isActive ? 'url(#dij-arrow-active)' : isShortest ? 'url(#dij-arrow-short)' : 'url(#dij-arrow)';
@@ -64,13 +64,8 @@ export default function DijkstraGraphCanvas({ step, shortestEdges, customNodes, 
               {/* Weight label */}
               <text x={midX} y={midY} textAnchor="middle" dy=".35em"
                 fontSize={isActive ? 12 : 11} fontWeight={isActive || isShortest ? 700 : 500}
-                className={`font-mono transition-all duration-300 ${
-                  isActive
-                    ? 'fill-orange-500 dark:fill-orange-400'
-                    : isShortest
-                      ? 'fill-green-600 dark:fill-green-400'
-                      : 'fill-zinc-600 dark:fill-foreground'
-                }`}
+                fill={stroke}
+                className="font-mono transition-all duration-300"
               >
                 {w}
               </text>

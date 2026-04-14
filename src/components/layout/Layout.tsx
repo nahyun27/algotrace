@@ -16,7 +16,7 @@ function LayoutInner() {
   }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground w-full">
+    <div className="flex h-screen overflow-hidden bg-background text-foreground w-full">
       
       {/* ── Desktop sidebar (sticky, ≥1200px) ── */}
       <aside className="hidden nw:block sticky top-0 h-screen w-[260px] shrink-0 border-r border-border/50 overflow-y-auto shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(99,102,241,0.12)] z-40">
@@ -51,10 +51,10 @@ function LayoutInner() {
       </AnimatePresence>
 
       {/* ── Main content ── */}
-      <div className="flex-1 flex flex-col relative min-w-0">
+      <div className="flex-1 flex flex-col relative min-w-0 overflow-hidden min-h-0">
         
         {/* ── Mobile Top Bar ── */}
-        <header className="nw:hidden sticky top-0 z-40 flex items-center justify-between px-4 h-14 bg-card/80 backdrop-blur-md border-b border-border/50">
+        <header className="nw:hidden shrink-0 z-40 flex items-center justify-between px-4 h-14 bg-card/80 backdrop-blur-md border-b border-border/50">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -90,7 +90,7 @@ function LayoutInner() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-x-hidden min-w-0 relative">
+        <main className="flex-1 flex flex-col overflow-hidden min-w-0 min-h-0">
           <Outlet />
         </main>
       </div>

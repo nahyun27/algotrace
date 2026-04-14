@@ -44,6 +44,8 @@
     --code-highlight: #2d2d44;
     --popover: #ffffff;
     
+    --graph-edge: #64748b;
+    
     --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(228, 228, 231, 0.4);
   }
@@ -65,6 +67,8 @@
     --code-bg: #0f172a;
     --code-highlight: #1e293b;
     --popover: #1e293b;
+
+    --graph-edge: #e2e8f0;
 
     --glass-bg: rgba(30, 41, 59, 0.7);
     --glass-border: rgba(51, 65, 85, 0.6);

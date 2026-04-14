@@ -87,7 +87,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col w-full pb-20">
+    <div className="flex-1 overflow-y-auto flex flex-col w-full pb-20">
       
       {/* ── Full Width Hero Section ── */}
       <section className="relative pt-10 pb-6 w-full">
