@@ -50,7 +50,7 @@ export default function StepController({
   }, [handleKey]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card/95 backdrop-blur-md text-card-foreground shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
+    <div className="fixed bottom-0 left-0 nw:left-[260px] right-0 z-50 border-t bg-card/95 backdrop-blur-md text-card-foreground shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-2">
 
         {/* Left: step count */}

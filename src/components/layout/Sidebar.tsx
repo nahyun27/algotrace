@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ChevronDown, Hash, LayoutGrid, Zap, Search, Activity, Box, Moon, Sun, Code2 } from 'lucide-react';
+import { Home, ChevronDown, Hash, LayoutGrid, Zap, Search, Activity, Box, Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLayout } from '../../context/LayoutContext';
 
 interface Props {
   onClose?: () => void;
@@ -53,9 +52,7 @@ const CATEGORIES: Category[] = [
 
 export default function Sidebar({ onClose }: Props) {
   const location = useLocation();
-  const { codeDrawerOpen, setCodeDrawerOpen } = useLayout();
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
-  const isAlgorithmPage = location.pathname.startsWith('/algorithm/');
 
   const [isDark, setIsDark] = useState(() =>
     typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),
@@ -172,7 +169,7 @@ export default function Sidebar({ onClose }: Props) {
       </div>
 
       {/* Footer Tools */}
-      <div className="mt-auto space-y-4 pt-6 border-t border-border/40 pb-20 lg:pb-28">
+      <div className="mt-auto space-y-4 pt-6 border-t border-border/40">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
             <a

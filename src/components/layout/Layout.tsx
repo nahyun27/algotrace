@@ -19,7 +19,7 @@ function LayoutInner() {
     <div className="flex min-h-screen bg-background text-foreground w-full">
       
       {/* ── Desktop sidebar (sticky, ≥1200px) ── */}
-      <aside className="hidden nw:block sticky top-0 h-screen w-[260px] shrink-0 border-r border-border/50 overflow-y-auto">
+      <aside className="hidden nw:block sticky top-0 h-screen w-[260px] shrink-0 border-r border-border/50 overflow-y-auto shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.1)] z-40">
         <Sidebar />
       </aside>
 

@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Filter, ArrowRight, Clock, Box, Zap, Activity, BarChart3, Waypoints, Network, Route, Share2 } from 'lucide-react';
+import { Search, Filter, ArrowRight, Clock, Activity, BarChart3, Waypoints, Network, Route, Share2, Zap } from 'lucide-react';
 
 type Paradigm    = "DP" | "Greedy" | "exploration";
 type ProblemType = "Shortest Path" | "Traversal" | "Optimization" | "MST" | "Sorting";
