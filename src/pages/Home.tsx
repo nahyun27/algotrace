@@ -87,57 +87,57 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-3 md:space-y-6 pb-20 px-4 sm:px-6 md:px-8">
+    <div className="flex flex-col w-full pb-20">
       
-      {/* Hero Section */}
-      <section className="relative pt-6 pb-4 overflow-hidden">
-        {/* Subtle Background Accent */}
-        <div className="absolute top-0 left-0 w-1/3 h-full bg-primary/5 blur-[80px] rounded-full pointer-events-none mix-blend-screen" />
+      {/* ── Full Width Hero Section ── */}
+      <section className="relative pt-10 pb-6 w-full">
+        {/* Full-bleed background gradient blending to transparent */}
+        <div className="absolute inset-0 w-[100vw] left-1/2 -translate-x-1/2 bg-gradient-to-b from-card via-card/50 to-transparent z-[-1] pointer-events-none" />
         
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 flex flex-col md:flex-row items-center md:items-end justify-between gap-6"
-        >
-          {/* Main Content (Left) */}
-          <div className="space-y-3 text-center md:text-left max-w-2xl w-full">
-            <div className="inline-flex items-center px-3 py-1 rounded-full border border-border/50 bg-background/50 shadow-sm mb-1">
-              <span className="text-[9px] font-bold tracking-[0.2em] uppercase bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-500 leading-none">
-                Algorithm Visualization
-              </span>
-            </div>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none text-foreground">
-              Algo<span className="opacity-40">Trace</span>
-            </h1>
-            
-            <p className="text-sm text-muted-foreground/80 leading-relaxed font-medium">
-              Interactive step-by-step visualizer for core algorithms.
-            </p>
-          </div>
-
-          {/* Stats/Badges (Right) */}
-          <div className="flex items-center gap-3 shrink-0 bg-card/40 border border-border/40 px-4 py-2.5 rounded-2xl shadow-sm backdrop-blur-sm">
-            <div className="flex -space-x-2">
-              {[1,2,3,4].map(i => (
-                <div key={i} className="w-8 h-8 rounded-full border-2 border-background bg-muted flex items-center justify-center overflow-hidden">
-                  <div className={`w-full h-full bg-gradient-to-br ${i === 1 ? 'from-blue-500' : i === 2 ? 'from-purple-500' : i === 3 ? 'from-rose-500' : 'from-emerald-500'} to-transparent opacity-80`} />
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col items-start gap-0.5 pl-1.5 border-l border-border/50">
-              <div className="flex items-center gap-0.5">
-                {[1,2,3,4,5].map(i => <Zap key={i} className="w-2.5 h-2.5 text-amber-500 fill-amber-500" />)}
+        {/* Subtle Background Accent */}
+        <div className="absolute top-0 left-0 w-1/3 h-full bg-primary/5 blur-[80px] rounded-full pointer-events-none mix-blend-screen z-[-1]" />
+        
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-10 flex flex-col md:flex-row items-center md:items-end justify-between gap-6"
+          >
+            {/* Main Content (Left) */}
+            <div className="space-y-4 text-center md:text-left max-w-2xl w-full">
+              <div className="inline-flex items-center px-3 py-1 rounded-full border border-border/50 bg-background/50 shadow-sm mb-1">
+                <span className="text-[9px] font-bold tracking-[0.2em] uppercase bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-500 leading-none">
+                  Algorithm Visualization
+                </span>
               </div>
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">9+ Core Visualizers</span>
+              
+              <div className="flex items-end justify-center md:justify-start gap-3 md:gap-4">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none text-foreground">
+                  Algo<span className="opacity-40">Trace</span>
+                </h1>
+                
+                <div className="flex -space-x-2 mb-0.5 md:mb-1">
+                  {[1,2,3,4].map(i => (
+                    <div key={i} className="w-8 h-8 md:w-9 md:h-9 rounded-full border-2 border-background bg-muted flex items-center justify-center overflow-hidden shadow-sm">
+                      <div className={`w-full h-full bg-gradient-to-br ${i === 1 ? 'from-blue-500' : i === 2 ? 'from-purple-500' : i === 3 ? 'from-rose-500' : 'from-emerald-500'} to-transparent opacity-80`} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <p className="text-sm text-muted-foreground/80 leading-relaxed font-medium">
+                Interactive step-by-step visualizer for core algorithms.
+              </p>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </section>
 
-      {/* Control Bar (Search + Filters) */}
-      <motion.section 
+      {/* ── Main Content Container ── */}
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 md:px-8 space-y-4 md:space-y-8 mt-2 md:mt-4">
+        {/* Control Bar (Search + Filters) */}
+        <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
@@ -214,7 +214,7 @@ export default function Home() {
             >
               <Link 
                 to={algo.comingSoon ? "#" : `/algorithm/${algo.slug}`}
-                className={`flex flex-col h-full rounded-xl md:rounded-2xl border border-border/40 bg-card/80 shadow-md shadow-black/5 dark:shadow-black/20 backdrop-blur-md p-3.5 md:p-5 transition-all duration-300 ${
+                className={`flex flex-col h-full rounded-xl md:rounded-2xl border border-border/40 bg-card/80 shadow-md shadow-black/5 dark:shadow-[0_8px_30px_rgba(99,102,241,0.12)] backdrop-blur-md p-3.5 md:p-5 transition-all duration-300 ${
                   algo.comingSoon 
                     ? 'opacity-50 cursor-not-allowed' 
                     : 'hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1.5'
@@ -286,6 +286,7 @@ export default function Home() {
           </motion.div>
         )}
       </motion.div>
+    </div>
 
     </div>
   );

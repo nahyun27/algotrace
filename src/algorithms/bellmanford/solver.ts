@@ -1,3 +1,4 @@
+
 import type { BellmanFordStep } from './types';
 import { INF, EXAMPLE1_N, EXAMPLE1_EDGES } from './types';
 
