@@ -62,7 +62,7 @@ export default function GraphCanvas({ currentMask, currentCity, nextCity, active
                 <path
                   d={`M ${n1.x},${n1.y} A ${dr},${dr} 0 0,1 ${n2.x},${n2.y}`}
                   fill="none"
-                  stroke={isActive ? '#f97316' : 'var(--border)'}
+                  stroke={isActive ? '#f97316' : 'var(--muted-foreground)'}
                   strokeWidth={isActive ? 2.5 : 1.5}
                   strokeOpacity={isActive ? 1 : 0.4}
                   className="transition-all duration-300"

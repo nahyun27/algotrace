@@ -49,7 +49,7 @@ export default function DijkstraGraphCanvas({ step, shortestEdges, customNodes, 
           const midX = (n1.x + n2.x) / 2 + (dy / len) * perp;
           const midY = (n1.y + n2.y) / 2 - (dx / len) * perp;
 
-          const stroke = isActive ? '#f97316' : isShortest ? '#22c55e' : 'var(--border)';
+          const stroke = isActive ? '#f97316' : isShortest ? '#22c55e' : 'var(--muted-foreground)';
           const strokeW = isActive || isShortest ? 2.5 : 1.5;
           const opacity = isActive || isShortest ? 1 : 0.35;
           const marker  = isActive ? 'url(#dij-arrow-active)' : isShortest ? 'url(#dij-arrow-short)' : 'url(#dij-arrow)';

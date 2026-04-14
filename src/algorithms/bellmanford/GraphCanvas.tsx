@@ -44,7 +44,7 @@ export default function BFGraphCanvas({ step, nodes, edges }: Props) {
           const midX = (n1.x + n2.x) / 2 + (dy / len) * perp;
           const midY = (n1.y + n2.y) / 2 - (dx / len) * perp;
 
-          let stroke = 'var(--border)';
+          let stroke = 'var(--muted-foreground)';
           let strokeW = 1.5;
           let opacity = 0.35;
           let marker = 'url(#bf-arrow)';
