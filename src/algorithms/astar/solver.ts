@@ -1,5 +1,6 @@
 import type { AStarStep } from './types';
 import { ASTAR_DEFAULT_GRAPH } from '../../types/graph';
+import { makeTr, type Lang } from '../../i18n';
 
 // calculate euclidean distance
 function calcDist(p1: {x: number, y: number}, p2: {x: number, y: number}) {
@@ -12,8 +13,10 @@ const HEURISTIC_SCALE = 30;
 export function generateAStarSteps(
   edges?: [number, number, number][],
   N?: number,
-  nodePositions?: { id: number; x: number; y: number }[]
+  nodePositions?: { id: number; x: number; y: number }[],
+  lang: Lang = 'ko',
 ): AStarStep[] {
+  const tr = makeTr(lang);
   // If not provided, use default
   if (!edges || N === undefined || !nodePositions) {
     const sorted = [...ASTAR_DEFAULT_GRAPH.nodes].sort((a, b) => a.id - b.id);
@@ -97,7 +100,7 @@ export function generateAStarSteps(
   f[start] = g[start] + h[start];
   openQueue.push([f[start], g[start], start]);
   
-  addStep('INIT', `A* 시작: 출발점(S=${start}), 목표점(G=${goal}). 초기화 완료 f=g+h`, null, null, false);
+  addStep('INIT', tr(`A* 시작: 출발점(S=${start}), 목표점(G=${goal}). 초기화 완료 f=g+h`, `A* starts: start S=${start}, goal G=${goal}. Initialized with f = g + h.`), null, null, false);
 
   while (openQueue.length > 0) {
     // pop min f
@@ -111,10 +114,10 @@ export function generateAStarSteps(
     if (closedSet.has(u)) continue;
 
     nodesExplored++;
-    addStep('DEQUEUE', `Open Set에서 f값이 가장 작은 노드 ${u} (f=${currF})를 꺼냄.`, u, null, false);
+    addStep('DEQUEUE', tr(`Open Set에서 f값이 가장 작은 노드 ${u} (f=${currF})를 꺼냄.`, `Pop node ${u} with the smallest f (f=${currF}) from the open set.`), u, null, false);
 
     if (u === goal) {
-      addStep('DONE', `[종료] 목표 노드 ${goal}에 도달했습니다! 총 탐색 노드: ${nodesExplored}개.`, u, null, false);
+      addStep('DONE', tr(`[종료] 목표 노드 ${goal}에 도달했습니다! 총 탐색 노드: ${nodesExplored}개.`, `[Done] Reached goal node ${goal}! Nodes explored: ${nodesExplored}.`), u, null, false);
       return steps;
     }
 
@@ -129,9 +132,9 @@ export function generateAStarSteps(
       
       let desc = '';
       if (isImprovement) {
-        desc = `노드 ${v} 갱신: 기존 g=${g[v] === Infinity ? '∞' : g[v]} > 새 g=${nextG}. f값은 ${nextF}로 갱신.`;
+        desc = tr(`노드 ${v} 갱신: 기존 g=${g[v] === Infinity ? '∞' : g[v]} > 새 g=${nextG}. f값은 ${nextF}로 갱신.`, `Update node ${v}: old g=${g[v] === Infinity ? '∞' : g[v]} > new g=${nextG}. f becomes ${nextF}.`);
       } else {
-        desc = `노드 ${v} 갱신 실패: 새 g=${nextG} 가 기존 g=${g[v]} 보다 크거나 같음.`;
+        desc = tr(`노드 ${v} 갱신 실패: 새 g=${nextG} 가 기존 g=${g[v]} 보다 크거나 같음.`, `No update for node ${v}: new g=${nextG} is not smaller than current g=${g[v]}.`);
       }
       addStep('RELAX', desc, u, [u, v], isImprovement);
 
@@ -144,9 +147,9 @@ export function generateAStarSteps(
     }
 
     closedSet.add(u);
-    addStep('CLOSE', `노드 ${u} 처리 완료. Closed Set에 추가.`, u, null, false);
+    addStep('CLOSE', tr(`노드 ${u} 처리 완료. Closed Set에 추가.`, `Node ${u} done. Added to the closed set.`), u, null, false);
   }
 
-  addStep('DONE', `[종료] 목표 노드 ${goal}에 도달할 수 없습니다.`, null, null, false);
+  addStep('DONE', tr(`[종료] 목표 노드 ${goal}에 도달할 수 없습니다.`, `[Done] Goal node ${goal} cannot be reached.`), null, null, false);
   return steps;
 }

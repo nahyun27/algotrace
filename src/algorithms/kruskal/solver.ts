@@ -1,4 +1,5 @@
 import type { KruskalStep, Edge, KruskalNode } from './types';
+import { makeTr, type Lang } from '../../i18n';
 
 function cloneParent(p: number[]): number[] { return [...p]; }
 
@@ -12,7 +13,9 @@ export function generateKruskalSteps(
   _nodes: KruskalNode[],
   edges: Edge[],
   N: number,
+  lang: Lang = 'ko',
 ): KruskalStep[] {
+  const tr = makeTr(lang);
   const steps: KruskalStep[] = [];
 
   const sorted = [...edges].sort((a, b) => a.weight - b.weight);
@@ -25,7 +28,10 @@ export function generateKruskalSteps(
   // INIT
   steps.push({
     type: 'INIT',
-    description: `간선 ${sorted.length}개를 가중치 오름차순 정렬 완료. Union-Find 초기화 — 각 노드가 독립된 집합입니다.`,
+    description: tr(
+      `간선 ${sorted.length}개를 가중치 오름차순 정렬 완료. Union-Find 초기화 — 각 노드가 독립된 집합입니다.`,
+      `Sorted ${sorted.length} edges by weight. Union-Find initialized — every node starts in its own set.`,
+    ),
     parent: cloneParent(parent), rank: [...rank],
     mstEdges: [], sortedEdges: sorted,
     currentEdge: null, rejectedEdges: [],
@@ -38,7 +44,7 @@ export function generateKruskalSteps(
     // CONSIDER
     steps.push({
       type: 'CONSIDER',
-      description: `간선 (${u}–${v}, 가중치 ${weight}) 검토 중...`,
+      description: tr(`간선 (${u}–${v}, 가중치 ${weight}) 검토 중...`, `Considering edge (${u}–${v}, weight ${weight})…`),
       parent: cloneParent(parent), rank: [...rank],
       mstEdges: [...mstEdges], sortedEdges: sorted,
       currentEdge: edge, rejectedEdges: [...rejectedEdges],
@@ -51,7 +57,9 @@ export function generateKruskalSteps(
     // FIND
     steps.push({
       type: 'FIND',
-      description: `Find(${u})=${ru}, Find(${v})=${rv}. ${ru === rv ? '같은 집합 → 사이클 발생!' : '다른 집합 → MST에 추가 가능!'}`,
+      description: `Find(${u})=${ru}, Find(${v})=${rv}. ` + (ru === rv
+        ? tr('같은 집합 → 사이클 발생!', 'Same set → this edge would make a cycle!')
+        : tr('다른 집합 → MST에 추가 가능!', 'Different sets → safe to add to the MST!')),
       parent: cloneParent(parent), rank: [...rank],
       mstEdges: [...mstEdges], sortedEdges: sorted,
       currentEdge: edge, rejectedEdges: [...rejectedEdges],
@@ -63,7 +71,10 @@ export function generateKruskalSteps(
       rejectedEdges.push(edge);
       steps.push({
         type: 'REJECT',
-        description: `간선 (${u}–${v}, ${weight}) 스킵! 같은 집합(루트: ${ru}) → 사이클 발생.`,
+        description: tr(
+          `간선 (${u}–${v}, ${weight}) 스킵! 같은 집합(루트: ${ru}) → 사이클 발생.`,
+          `Skip edge (${u}–${v}, ${weight})! Both ends share root ${ru} → it would form a cycle.`,
+        ),
         parent: cloneParent(parent), rank: [...rank],
         mstEdges: [...mstEdges], sortedEdges: sorted,
         currentEdge: edge, rejectedEdges: [...rejectedEdges],
@@ -82,7 +93,10 @@ export function generateKruskalSteps(
 
       steps.push({
         type: 'ACCEPT',
-        description: `간선 (${u}–${v}, ${weight}) MST에 추가! Union(${ru}, ${rv}). 현재 총 비용: ${totalCost}`,
+        description: tr(
+          `간선 (${u}–${v}, ${weight}) MST에 추가! Union(${ru}, ${rv}). 현재 총 비용: ${totalCost}`,
+          `Add edge (${u}–${v}, ${weight}) to the MST! Union(${ru}, ${rv}). Total cost so far: ${totalCost}`,
+        ),
         parent: cloneParent(parent), rank: [...rank],
         mstEdges: [...mstEdges], sortedEdges: sorted,
         currentEdge: edge, rejectedEdges: [...rejectedEdges],
@@ -97,7 +111,7 @@ export function generateKruskalSteps(
   // DONE
   steps.push({
     type: 'DONE',
-    description: `MST 완성! 간선 ${mstEdges.length}개, 총 비용: ${totalCost}`,
+    description: tr(`MST 완성! 간선 ${mstEdges.length}개, 총 비용: ${totalCost}`, `MST complete! ${mstEdges.length} edges, total cost: ${totalCost}`),
     parent: cloneParent(parent), rank: [...rank],
     mstEdges: [...mstEdges], sortedEdges: sorted,
     currentEdge: null, rejectedEdges: [...rejectedEdges],

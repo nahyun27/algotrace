@@ -1,5 +1,8 @@
-import { MousePointer2, PlusCircle, ArrowRightCircle, Trash2, RefreshCw, ArrowLeftRight, ChevronDown } from 'lucide-react';
+import { MousePointer2, PlusCircle, ArrowRightCircle, Trash2, RotateCcw, ArrowLeftRight, ChevronDown, MoveRight } from 'lucide-react';
 import { useState } from 'react';
+import { Button, SegmentedControl, cn } from '../ui';
+import { toneSoft } from '../ui/tone';
+import { useTr } from '../../i18n';
 
 export type EditorMode = 'SELECT' | 'ADD_NODE' | 'ADD_EDGE';
 
@@ -25,113 +28,75 @@ export default function Toolbar({
   mode, onModeChange, directed, onDirectedToggle,
   canDelete, onDelete, onReset, presets, nodeCount, maxNodes,
 }: ToolbarProps) {
+  const tr = useTr();
   const [presetOpen, setPresetOpen] = useState(false);
 
-  const modeButtons: { id: EditorMode; icon: React.ReactNode; label: string }[] = [
-    { id: 'SELECT',   icon: <MousePointer2 size={15} />, label: '선택  / 이동' },
-    { id: 'ADD_NODE', icon: <PlusCircle size={15} />,    label: '노드 추가' },
-    { id: 'ADD_EDGE', icon: <ArrowRightCircle size={15} />, label: '간선 추가' },
+  const modeOptions: { value: EditorMode; label: React.ReactNode }[] = [
+    { value: 'SELECT',   label: <span className="flex items-center gap-1.5"><MousePointer2 size={14} /><span className="hidden sm:inline">{tr('선택 / 이동', 'Select / move')}</span></span> },
+    { value: 'ADD_NODE', label: <span className="flex items-center gap-1.5"><PlusCircle size={14} /><span className="hidden sm:inline">{tr('노드 추가', 'Add node')}</span></span> },
+    { value: 'ADD_EDGE', label: <span className="flex items-center gap-1.5"><ArrowRightCircle size={14} /><span className="hidden sm:inline">{tr('간선 추가', 'Add edge')}</span></span> },
   ];
 
   return (
-    <div className="flex flex-wrap items-center gap-2 px-3 py-2 border-b bg-muted/20 text-sm">
-      {/* Mode buttons */}
-      <div className="flex bg-card rounded-lg border shadow-sm p-0.5 gap-0.5">
-        {modeButtons.map(({ id, icon, label }) => (
-          <button
-            key={id}
-            title={label}
-            onClick={() => onModeChange(id)}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold transition-all ${
-              mode === id
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
-            }`}
-          >
-            {icon}
-            <span className="hidden sm:inline">{label}</span>
-          </button>
-        ))}
-      </div>
+    <div className="flex flex-wrap items-center gap-2 px-3 sm:px-4 py-2.5 border-b border-border bg-muted/40">
+      <SegmentedControl id="graph-editor-mode" options={modeOptions} value={mode} onChange={onModeChange} />
 
-      {/* Divider */}
-      <div className="w-px h-6 bg-border" />
-
-      {/* Directed toggle */}
-      <button
+      <Button
         onClick={onDirectedToggle}
-        title="방향 그래프 / 무방향 그래프 전환"
-        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold border transition-all ${
-          directed
-            ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300'
-            : 'bg-card border-border text-muted-foreground hover:bg-muted/60'
-        }`}
+        title={tr('방향 그래프 / 무방향 그래프 전환', 'Toggle directed / undirected')}
+        className={directed ? 'bg-primary-soft text-primary border-primary/30' : ''}
       >
-        <ArrowLeftRight size={13} />
-        <span>{directed ? '방향 그래프' : '무방향 그래프'}</span>
-      </button>
+        {directed ? <MoveRight size={14} /> : <ArrowLeftRight size={14} />}
+        {directed ? tr('방향 그래프', 'Directed') : tr('무방향 그래프', 'Undirected')}
+      </Button>
 
-      {/* Divider */}
-      <div className="w-px h-6 bg-border" />
-
-      {/* Delete */}
-      <button
+      <Button
         onClick={onDelete}
         disabled={!canDelete}
-        title="선택된 노드/간선 삭제 (Delete)"
-        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold border transition-all ${
-          canDelete
-            ? 'bg-red-50 dark:bg-red-900/30 border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50'
-            : 'bg-card border-border text-muted-foreground/40 cursor-not-allowed'
-        }`}
+        title={tr('선택한 노드/간선 삭제 (Delete)', 'Delete selection (Delete)')}
+        className={canDelete ? `${toneSoft.danger} border-state-danger/30` : ''}
       >
-        <Trash2 size={13} />
-        <span className="hidden sm:inline">삭제</span>
-      </button>
+        <Trash2 size={14} />
+        <span className="hidden sm:inline">{tr('삭제', 'Delete')}</span>
+      </Button>
 
-      {/* Reset */}
-      <button
-        onClick={onReset}
-        title="캔버스 초기화"
-        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold border bg-card border-border text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-all"
-      >
-        <RefreshCw size={13} />
-        <span className="hidden sm:inline">초기화</span>
-      </button>
+      <Button onClick={onReset} title={tr('캔버스 비우기', 'Clear canvas')}>
+        <RotateCcw size={14} />
+        <span className="hidden sm:inline">{tr('비우기', 'Clear')}</span>
+      </Button>
 
-      {/* Presets */}
-      {presets.length > 0 && (
-        <div className="relative ml-auto">
-          <button
-            onClick={() => setPresetOpen(p => !p)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold border bg-card border-border text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-all"
-          >
-            프리셋
-            <ChevronDown size={12} className={`transition-transform ${presetOpen ? 'rotate-180' : ''}`} />
-          </button>
-          {presetOpen && (
-            <div className="absolute right-0 top-full mt-1 bg-card border border-border rounded-lg shadow-lg z-50 min-w-[160px] overflow-hidden">
-              {presets.map(p => (
-                <button
-                  key={p.label}
-                  onClick={() => { p.onLoad(); setPresetOpen(false); }}
-                  className="w-full text-left px-3 py-2 text-xs hover:bg-muted/60 transition-colors"
-                >
-                  {p.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+      <div className="ml-auto flex items-center gap-2">
+        {presets.length > 0 && (
+          <div className="relative">
+            <Button onClick={() => setPresetOpen(p => !p)} aria-expanded={presetOpen}>
+              {tr('예제 불러오기', 'Load example')}
+              <ChevronDown size={13} className={cn('transition-transform', presetOpen && 'rotate-180')} />
+            </Button>
+            {presetOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setPresetOpen(false)} />
+                <div className="absolute right-0 top-full mt-1.5 z-50 min-w-[200px] rounded-xl border border-border bg-popover p-1 shadow-xl">
+                  {presets.map(p => (
+                    <button
+                      key={p.label}
+                      onClick={() => { p.onLoad(); setPresetOpen(false); }}
+                      className="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-muted transition-colors"
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
 
-      {/* Node count badge */}
-      <div className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
-        nodeCount >= maxNodes
-          ? 'bg-red-50 dark:bg-red-900/30 border-red-300 dark:border-red-700 text-red-600 dark:text-red-400'
-          : 'bg-muted/50 border-border text-muted-foreground'
-      }`}>
-        노드 {nodeCount} / {maxNodes}
+        <span className={cn(
+          'text-xs font-bold px-2.5 py-1 rounded-full tabular-nums',
+          nodeCount >= maxNodes ? toneSoft.danger : 'bg-card border border-border text-muted-foreground',
+        )}>
+          {tr('노드', 'Nodes')} {nodeCount} / {maxNodes}
+        </span>
       </div>
     </div>
   );

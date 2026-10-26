@@ -2,6 +2,8 @@ import { useRef, useState, useCallback } from 'react';
 import type { GraphNode, GraphEdge } from '../../types/graph';
 import type { EditorMode } from './Toolbar';
 import WeightPopup from './WeightPopup';
+import { NODE_COLORS, EDGE_COLORS } from '../viz/palette';
+import { useTr } from '../../i18n';
 
 const VIEWBOX_W = 560;
 const VIEWBOX_H = 420;
@@ -45,6 +47,7 @@ export default function EditorCanvas({
   const draggingRef  = useRef<{ nodeId: number } | null>(null);
   const pendingEdgeToRef = useRef<number | null>(null);
 
+  const tr = useTr();
   const [popup, setPopup] = useState<PopupState | null>(null);
 
   // ── coord helpers ────────────────────────────────────────────────────────
@@ -197,7 +200,7 @@ export default function EditorCanvas({
   const cursor = mode === 'ADD_NODE' ? 'crosshair' : mode === 'ADD_EDGE' ? 'cell' : 'default';
 
   return (
-    <div ref={containerRef} className="relative flex-1 w-full overflow-hidden select-none">
+    <div ref={containerRef} className="viz-surface relative flex-1 w-full h-full overflow-hidden select-none">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${VIEWBOX_W} ${VIEWBOX_H}`}
@@ -207,14 +210,11 @@ export default function EditorCanvas({
         onMouseDown={(e) => { if (e.target === svgRef.current) handleBgClick(); }}
       >
         <defs>
-          <marker id="ge-arrow" markerWidth="10" markerHeight="7" refX="24" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" className="fill-zinc-400 dark:fill-zinc-500" />
+          <marker id="ge-arrow" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="10" refX="35" refY="5" orient="auto">
+            <polygon points="0 0, 11 5, 0 10" style={{ fill: EDGE_COLORS.idle }} />
           </marker>
-          <marker id="ge-arrow-sel" markerWidth="10" markerHeight="7" refX="24" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6" />
-          </marker>
-          <marker id="ge-arrow-pend" markerWidth="10" markerHeight="7" refX="24" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" fill="#8b5cf6" />
+          <marker id="ge-arrow-sel" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="10" refX="35" refY="5" orient="auto">
+            <polygon points="0 0, 11 5, 0 10" style={{ fill: EDGE_COLORS.current }} />
           </marker>
         </defs>
 
@@ -231,17 +231,16 @@ export default function EditorCanvas({
             >
               <path d={d} fill="none" stroke="transparent" strokeWidth={14} />
               <path d={d} fill="none"
-                stroke={isSelected ? '#3b82f6' : 'currentColor'}
-                strokeWidth={isSelected ? 2.5 : 1.5}
-                strokeOpacity={isSelected ? 1 : 0.45}
+                strokeWidth={isSelected ? 3 : 1.75}
+                strokeOpacity={isSelected ? 1 : 0.6}
                 markerEnd={marker}
+                style={{ stroke: isSelected ? EDGE_COLORS.current : EDGE_COLORS.idle }}
                 className="transition-all duration-150"
               />
               <text x={midX} y={midY} textAnchor="middle" dy=".35em"
-                fontSize={11} fontWeight={isSelected ? 700 : 500}
-                className={`font-mono pointer-events-none select-none ${
-                  isSelected ? 'fill-blue-500 dark:fill-blue-400' : 'fill-zinc-600 dark:fill-white'
-                }`}
+                fontSize={12} fontWeight={isSelected ? 800 : 600}
+                className="font-mono pointer-events-none select-none"
+                style={{ fill: isSelected ? EDGE_COLORS.current : 'var(--foreground)' }}
               >
                 {edge.weight}
               </text>
@@ -253,9 +252,7 @@ export default function EditorCanvas({
         {nodes.map(node => {
           const isSelected = node.id === selectedNodeId;
           const isPending  = node.id === pendingEdgeFrom;
-          let fill = '#e4e4e7', stroke = '#a1a1aa', textFill = '#3f3f46';
-          if (isPending)       { fill = '#ede9fe'; stroke = '#7c3aed'; textFill = '#5b21b6'; }
-          else if (isSelected) { fill = '#dbeafe'; stroke = '#2563eb'; textFill = '#1e40af'; }
+          const c = NODE_COLORS[isPending ? 'candidate' : isSelected ? 'current' : 'idle'];
           return (
             <g key={node.id} data-node="1"
               transform={`translate(${node.x},${node.y})`}
@@ -264,13 +261,11 @@ export default function EditorCanvas({
               onMouseDown={(e) => handleNodeMouseDown(e, node.id)}
             >
               {(isSelected || isPending) && (
-                <circle r={NODE_R + 7} fill={isPending ? '#8b5cf6' : '#3b82f6'} fillOpacity={0.12} />
+                <circle r={NODE_R + 8} style={{ fill: c.fill }} fillOpacity={0.18} />
               )}
-              <circle r={NODE_R} fill={fill} stroke={stroke} strokeWidth={2}
-                style={{ filter: (isSelected || isPending) ? 'drop-shadow(0 2px 8px rgba(0,0,0,0.18))' : 'none' }}
-              />
-              <text textAnchor="middle" dy=".35em" fontSize={14} fontWeight={700}
-                fill={textFill} style={{ pointerEvents: 'none', userSelect: 'none' }}>
+              <circle r={NODE_R} strokeWidth={2.5} style={{ fill: c.fill, stroke: c.stroke }} />
+              <text textAnchor="middle" dy=".35em" fontSize={14} fontWeight={800}
+                style={{ fill: c.text, pointerEvents: 'none', userSelect: 'none' }}>
                 {node.label}
               </text>
             </g>
@@ -280,22 +275,20 @@ export default function EditorCanvas({
         {/* Empty state hint */}
         {nodes.length === 0 && (
           <text x={VIEWBOX_W / 2} y={VIEWBOX_H / 2} textAnchor="middle"
-            fontSize={13} className="fill-muted-foreground/40 select-none pointer-events-none">
-            {mode === 'ADD_NODE' ? '캔버스를 클릭해 노드를 추가하세요' : '먼저 ADD NODE 모드에서 노드를 추가하세요'}
+            fontSize={14} fontWeight={600} className="select-none pointer-events-none" style={{ fill: 'var(--hint)' }}>
+            {mode === 'ADD_NODE'
+              ? tr('캔버스를 클릭해 노드를 추가하세요', 'Click the canvas to add a node')
+              : tr('먼저 \'노드 추가\' 모드에서 노드를 추가하세요', "Switch to 'Add node' mode to place nodes")}
           </text>
         )}
 
         {/* ADD_EDGE mode hint */}
-        {mode === 'ADD_EDGE' && nodes.length > 0 && pendingEdgeFrom === null && (
-          <text x={VIEWBOX_W / 2} y={18} textAnchor="middle"
-            fontSize={11} className="fill-violet-500 dark:fill-violet-400 select-none pointer-events-none font-semibold">
-            출발 노드를 클릭하세요
-          </text>
-        )}
-        {mode === 'ADD_EDGE' && pendingEdgeFrom !== null && (
-          <text x={VIEWBOX_W / 2} y={18} textAnchor="middle"
-            fontSize={11} className="fill-violet-500 dark:fill-violet-400 select-none pointer-events-none font-semibold">
-            도착 노드를 클릭하세요 (다른 노드 선택)
+        {mode === 'ADD_EDGE' && nodes.length > 0 && (
+          <text x={VIEWBOX_W / 2} y={20} textAnchor="middle"
+            fontSize={12} className="select-none pointer-events-none font-bold" style={{ fill: 'var(--primary)' }}>
+            {pendingEdgeFrom === null
+              ? tr('출발 노드를 클릭하세요', 'Click the start node')
+              : tr('도착 노드를 클릭하세요 (다른 노드 선택)', 'Now click the target node')}
           </text>
         )}
       </svg>

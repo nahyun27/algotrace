@@ -1,10 +1,13 @@
 import type { KahnStep, TopoNode } from './types';
+import { makeTr, type Lang } from '../../i18n';
 
 export function generateKahnSteps(
   nodes: TopoNode[],
   edges: [number, number][],
   N: number,
+  lang: Lang = 'ko',
 ): KahnStep[] {
+  const tr = makeTr(lang);
   const steps: KahnStep[] = [];
 
   const adj: number[][] = Array.from({ length: N }, () => []);
@@ -18,7 +21,7 @@ export function generateKahnSteps(
   // INIT
   steps.push({
     type: 'INIT',
-    description: `진입차수 초기화: [${inDeg.join(', ')}]`,
+    description: tr(`진입차수 초기화: [${inDeg.join(', ')}]`, `Initial in-degrees: [${inDeg.join(', ')}]`),
     inDegree: snap(), queue: [], result: [],
     currentNode: null, activeEdge: null,
     decreasedNode: null, newlyEnqueued: null,
@@ -34,7 +37,7 @@ export function generateKahnSteps(
       queue.push(i);
       steps.push({
         type: 'ENQUEUE',
-        description: `"${nodes[i].label}" 진입차수=0 → 큐 삽입`,
+        description: tr(`"${nodes[i].label}" 진입차수=0 → 큐 삽입`, `"${nodes[i].label}" has in-degree 0 → enqueue`),
         inDegree: snap(), queue: [...queue], result: [...result],
         currentNode: i, activeEdge: null,
         decreasedNode: null, newlyEnqueued: i,
@@ -49,7 +52,10 @@ export function generateKahnSteps(
 
     steps.push({
       type: 'DEQUEUE',
-      description: `큐에서 "${nodes[u].label}" 꺼냄 → 결과: [${result.map(n => nodes[n].label).join(' → ')}]`,
+      description: tr(
+        `큐에서 "${nodes[u].label}" 꺼냄 → 결과: [${result.map(n => nodes[n].label).join(' → ')}]`,
+        `Dequeue "${nodes[u].label}" → result: [${result.map(n => nodes[n].label).join(' → ')}]`,
+      ),
       inDegree: snap(), queue: [...queue], result: [...result],
       currentNode: u, activeEdge: null,
       decreasedNode: null, newlyEnqueued: null,
@@ -63,7 +69,10 @@ export function generateKahnSteps(
 
       steps.push({
         type: 'DECREASE',
-        description: `간선 ${nodes[u].label}→${nodes[v].label}: 진입차수 ${inDeg[v] + 1}→${inDeg[v]}${enqueued ? ` ✓ "${nodes[v].label}" 큐 삽입` : ''}`,
+        description: tr(
+          `간선 ${nodes[u].label}→${nodes[v].label}: 진입차수 ${inDeg[v] + 1}→${inDeg[v]}${enqueued ? ` ✓ "${nodes[v].label}" 큐 삽입` : ''}`,
+          `Edge ${nodes[u].label}→${nodes[v].label}: in-degree ${inDeg[v] + 1}→${inDeg[v]}${enqueued ? ` ✓ enqueue "${nodes[v].label}"` : ''}`,
+        ),
         inDegree: snap(), queue: [...queue], result: [...result],
         currentNode: u, activeEdge: [u, v],
         decreasedNode: v, newlyEnqueued: enqueued ? v : null,
@@ -77,8 +86,8 @@ export function generateKahnSteps(
   steps.push({
     type: hasCycle ? 'CYCLE_DETECTED' : 'DONE',
     description: hasCycle
-      ? `⚠️ 사이클 감지! 처리된 노드 수(${result.length}) < 전체(${N}). 위상정렬 불가.`
-      : `[완료] 위상정렬: ${result.map(n => nodes[n].label).join(' → ')}`,
+      ? tr(`⚠️ 사이클 감지! 처리된 노드 수(${result.length}) < 전체(${N}). 위상정렬 불가.`, `⚠️ Cycle detected! Processed nodes (${result.length}) < total (${N}). No topological order exists.`)
+      : tr(`[완료] 위상정렬: ${result.map(n => nodes[n].label).join(' → ')}`, `[Done] Topological order: ${result.map(n => nodes[n].label).join(' → ')}`),
     inDegree: snap(), queue: [...queue], result: [...result],
     currentNode: null, activeEdge: null,
     decreasedNode: null, newlyEnqueued: null,

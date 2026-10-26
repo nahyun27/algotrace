@@ -1,11 +1,15 @@
 
 import type { BellmanFordStep } from './types';
 import { INF, EXAMPLE1_N, EXAMPLE1_EDGES } from './types';
+import { makeTr, type Lang } from '../../i18n';
 
 export function generateBellmanFordSteps(
   customEdges?: [number, number, number][],
   customN?: number,
+  lang: Lang = 'ko',
 ): BellmanFordStep[] {
+  const tr = makeTr(lang);
+  const fmt = (d: number) => (d >= INF ? '∞' : String(d));
   const N = customN ?? EXAMPLE1_N;
   const EDGES = customEdges ?? EXAMPLE1_EDGES;
   const steps: BellmanFordStep[] = [];
@@ -20,7 +24,10 @@ export function generateBellmanFordSteps(
   dist[0] = 0;
   steps.push({
     type: 'INIT',
-    description: `초기화: dist[0] = 0, 나머지 = ∞. 총 ${V_MINUS_1}라운드 진행 예정.`,
+    description: tr(
+      `초기화: dist[0] = 0, 나머지 = ∞. 총 ${V_MINUS_1}라운드 진행 예정.`,
+      `Init: dist[0] = 0, others = ∞. Up to ${V_MINUS_1} rounds will run.`,
+    ),
     dist: cloneDist(),
     currentNode: null, neighborNode: null, activeEdge: null,
     updatedCell: 0, isImprovement: true,
@@ -39,7 +46,10 @@ export function generateBellmanFordSteps(
 
     steps.push({
       type: 'ROUND_START',
-      description: `[ 라운드 ${round} / ${V_MINUS_1} ] 모든 간선 완화 시작.`,
+      description: tr(
+        `[ 라운드 ${round} / ${V_MINUS_1} ] 모든 간선 완화 시작.`,
+        `[ Round ${round} / ${V_MINUS_1} ] Relax every edge.`,
+      ),
       dist: cloneDist(),
       currentNode: null, neighborNode: null, activeEdge: null,
       updatedCell: null, isImprovement: false,
@@ -57,8 +67,14 @@ export function generateBellmanFordSteps(
       steps.push({
         type: 'RELAX',
         description: improved
-          ? `완화 성공: dist[${v}] ${dist[v] >= INF ? '∞' : dist[v]} → ${newDist}  (경로: 노드 ${u} →${v}, 가중치 ${w})`
-          : `완화 실패: dist[${u}]${w >= 0 ? '+' : ''}${w} = ${newDist} ≥ dist[${v}]=${dist[v] >= INF ? '∞' : dist[v]}  변화 없음`,
+          ? tr(
+              `완화 성공: dist[${v}] ${fmt(dist[v])} → ${newDist}  (경로: 노드 ${u} →${v}, 가중치 ${w})`,
+              `Relaxed: dist[${v}] ${fmt(dist[v])} → ${newDist}  (via edge ${u} → ${v}, weight ${w})`,
+            )
+          : tr(
+              `완화 실패: dist[${u}]${w >= 0 ? '+' : ''}${w} = ${newDist} ≥ dist[${v}]=${fmt(dist[v])}  변화 없음`,
+              `No improvement: dist[${u}]${w >= 0 ? '+' : ''}${w} = ${newDist} ≥ dist[${v}]=${fmt(dist[v])}`,
+            ),
         dist: cloneDist(),
         currentNode: u, neighborNode: v, activeEdge: [u, v],
         updatedCell: improved ? v : null, isImprovement: improved,
@@ -78,7 +94,10 @@ export function generateBellmanFordSteps(
 
     steps.push({
       type: 'ROUND_END',
-      description: `라운드 ${round} 완료. 이번 라운드 갱신 횟수: ${updatesThisRound}회.${updatesThisRound === 0 ? ' (조기 종료 가능)' : ''}`,
+      description: tr(
+        `라운드 ${round} 완료. 이번 라운드 갱신 횟수: ${updatesThisRound}회.${updatesThisRound === 0 ? ' (조기 종료 가능)' : ''}`,
+        `Round ${round} finished with ${updatesThisRound} update${updatesThisRound === 1 ? '' : 's'}.${updatesThisRound === 0 ? ' (we can stop early)' : ''}`,
+      ),
       dist: cloneDist(),
       currentNode: null, neighborNode: null, activeEdge: null,
       updatedCell: null, isImprovement: false,
@@ -104,7 +123,10 @@ export function generateBellmanFordSteps(
   if (negativeCycleDetected) {
     steps.push({
       type: 'NEGATIVE_CYCLE',
-      description: `⚠️ 음수 사이클 감지! V번째 라운드에서도 거리가 갱신됩니다. 최단 경로가 존재하지 않습니다.`,
+      description: tr(
+        '⚠️ 음수 사이클 감지! V번째 라운드에서도 거리가 갱신됩니다. 최단 경로가 존재하지 않습니다.',
+        '⚠️ Negative cycle detected! Distances still improve in round V, so no shortest path exists.',
+      ),
       dist: cloneDist(),
       currentNode: null, neighborNode: null, activeEdge: null,
       updatedCell: null, isImprovement: false,
@@ -116,7 +138,10 @@ export function generateBellmanFordSteps(
   } else {
     steps.push({
       type: 'DONE',
-      description: `[완료] 벨만-포드 종료. 최단 거리: ${dist.map((d, i) => `${i}→${d >= INF ? '∞' : d}`).join(', ')}`,
+      description: tr(
+        `[완료] 벨만-포드 종료. 최단 거리: ${dist.map((d, i) => `${i}→${fmt(d)}`).join(', ')}`,
+        `[Done] Bellman-Ford finished. Shortest distances: ${dist.map((d, i) => `${i}→${fmt(d)}`).join(', ')}`,
+      ),
       dist: cloneDist(),
       currentNode: null, neighborNode: null, activeEdge: null,
       updatedCell: null, isImprovement: false,

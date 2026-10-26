@@ -1,6 +1,8 @@
 import type { SortStep } from './types';
+import { makeTr, type Lang } from '../../i18n';
 
-export function generateSelectionSortSteps(input: number[]): SortStep[] {
+export function generateSelectionSortSteps(input: number[], lang: Lang = 'ko'): SortStep[] {
+  const tr = makeTr(lang);
   const arr = [...input];
   const n = arr.length;
   const steps: SortStep[] = [];
@@ -11,14 +13,14 @@ export function generateSelectionSortSteps(input: number[]): SortStep[] {
     steps.push({ type, array: [...arr], comparing, swapping, sorted: [...sorted], pivot: null, description: desc, codeLine, compares, swaps });
   };
 
-  snap('INIT', '선택 정렬 시작', 1);
+  snap('INIT', tr('선택 정렬 시작', 'Starting selection sort'), 1);
 
   for (let i = 0; i < n - 1; i++) {
     let minIdx = i;
-    snap('COMPARE', `i=${i}: 최솟값 탐색 시작 (현재 최소: arr[${minIdx}]=${arr[minIdx]})`, 4, [i]);
+    snap('COMPARE', tr(`i=${i}: 최솟값 탐색 시작 (현재 최소: arr[${minIdx}]=${arr[minIdx]})`, `i=${i}: searching for the minimum (current min: arr[${minIdx}]=${arr[minIdx]})`), 4, [i]);
     for (let j = i + 1; j < n; j++) {
       compares++;
-      snap('COMPARE', `arr[${j}]=${arr[j]}와 현재 최소 arr[${minIdx}]=${arr[minIdx]} 비교`, 6, [minIdx, j]);
+      snap('COMPARE', tr(`arr[${j}]=${arr[j]}와 현재 최소 arr[${minIdx}]=${arr[minIdx]} 비교`, `Compare arr[${j}]=${arr[j]} with current min arr[${minIdx}]=${arr[minIdx]}`), 6, [minIdx, j]);
       if (arr[j] < arr[minIdx]) {
         minIdx = j;
       }
@@ -26,12 +28,12 @@ export function generateSelectionSortSteps(input: number[]): SortStep[] {
     if (minIdx !== i) {
       [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
       swaps++;
-      snap('SWAP', `arr[${i}]과 arr[${minIdx}] 교환`, 8, [], [i, minIdx]);
+      snap('SWAP', tr(`arr[${i}]과 arr[${minIdx}] 교환`, `Swap arr[${i}] and arr[${minIdx}]`), 8, [], [i, minIdx]);
     }
     sorted.push(i);
-    snap('SORTED', `인덱스 ${i}에 최솟값 ${arr[i]} 확정`, 8);
+    snap('SORTED', tr(`인덱스 ${i}에 최솟값 ${arr[i]} 확정`, `Minimum ${arr[i]} fixed at index ${i}`), 8);
   }
   sorted.push(n - 1);
-  snap('DONE', `선택 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, 9);
+  snap('DONE', tr(`선택 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Selection sort done! ${compares} comparisons, ${swaps} swaps`), 9);
   return steps;
 }
