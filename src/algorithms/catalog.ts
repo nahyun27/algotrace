@@ -8,7 +8,7 @@ export interface Localized {
   en: string;
 }
 
-export type CategoryId = 'search' | 'shortest-path' | 'graph' | 'dp' | 'sorting';
+export type CategoryId = 'search' | 'shortest-path' | 'graph' | 'data-structure' | 'string' | 'dp' | 'backtracking' | 'sorting';
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
 export interface Category {
