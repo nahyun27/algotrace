@@ -72,7 +72,7 @@ export function generateGridAStarSteps(map: GridMap, lang: Lang = 'ko'): GridSte
     const cur = pq.shift()!;
     const curPos: GridPos = { r: cur.r, c: cur.c };
 
-    steps.push(snap('DEQUEUE', tr(`f=${cur.f}인 셀 (${cur.r},${cur.c}) 꺼냄 — g=${cur.g}, h=${h[cur.r][cur.c]}`, `Pop cell (${cur.r},${cur.c}) with f=${cur.f} — g=${cur.g}, h=${h[cur.r][cur.c]}`), curPos, null, 17));
+    steps.push(snap('DEQUEUE', tr(`f=${cur.f}인 셀 (${cur.r},${cur.c}) 꺼냄 (g=${cur.g}, h=${h[cur.r][cur.c]})`, `Pop cell (${cur.r},${cur.c}) with f=${cur.f} (g=${cur.g}, h=${h[cur.r][cur.c]})`), curPos, null, 17));
 
     if (closedFlag[cur.r][cur.c]) continue;
 

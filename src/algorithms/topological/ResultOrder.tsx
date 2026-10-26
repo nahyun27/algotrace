@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { Check, X } from 'lucide-react';
 import type { KahnStep, DFSTopoStep, TopoNode } from './types';
 import { Panel, Badge, cn } from '../../components/ui';
 import { toneSoft, toneBorder, toneText } from '../../components/ui/tone';
@@ -35,8 +36,8 @@ export default function ResultOrder({ step, mode, nodes, vertical = false }: Pro
         : vertical ? tr('정렬 결과', 'Order') : tr('위상정렬 결과 (스택 역순)', 'Topological order (reversed stack)')}
       actions={
         <>
-          {isDone && !isCycle && <Badge tone="path">{tr('✓ 완료', '✓ Done')}</Badge>}
-          {isCycle && <Badge tone="danger">{tr('✗ 사이클', '✗ Cycle')}</Badge>}
+          {isDone && !isCycle && <Badge tone="path"><Check className="w-3 h-3" aria-hidden />{tr('완료', 'Done')}</Badge>}
+          {isCycle && <Badge tone="danger"><X className="w-3 h-3" aria-hidden />{tr('사이클', 'Cycle')}</Badge>}
         </>
       }
       className={vertical ? 'h-full' : undefined}

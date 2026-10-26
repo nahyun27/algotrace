@@ -24,15 +24,15 @@ export default function GridAStarInfoModal({ isOpen, onClose, onStartVisualizati
         <InfoCode>{'f(n) = g(n) + h(n)'}</InfoCode>
         {lang === 'ko' ? (
           <ul className="space-y-1 text-[13px]">
-            <li><strong>g(n)</strong> — 시작점에서 n까지 실제 비용</li>
-            <li><strong>h(n)</strong> — n에서 목표까지 예상 비용 (휴리스틱)</li>
-            <li><strong>f(n)</strong> — 총 추정 비용 (최소 f를 가진 셀을 우선 탐색)</li>
+            <li><strong>g(n)</strong>: 시작점에서 n까지 실제 비용</li>
+            <li><strong>h(n)</strong>: n에서 목표까지 예상 비용 (휴리스틱)</li>
+            <li><strong>f(n)</strong>: 총 추정 비용 (최소 f를 가진 셀을 우선 탐색)</li>
           </ul>
         ) : (
           <ul className="space-y-1 text-[13px]">
-            <li><strong>g(n)</strong> — actual cost from the start to n</li>
-            <li><strong>h(n)</strong> — estimated cost from n to the goal (heuristic)</li>
-            <li><strong>f(n)</strong> — total estimate; the cell with the smallest f is explored first</li>
+            <li><strong>g(n)</strong>: actual cost from the start to n</li>
+            <li><strong>h(n)</strong>: estimated cost from n to the goal (heuristic)</li>
+            <li><strong>f(n)</strong>: total estimate; the cell with the smallest f is explored first</li>
           </ul>
         )}
       </InfoSection>
@@ -59,9 +59,9 @@ export default function GridAStarInfoModal({ isOpen, onClose, onStartVisualizati
 
       <InfoSection n={4} title={tr('Admissible 조건', 'Admissibility')}>
         {lang === 'ko' ? (
-          <p>h(n) ≤ 실제 남은 거리 — 즉 휴리스틱이 <strong>실제 비용을 과대평가하지 않아야</strong> 최적해 보장. 상하좌우로만 움직이는 격자에서 맨해튼 거리는 항상 이를 만족합니다 (벽이 없을 때의 최단 거리이므로).</p>
+          <p>h(n) ≤ 실제 남은 거리. 즉 휴리스틱이 <strong>실제 비용을 과대평가하지 않아야</strong> 최적해 보장. 상하좌우로만 움직이는 격자에서 맨해튼 거리는 항상 이를 만족합니다 (벽이 없을 때의 최단 거리이므로).</p>
         ) : (
-          <p>h(n) ≤ true remaining distance — the heuristic must <strong>never overestimate the real cost</strong> for the answer to be optimal. Manhattan distance always satisfies this (without diagonals it is the true shortest distance on an empty grid).</p>
+          <p>h(n) ≤ true remaining distance: the heuristic must <strong>never overestimate the real cost</strong> for the answer to be optimal. Manhattan distance always satisfies this (without diagonals it is the true shortest distance on an empty grid).</p>
         )}
       </InfoSection>
 

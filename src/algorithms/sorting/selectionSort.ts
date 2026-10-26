@@ -31,7 +31,7 @@ export function generateSelectionSortSteps(input: number[], lang: Lang = 'ko'): 
       snap('SWAP', tr(`arr[${i}]과 arr[${minIdx}] 교환`, `Swap arr[${i}] and arr[${minIdx}]`), 8, [], [i, minIdx]);
     }
     sorted.push(i);
-    snap('SORTED', tr(`인덱스 ${i}에 최솟값 ${arr[i]} 확정`, `Index ${i} holds the minimum ${arr[i]} — now in its final place`), 8);
+    snap('SORTED', tr(`인덱스 ${i}에 최솟값 ${arr[i]} 확정`, `Index ${i} holds the minimum ${arr[i]}, now in its final place`), 8);
   }
   sorted.push(n - 1);
   snap('DONE', tr(`선택 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Selection sort done! ${compares} comparison${compares === 1 ? '' : 's'}, ${swaps} swap${swaps === 1 ? '' : 's'}`), 9);

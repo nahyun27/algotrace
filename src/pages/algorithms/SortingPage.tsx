@@ -116,7 +116,7 @@ export default function SortingPage() {
 
   const handleCustomInput = () => {
     if (isDistribution) {
-      // counting / radix sort need non-negative integers (counting: 0–COUNTING_MAX)
+      // counting / radix sort need non-negative integers (counting: 0..COUNTING_MAX)
       const tokens = inputText.split(/[,\s]+/).filter(Boolean);
       const values = tokens.map(Number);
       const hi = algorithm === 'counting' ? COUNTING_MAX : 999_999;
@@ -140,7 +140,7 @@ export default function SortingPage() {
     ? tr(`직접 입력 (0~${COUNTING_MAX} 정수 2~20개, 쉼표로 구분)`, `Custom array (2 to 20 integers from 0 to ${COUNTING_MAX}, comma-separated)`)
     : algorithm === 'radix'
       ? tr('직접 입력 (0 이상 정수 2~20개, 쉼표로 구분)', 'Custom array (2 to 20 non-negative integers, comma-separated)')
-      : tr('직접 입력 (2~20개, 쉼표로 구분)', 'Custom array (2–20 numbers, comma-separated)');
+      : tr('직접 입력 (2~20개, 쉼표로 구분)', 'Custom array (2~20 numbers, comma-separated)');
 
   return (
     <>
@@ -198,7 +198,7 @@ export default function SortingPage() {
                 </div>
               </div>
             ) : (
-              /* Array canvas — grows to fill all remaining space */
+              /* Array canvas: grows to fill all remaining space */
               <div className="flex-1 min-h-0 overflow-hidden border-y border-border">
                 <SortingArrayCanvas step={step} />
               </div>

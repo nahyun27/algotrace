@@ -80,8 +80,8 @@ export default function TopologicalPage() {
         header={
           <AlgorithmHeader
             title={algoMode === 'Kahn'
-              ? tr('위상정렬 — 칸의 알고리즘', "Topological sort — Kahn's algorithm")
-              : tr('위상정렬 — DFS 방식', 'Topological sort — DFS')}
+              ? tr('위상 정렬: 칸의 알고리즘', "Topological sort: Kahn's algorithm")
+              : tr('위상 정렬: DFS 방식', 'Topological sort: DFS')}
             onInfo={() => setIsModalOpen(true)}
             tabs={
               <SegmentedControl
@@ -124,7 +124,7 @@ export default function TopologicalPage() {
                   <QueueStackDisplay
                     step={{ stack: step.stack.map((nodeId, i) => ({ id: `${nodeId}-${i}`, value: nodeId } as DataItem)) } as unknown as BaseStep}
                     mode="DFS"
-                    title={tr('📚 스택 (완료 순서)', '📚 Stack (finish order)')}
+                    title={tr('스택 (완료 순서)', 'Stack (finish order)')}
                     formatItem={labelOf}
                     highlightNext={false}
                   />

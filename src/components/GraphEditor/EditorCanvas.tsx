@@ -75,7 +75,7 @@ export default function EditorCanvas({
     return { x: svgPt.x, y: svgPt.y };
   }, []);
 
-  // ── drag (inline handlers – no circular useCallback deps) ────────────────
+  // ── drag (inline handlers: no circular useCallback deps) ────────────────
   const handleNodeMouseDown = useCallback((e: React.MouseEvent, nodeId: number) => {
     if (mode !== 'SELECT') return;
     e.stopPropagation();

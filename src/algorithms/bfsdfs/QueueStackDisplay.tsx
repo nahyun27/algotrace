@@ -1,6 +1,6 @@
 import { useMemo, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowUpDown } from 'lucide-react';
+import { ArrowRight, ArrowUpDown, Package, Layers } from 'lucide-react';
 import type { BaseStep, BFSStep, DFSStep, DataItem } from './types';
 import { Panel, Badge, cn } from '../../components/ui';
 import { toneSoft, toneBorder } from '../../components/ui/tone';
@@ -32,7 +32,9 @@ export default function QueueStackDisplay({ step, mode, title, formatItem, highl
 
   return (
     <Panel
-      title={title ?? (isBFS ? tr('📦 큐 (Queue)', '📦 Queue') : tr('📚 스택 (Stack)', '📚 Stack'))}
+      title={title ?? (isBFS ? tr('큐 (Queue)', 'Queue') : tr('스택 (Stack)', 'Stack'))}
+      icon={isBFS ? Package : Layers}
+      iconTone="candidate"
       actions={<Badge>{isBFS ? 'FIFO' : 'LIFO'}</Badge>}
       bodyClassName="p-3 sm:p-4"
     >

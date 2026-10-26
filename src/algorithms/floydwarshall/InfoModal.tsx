@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react';
 import { Grid3x3 } from 'lucide-react';
-import InfoModal, { InfoSection, InfoCard, InfoCode, ComplexityChips } from '../../components/algorithm/InfoModal';
+import InfoModal, { InfoSection, InfoCard, InfoCode, ComplexityChips, InfoMark } from '../../components/algorithm/InfoModal';
 import { useLang, useTr } from '../../i18n';
 
 interface Props {
@@ -12,10 +13,10 @@ export default function FWInfoModal({ isOpen, onClose, onStartVisualization }: P
   const tr = useTr();
   const { lang } = useLang();
 
-  const rows: [string, string, string, string][] = [
+  const rows: [string, ReactNode, ReactNode, ReactNode][] = [
     [tr('출발점', 'Source'), tr('단일 출발', 'Single source'), tr('단일 출발', 'Single source'), tr('모든 쌍', 'All pairs')],
-    [tr('음수 간선', 'Negative edges'), tr('❌ 불가', '❌ No'), tr('✅ 가능', '✅ Yes'), tr('✅ 가능', '✅ Yes')],
-    [tr('음수 사이클', 'Negative cycles'), tr('❌ 감지 불가', '❌ Not detected'), tr('✅ 감지 가능', '✅ Detected'), tr('✅ 감지 가능', '✅ Detected')],
+    [tr('음수 간선', 'Negative edges'), <InfoMark ok={false}>{tr('불가', 'No')}</InfoMark>, <InfoMark ok>{tr('가능', 'Yes')}</InfoMark>, <InfoMark ok>{tr('가능', 'Yes')}</InfoMark>],
+    [tr('음수 사이클', 'Negative cycles'), <InfoMark ok={false}>{tr('감지 불가', 'Not detected')}</InfoMark>, <InfoMark ok>{tr('감지 가능', 'Detected')}</InfoMark>, <InfoMark ok>{tr('감지 가능', 'Detected')}</InfoMark>],
     [tr('시간복잡도', 'Time'), 'O((V+E)logV)', 'O(V·E)', 'O(V³)'],
     [tr('공간복잡도', 'Space'), 'O(V)', 'O(V)', 'O(V²)'],
     [tr('구현 난이도', 'Difficulty'), tr('중', 'Medium'), tr('중', 'Medium'), tr('쉬움 (3중 반복문)', 'Easy (triple loop)')],
@@ -30,7 +31,7 @@ export default function FWInfoModal({ isOpen, onClose, onStartVisualization }: P
       onStartVisualization={onStartVisualization}
       icon={Grid3x3}
       title={tr('플로이드-워셜 알고리즘', 'Floyd-Warshall algorithm')}
-      subtitle={tr('모든 노드 쌍의 최단거리 — 동적 계획법 기반', 'All-pairs shortest paths with dynamic programming')}
+      subtitle={tr('동적 계획법으로 구하는 모든 노드 쌍의 최단거리', 'All-pairs shortest paths with dynamic programming')}
     >
       <InfoSection n={1} title={tr('문제 정의', 'The problem')}>
         <InfoCard tone="current">
@@ -42,7 +43,7 @@ export default function FWInfoModal({ isOpen, onClose, onStartVisualization }: P
         </InfoCard>
       </InfoSection>
 
-      <InfoSection n={2} title={tr('핵심 아이디어 — 경유 노드 DP', 'Key idea — DP over intermediate nodes')}>
+      <InfoSection n={2} title={tr('핵심 아이디어: 경유 노드 DP', 'Key idea: DP over intermediate nodes')}>
         <p>{tr('"경유할 수 있는 노드 집합을 하나씩 늘려가며" 최단거리를 갱신합니다.', 'Grow the set of nodes a path may pass through, one node at a time, and update distances as you go.')}</p>
         <InfoCode>
           {'for k in 0..V:\n  for i in 0..V:\n    for j in 0..V:\n      dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])'}

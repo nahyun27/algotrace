@@ -1,3 +1,4 @@
+import { Check } from 'lucide-react';
 import type { KahnStep, TopoNode } from './types';
 import { Panel, cn } from '../../components/ui';
 import { toneSoft } from '../../components/ui/tone';
@@ -48,7 +49,7 @@ export default function InDegreeDisplay({ step, nodes }: Props) {
             className={cn('flex flex-col items-center min-w-[60px] rounded-xl px-3 py-2 transition-all duration-200', cellCls)}
           >
             <span className="text-[11px] font-semibold opacity-80">{node.label}</span>
-            <span className="font-mono text-lg font-bold leading-tight">{isDone ? '✓' : deg}</span>
+            <span className="font-mono text-lg font-bold leading-tight">{isDone ? <Check className="w-4 h-4 inline align-[-2px]" aria-label={tr('완료', 'Done')} /> : deg}</span>
           </div>
         );
       })}

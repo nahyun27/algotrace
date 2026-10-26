@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react';
 import type { FloydWarshallStep } from './types';
 import { INF, FW_N } from './types';
 import { Badge, Panel, cn } from '../../components/ui';
@@ -27,8 +28,8 @@ export default function FWDistMatrix({ step }: Props) {
     if (prevVal === null || newVal === null) return null;
     const head = `dist[${currentI}][${currentJ}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj})`;
     return isUpdate
-      ? tr(`경유 노드 k=${currentK}: ${head} = ${newVal} 로 갱신`, `Via k=${currentK}: ${head} = ${newVal} — updated`)
-      : tr(`경유 노드 k=${currentK}: ${head} = ${iStr(prevVal)}, 변화 없음`, `Via k=${currentK}: ${head} = ${iStr(prevVal)} — no change`);
+      ? tr(`경유 노드 k=${currentK}: ${head} = ${newVal} 로 갱신`, `Via k=${currentK}: ${head} = ${newVal}, updated`)
+      : tr(`경유 노드 k=${currentK}: ${head} = ${iStr(prevVal)}, 변화 없음`, `Via k=${currentK}: ${head} = ${iStr(prevVal)}, no change`);
   })();
 
   return (
@@ -45,8 +46,8 @@ export default function FWDistMatrix({ step }: Props) {
       {isRoundStart && currentK !== null && (
         <div className={cn('text-xs font-semibold px-4 py-2 rounded-xl border text-center', toneSoft.current, toneBorder.current)}>
           {tr(
-            `경유 노드 k = ${currentK} 라운드 시작 — 파란색 행/열이 경유 노드에 해당합니다`,
-            `Round k = ${currentK} begins — the blue row and column belong to intermediate node k`,
+            `경유 노드 k = ${currentK} 라운드 시작. 파란색 행/열이 경유 노드에 해당합니다`,
+            `Round k = ${currentK} begins. The blue row and column belong to intermediate node k`,
           )}
         </div>
       )}
@@ -149,7 +150,10 @@ export default function FWDistMatrix({ step }: Props) {
       {/* Negative cycle warning */}
       {isNegCycle && (
         <div className={cn('rounded-2xl border p-4 text-sm', toneSoft.danger, toneBorder.danger)}>
-          <div className="font-bold mb-1">{tr('⚠️ 음수 사이클 감지됨', '⚠️ Negative cycle detected')}</div>
+          <div className="font-bold mb-1 flex items-center gap-1.5">
+            <AlertTriangle className="w-4 h-4 shrink-0" aria-hidden />
+            {tr('음수 사이클 감지됨', 'Negative cycle detected')}
+          </div>
           <p className="text-[13px] leading-relaxed">
             {tr(
               '대각선 dist[i][i] < 0인 노드가 존재합니다. 해당 노드를 포함하는 사이클의 가중치 합이 음수입니다. 이 경우 최단 경로가 -∞로 수렴하므로 정의되지 않습니다.',
@@ -163,8 +167,8 @@ export default function FWDistMatrix({ step }: Props) {
       {isDone && (
         <div className={cn('rounded-2xl border p-3 text-[13px] font-medium text-center', toneSoft.visited, toneBorder.visited)}>
           {tr(
-            '모든 쌍 최단거리 계산 완료 — 위의 경로 탐색에서 출발·도착 노드를 골라 최단 경로를 확인하세요',
-            'All-pairs shortest distances are ready — choose From and To in the path finder above to see the route',
+            '모든 쌍 최단거리 계산 완료. 위의 경로 탐색에서 출발·도착 노드를 골라 최단 경로를 확인하세요',
+            'All-pairs shortest distances are ready. Choose From and To in the path finder above to see the route',
           )}
         </div>
       )}

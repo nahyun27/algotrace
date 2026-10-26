@@ -16,14 +16,14 @@ const MAX_W = 720;
 type TabId = 'code' | 'problems' | 'extra';
 
 interface Props {
-  /** Source code view (CodePanel) — fills the panel height */
+  /** Source code view (CodePanel): fills the panel height */
   code?: ReactNode;
   /** Related problem list */
   problems?: ReactNode;
   /** Optional extra insight panel (stats, comparisons) */
   extra?: ReactNode;
   extraLabel?: string;
-  /** @deprecated legacy stacked content — pass code/problems instead */
+  /** @deprecated legacy stacked content: pass code/problems instead */
   children?: ReactNode;
 }
 

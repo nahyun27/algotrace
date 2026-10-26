@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react';
 import type { BellmanFordStep } from './types';
 import { INF } from './types';
 import { Badge, Panel, cn } from '../../components/ui';
@@ -102,11 +103,14 @@ export default function BFDistanceTable({ step }: Props) {
       {/* Negative cycle warning */}
       {isNegCycle && (
         <div className={cn('rounded-2xl border p-4 text-sm', toneSoft.danger, toneBorder.danger)}>
-          <div className="font-bold mb-1">{tr('⚠️ 음수 사이클 감지됨', '⚠️ Negative cycle detected')}</div>
+          <div className="font-bold mb-1 flex items-center gap-1.5">
+            <AlertTriangle className="w-4 h-4 shrink-0" aria-hidden />
+            {tr('음수 사이클 감지됨', 'Negative cycle detected')}
+          </div>
           <p className="text-[13px] leading-relaxed">
             {tr(
               'V번째 라운드에서 거리가 추가로 갱신되었습니다. 이 그래프에는 음수 사이클이 존재하여 최단 경로가 정의되지 않습니다. 벨만-포드는 이를 감지하고 알림을 반환합니다.',
-              'A distance was still improved in round V. This graph contains a negative cycle, so shortest paths are undefined — Bellman-Ford detects this and reports it.',
+              'A distance was still improved in round V. This graph contains a negative cycle, so shortest paths are undefined. Bellman-Ford detects this and reports it.',
             )}
           </p>
         </div>

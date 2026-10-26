@@ -47,7 +47,7 @@ function bottomUpCost(steps: TSPStep[], W: number[][], N: number): number {
 }
 
 const SPARSE: { W: number[][]; N: number } = {
-  // missing edges (0) — the only tour is 0→1→2→3→0 (cost 19)
+  // missing edges (0): the only tour is 0→1→2→3→0 (cost 19)
   N: 4,
   W: [
     [0, 4, 0, 0],

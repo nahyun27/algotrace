@@ -1,3 +1,4 @@
+import { Check } from 'lucide-react';
 import { Badge, Panel, cn } from '../../components/ui';
 import { toneSoft, toneBorder, toneText } from '../../components/ui/tone';
 import { useTr } from '../../i18n';
@@ -31,7 +32,7 @@ export default function MstResult({ edges, totalCost, isDone, doneLabel, classNa
               key={i}
               className={cn('flex items-center justify-between rounded-lg border px-2.5 py-1 text-xs', toneSoft.path, toneBorder.path)}
             >
-              <span className="font-mono font-bold">{e.u}–{e.v}</span>
+              <span className="font-mono font-bold">{e.u}-{e.v}</span>
               <span className="font-mono font-bold">w={e.weight}</span>
             </div>
           ))}
@@ -43,7 +44,8 @@ export default function MstResult({ edges, totalCost, isDone, doneLabel, classNa
       )}
       {isDone && (
         <Badge tone="path" outline className="mt-1 justify-center rounded-full">
-          ✓ {doneLabel ?? tr('MST 완성', 'MST complete')}
+          <Check className="w-3.5 h-3.5" aria-hidden />
+          {doneLabel ?? tr('MST 완성', 'MST complete')}
         </Badge>
       )}
     </Panel>

@@ -13,7 +13,7 @@ export function generateHeapSortSteps(input: number[], lang: Lang = 'ko'): SortS
     steps.push({ type, array: [...arr], comparing, swapping, sorted: [...sorted], pivot: null, description: desc, codeLine, compares, swaps, heapSize: hs ?? n });
   };
 
-  snap('INIT', tr('힙 정렬 시작 — 먼저 최대 힙 구축', 'Starting heap sort — build a max-heap first'), 1, [], [], n);
+  snap('INIT', tr('힙 정렬 시작: 먼저 최대 힙 구축', 'Starting heap sort: build a max-heap first'), 1, [], [], n);
 
   function heapify(size: number, root: number) {
     let largest = root;

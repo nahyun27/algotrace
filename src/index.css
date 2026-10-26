@@ -5,8 +5,8 @@
 
 @theme {
   /* Custom responsive breakpoints */
-  --breakpoint-nw: 75rem;    /* 1200px – sidebar collapses to a drawer below this */
-  --breakpoint-wp: 87.5rem;  /* 1400px – roomy desktop */
+  --breakpoint-nw: 75rem;    /* 1200px: sidebar collapses to a drawer below this */
+  --breakpoint-wp: 87.5rem;  /* 1400px: roomy desktop */
 
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -27,7 +27,7 @@
   --color-code-bg: var(--code-bg);
   --color-code-highlight: var(--code-highlight);
 
-  /* Visualization state colors — every algorithm uses the same meaning for the same color */
+  /* Visualization state colors: every algorithm uses the same meaning for the same color */
   --color-state-current: var(--state-current);      /* node/element being processed now */
   --color-state-candidate: var(--state-candidate);  /* being compared / relaxed / considered */
   --color-state-visited: var(--state-visited);      /* settled / finalized / accepted */
@@ -149,7 +149,7 @@
     display: none;
   }
 
-  /* Timeline scrubber (StepController) — filled up to --progress */
+  /* Timeline scrubber (StepController): filled up to --progress */
   .scrubber {
     -webkit-appearance: none;
     appearance: none;

@@ -29,8 +29,8 @@ export function generateKruskalSteps(
   steps.push({
     type: 'INIT',
     description: tr(
-      `간선 ${sorted.length}개를 가중치 오름차순 정렬 완료. Union-Find 초기화 — 각 노드가 독립된 집합입니다.`,
-      `Sorted ${sorted.length} edges by weight (ascending). Union-Find initialized — each node starts in its own set.`,
+      `간선 ${sorted.length}개를 가중치 오름차순 정렬 완료. Union-Find 초기화. 각 노드가 독립된 집합입니다.`,
+      `Sorted ${sorted.length} edges by weight (ascending). Union-Find initialized; each node starts in its own set.`,
     ),
     parent: cloneParent(parent), rank: [...rank],
     mstEdges: [], sortedEdges: sorted,
@@ -44,7 +44,7 @@ export function generateKruskalSteps(
     // CONSIDER
     steps.push({
       type: 'CONSIDER',
-      description: tr(`간선 (${u}–${v}, 가중치 ${weight}) 검토 중...`, `Checking edge (${u}–${v}, weight ${weight})…`),
+      description: tr(`간선 (${u}-${v}, 가중치 ${weight}) 검토 중...`, `Checking edge (${u}-${v}, weight ${weight})…`),
       parent: cloneParent(parent), rank: [...rank],
       mstEdges: [...mstEdges], sortedEdges: sorted,
       currentEdge: edge, rejectedEdges: [...rejectedEdges],
@@ -72,8 +72,8 @@ export function generateKruskalSteps(
       steps.push({
         type: 'REJECT',
         description: tr(
-          `간선 (${u}–${v}, ${weight}) 스킵! 같은 집합(루트: ${ru}) → 사이클 발생.`,
-          `Skip edge (${u}–${v}, ${weight}): both ends share root ${ru}, so it would create a cycle.`,
+          `간선 (${u}-${v}, ${weight}) 스킵! 같은 집합(루트: ${ru}) → 사이클 발생.`,
+          `Skip edge (${u}-${v}, ${weight}): both ends share root ${ru}, so it would create a cycle.`,
         ),
         parent: cloneParent(parent), rank: [...rank],
         mstEdges: [...mstEdges], sortedEdges: sorted,
@@ -94,8 +94,8 @@ export function generateKruskalSteps(
       steps.push({
         type: 'ACCEPT',
         description: tr(
-          `간선 (${u}–${v}, ${weight}) MST에 추가! Union(${ru}, ${rv}). 현재 총 비용: ${totalCost}`,
-          `Add edge (${u}–${v}, ${weight}) to the MST! Union(${ru}, ${rv}). Total cost so far: ${totalCost}`,
+          `간선 (${u}-${v}, ${weight}) MST에 추가! Union(${ru}, ${rv}). 현재 총 비용: ${totalCost}`,
+          `Add edge (${u}-${v}, ${weight}) to the MST! Union(${ru}, ${rv}). Total cost so far: ${totalCost}`,
         ),
         parent: cloneParent(parent), rank: [...rank],
         mstEdges: [...mstEdges], sortedEdges: sorted,

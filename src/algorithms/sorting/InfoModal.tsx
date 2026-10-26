@@ -33,7 +33,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: '왜 느린가?', en: 'Why is it slow?' },
         body: {
           ko: '모든 인접 쌍을 매 패스마다 비교하므로 비교 횟수가 O(n²)입니다. 이미 정렬된 원소도 반복 검사합니다.',
-          en: 'Every adjacent pair is compared on every pass, so it makes O(n²) comparisons — even elements that are already in place get checked again.',
+          en: 'Every adjacent pair is compared on every pass, so it makes O(n²) comparisons. Even elements that are already in place get checked again.',
         },
       },
       {
@@ -67,14 +67,14 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: '불안정 정렬인 이유', en: 'Why it is unstable' },
         body: {
           ko: '최솟값을 찾아 교환할 때, 동일한 값의 상대 순서가 바뀔 수 있습니다. 예: [4a, 3, 4b, 1] → [1, 3, 4b, 4a]로 4a와 4b 순서가 뒤바뀜.',
-          en: 'The long-distance swap can reorder equal values. Example: [4a, 3, 4b, 1] → [1, 3, 4b, 4a] — 4a and 4b trade places.',
+          en: 'The long-distance swap can reorder equal values. Example: [4a, 3, 4b, 1] → [1, 3, 4b, 4a], so 4a and 4b trade places.',
         },
       },
       {
         title: { ko: '교환 횟수가 적다', en: 'Very few swaps' },
         body: {
           ko: '비교는 O(n²)이지만 교환은 최대 O(n)입니다. 쓰기 비용이 비싼 환경(플래시 메모리 등)에서 유리합니다.',
-          en: 'Comparisons are O(n²) but swaps are at most O(n) — handy when writes are expensive (e.g. flash memory).',
+          en: 'Comparisons are O(n²) but swaps are at most O(n), which is handy when writes are expensive (e.g. flash memory).',
         },
       },
     ],
@@ -87,7 +87,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: '동작 원리', en: 'How it works' },
         body: {
           ko: '정렬된 구간의 올바른 위치에 새 원소를 삽입합니다. 카드 게임에서 손에 든 카드를 정렬하는 것과 같은 원리입니다.',
-          en: 'Take the next element and insert it into its correct spot in the sorted part — just like sorting a hand of playing cards.',
+          en: 'Take the next element and insert it into its correct spot in the sorted part, just like sorting a hand of playing cards.',
         },
       },
       {
@@ -108,7 +108,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: '실전 활용', en: 'In the real world' },
         body: {
           ko: 'Python의 Tim Sort, Java의 Arrays.sort()는 작은 구간에 삽입 정렬을 사용합니다. 소규모(N < 64)에서 오버헤드 없이 빠릅니다.',
-          en: "Python's Timsort and Java's Arrays.sort() use insertion sort for small runs — for N < 64 it is fast with no overhead.",
+          en: "Python's Timsort and Java's Arrays.sort() use insertion sort for small runs: for N < 64 it is fast with no overhead.",
         },
       },
     ],
@@ -128,7 +128,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: '안정 정렬', en: 'Stable' },
         body: {
           ko: '같은 값의 원소는 원래 순서가 유지됩니다. 데이터베이스 정렬 등에서 중요한 성질입니다.',
-          en: 'Equal elements keep their original order — an important property for things like database sorting.',
+          en: 'Equal elements keep their original order, an important property for things like database sorting.',
         },
       },
       {
@@ -169,7 +169,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: '최악 O(n²) 주의', en: 'Beware the O(n²) worst case' },
         body: {
           ko: '이미 정렬된 배열에서 매번 끝 원소를 피벗으로 잡으면 파티션이 극단적으로 불균형해져 O(n²)이 됩니다.',
-          en: 'Always picking the last element on an already sorted array makes every partition maximally lopsided — O(n²).',
+          en: 'Always picking the last element on an already sorted array makes every partition maximally lopsided, giving O(n²).',
         },
       },
       {
@@ -203,7 +203,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: 'O(n log n) 보장', en: 'Guaranteed O(n log n)' },
         body: {
           ko: '최선/평균/최악 모두 O(n log n)이며 추가 메모리 O(1)로 in-place 정렬입니다. 최악 성능이 보장되어야 할 때 적합합니다.',
-          en: 'O(n log n) in every case and in-place with O(1) extra memory — a good pick when the worst case must be bounded.',
+          en: 'O(n log n) in every case and in-place with O(1) extra memory. A good pick when the worst case must be bounded.',
         },
       },
       {
@@ -422,8 +422,8 @@ export function SortCompareModal({ isOpen, onClose }: CompareModalProps) {
         <ul className="space-y-1.5 text-[13px]">
           {SORT_ORDER.map(algo => (
             <li key={algo} className="flex flex-wrap gap-x-2">
-              <strong className="font-bold">{SORT_LABELS[algo][lang]}</strong>
-              <span className="text-muted-foreground">— {SUMMARY[algo][lang]}</span>
+              <strong className="font-bold">{SORT_LABELS[algo][lang]}:</strong>
+              <span className="text-muted-foreground">{SUMMARY[algo][lang]}</span>
             </li>
           ))}
         </ul>

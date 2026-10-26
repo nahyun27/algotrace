@@ -48,7 +48,7 @@ export const toneBorder: Record<Tone, string> = {
   danger:    'border-state-danger/35',
 };
 
-/** CSS color value — use for SVG fill/stroke */
+/** CSS color value: use for SVG fill/stroke */
 export const toneVar: Record<Tone, string> = {
   neutral:   'var(--muted-foreground)',
   primary:   'var(--primary)',

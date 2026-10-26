@@ -123,8 +123,8 @@ export function generateTSPStepsBottomUp(
     mask: finalMask, currentCity: 0, nextCity: null, edgeWeight: null, dpTable: cloneDP(),
     activeEdge: bestLastCity !== -1 ? [bestLastCity, 0] : null,
     description: tr(
-      `종료 — 최종 최소 순회 비용: ${ans === INF ? '도달 불가' : ans}`,
-      `Done — minimum tour cost: ${ans === INF ? 'unreachable' : ans}`,
+      `종료. 최종 최소 순회 비용: ${ans === INF ? '도달 불가' : ans}`,
+      `Done. Minimum tour cost: ${ans === INF ? 'unreachable' : ans}`,
     ),
     isImprovement: true, codeLine: 18
   });

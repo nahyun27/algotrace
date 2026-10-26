@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react';
 import { TrendingDown } from 'lucide-react';
-import InfoModal, { InfoSection, InfoCard, InfoCode, ComplexityChips } from '../../components/algorithm/InfoModal';
+import InfoModal, { InfoSection, InfoCard, InfoCode, ComplexityChips, InfoMark } from '../../components/algorithm/InfoModal';
 import { useLang, useTr } from '../../i18n';
 
 interface Props {
@@ -12,9 +13,9 @@ export default function BFInfoModal({ isOpen, onClose, onStartVisualization }: P
   const tr = useTr();
   const { lang } = useLang();
 
-  const rows: [string, string, string][] = [
-    [tr('음수 간선', 'Negative edges'), tr('❌ 불가', '❌ No'), tr('✅ 가능', '✅ Yes')],
-    [tr('음수 사이클 감지', 'Detects negative cycles'), tr('❌ 불가', '❌ No'), tr('✅ 가능', '✅ Yes')],
+  const rows: [string, ReactNode, ReactNode][] = [
+    [tr('음수 간선', 'Negative edges'), <InfoMark ok={false}>{tr('불가', 'No')}</InfoMark>, <InfoMark ok>{tr('가능', 'Yes')}</InfoMark>],
+    [tr('음수 사이클 감지', 'Detects negative cycles'), <InfoMark ok={false}>{tr('불가', 'No')}</InfoMark>, <InfoMark ok>{tr('가능', 'Yes')}</InfoMark>],
     [tr('시간복잡도', 'Time'), 'O((V+E) log V)', 'O(V·E)'],
     [tr('방식', 'Approach'), tr('그리디 (우선순위 큐)', 'Greedy (priority queue)'), tr('완전 반복 완화', 'Repeated relaxation of all edges')],
   ];
@@ -76,7 +77,7 @@ export default function BFInfoModal({ isOpen, onClose, onStartVisualization }: P
         {lang === 'ko' ? (
           <p>V-1번 반복 후 V번째 라운드에서도 거리가 갱신된다면, 즉 <code className="font-mono bg-muted px-1 rounded">dist[u] + w &lt; dist[v]</code>가 성립한다면 음수 사이클이 존재합니다. 이 경우 최단경로가 <strong>-∞</strong>로 수렴하므로 정의되지 않습니다.</p>
         ) : (
-          <p>If a distance still improves in round V — that is, <code className="font-mono bg-muted px-1 rounded">dist[u] + w &lt; dist[v]</code> still holds after V-1 rounds — a negative cycle exists. Distances would keep dropping toward <strong>-∞</strong>, so shortest paths are undefined.</p>
+          <p>If a distance still improves in round V (that is, <code className="font-mono bg-muted px-1 rounded">dist[u] + w &lt; dist[v]</code> still holds after V-1 rounds), a negative cycle exists. Distances would keep dropping toward <strong>-∞</strong>, so shortest paths are undefined.</p>
         )}
       </InfoSection>
 

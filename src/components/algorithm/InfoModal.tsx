@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
-import { Play } from 'lucide-react';
+import { Play, Check, X } from 'lucide-react';
 import Modal from '../ui/Modal';
 import { Button, cn } from '../ui';
-import { toneSoft, toneBorder, toneSolid, type Tone } from '../ui/tone';
+import { toneSoft, toneBorder, toneSolid, toneText, type Tone } from '../ui/tone';
 import { useTr } from '../../i18n';
 
 interface InfoModalProps {
@@ -78,17 +78,35 @@ export function InfoSection({ n, title, children }: InfoSectionProps) {
 interface InfoCardProps {
   tone?: Tone;
   title?: ReactNode;
+  /** Optional icon shown before the title, tinted with the card tone */
+  icon?: LucideIcon;
   children: ReactNode;
   className?: string;
 }
 
 /** Tinted callout card for key ideas, comparisons, warnings. */
-export function InfoCard({ tone = 'neutral', title, children, className }: InfoCardProps) {
+export function InfoCard({ tone = 'neutral', title, icon: Icon, children, className }: InfoCardProps) {
   return (
     <div className={cn('rounded-2xl border p-4', tone === 'neutral' ? 'bg-muted/60 border-border' : `${toneSoft[tone]} ${toneBorder[tone]}`, className)}>
-      {title && <p className="font-bold text-sm mb-1.5">{title}</p>}
+      {title && (
+        <p className={cn('font-bold text-sm mb-1.5', Icon && 'flex items-center gap-1.5')}>
+          {Icon && <Icon className={cn('w-4 h-4 shrink-0', toneText[tone])} aria-hidden />}
+          {title}
+        </p>
+      )}
       <div className={cn('text-[13px] leading-relaxed', tone === 'neutral' ? 'text-muted-foreground' : 'text-foreground/80')}>{children}</div>
     </div>
+  );
+}
+
+/** Yes/No cell for comparison tables: a check or cross icon followed by the label. */
+export function InfoMark({ ok, children }: { ok: boolean; children: ReactNode }) {
+  const Icon = ok ? Check : X;
+  return (
+    <span className="inline-flex items-center gap-1 align-top">
+      <Icon className={cn('w-3.5 h-3.5 shrink-0', ok ? toneText.path : toneText.danger)} aria-hidden />
+      {children}
+    </span>
   );
 }
 

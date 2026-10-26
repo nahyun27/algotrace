@@ -1,6 +1,6 @@
 /**
  * Shared colors for SVG visualizations. All values are CSS color strings built on the
- * --state-* tokens, so they follow the theme automatically — never branch on dark mode.
+ * --state-* tokens, so they follow the theme automatically: never branch on dark mode.
  *
  * Apply via `style={{ fill, stroke }}` (color-mix() needs the style property, not attributes).
  */

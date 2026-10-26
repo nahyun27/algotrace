@@ -4,7 +4,7 @@ import { makeTr, type Lang } from '../../i18n';
 /**
  * Stable counting sort: count occurrences, turn counts into prefix sums,
  * then place elements right-to-left into the output array.
- * Input values are clamped to integers 0–COUNTING_MAX (see sanitizeInput).
+ * Input values are clamped to integers 0..COUNTING_MAX (see sanitizeInput).
  */
 export function generateCountingSortSteps(input: number[], lang: Lang = 'ko'): SortStep[] {
   const tr = makeTr(lang);

@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Check } from 'lucide-react';
 import type { KruskalStep, Edge } from './types';
 import { Badge, Panel, cn, type Tone } from '../../components/ui';
 import { toneSoft } from '../../components/ui/tone';
@@ -46,7 +47,7 @@ export default function KruskalEdgeList({ step }: Props) {
   const label: Record<EdgeStatus, string> = {
     pending: tr('대기', 'Waiting'),
     current: tr('검토 중', 'Checking'),
-    accepted: 'MST ✓',
+    accepted: 'MST',
     rejected: tr('사이클', 'Cycle'),
   };
 
@@ -80,12 +81,13 @@ export default function KruskalEdgeList({ step }: Props) {
             >
               <span className="text-[11px] sm:text-xs text-muted-foreground w-4 sm:w-5 shrink-0 text-right font-mono">{i + 1}</span>
               <span className={cn('font-mono font-bold text-sm', status === 'rejected' && 'line-through opacity-70')}>
-                {e.u}–{e.v}
+                {e.u}-{e.v}
               </span>
               <span className="text-[11px] sm:text-xs font-semibold font-mono px-1.5 py-0.5 rounded-md bg-card/70 text-muted-foreground shrink-0">
                 w={e.weight}
               </span>
               <Badge tone={STATUS_TONE[status]} className="ml-auto shrink-0 rounded-full">
+                {status === 'accepted' && <Check className="w-3 h-3" aria-hidden />}
                 {label[status]}
               </Badge>
             </motion.div>

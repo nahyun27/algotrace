@@ -34,7 +34,7 @@ export interface AlgorithmMeta {
   space: string;
   /** Lower-case search terms for the home page */
   keywords: string[];
-  /** Lazy page import — the page becomes its own chunk */
+  /** Lazy page import: the page becomes its own chunk */
   load: () => Promise<{ default: ComponentType }>;
 }
 

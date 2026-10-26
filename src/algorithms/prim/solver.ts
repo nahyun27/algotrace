@@ -71,7 +71,7 @@ export function generatePrimSteps(
     if (visited[u]) {
       steps.push(snap(
         'ALREADY_IN_MST',
-        tr(`노드 ${u}는 이미 MST에 포함됨 — 스킵`, `Node ${u} is already in the MST — skip`),
+        tr(`노드 ${u}는 이미 MST에 포함되어 스킵`, `Node ${u} is already in the MST, so skip it`),
         u, null, null, 16,
       ));
       continue;
@@ -86,7 +86,7 @@ export function generatePrimSteps(
       'ADD_TO_MST',
       parent[u] === -1
         ? tr(`노드 ${u}를 MST에 추가 (시작 노드, 비용 +0)`, `Add node ${u} to the MST (start node, cost +0)`)
-        : tr(`노드 ${u}를 MST에 추가 — 간선 ${parent[u]}–${u} (비용 +${k})`, `Add node ${u} to the MST via edge ${parent[u]}–${u} (cost +${k})`),
+        : tr(`노드 ${u}를 간선 ${parent[u]}-${u}로 MST에 추가 (비용 +${k})`, `Add node ${u} to the MST via edge ${parent[u]}-${u} (cost +${k})`),
       u, null, null, 19,
     ));
 
@@ -100,7 +100,7 @@ export function generatePrimSteps(
         pq.push({ node: v, key: w });
         steps.push(snap(
           'UPDATE',
-          tr(`노드 ${v}의 key 갱신: ${fmt(oldKey)} → ${w}  (간선 ${u}–${v})`, `Update node ${v}'s key: ${fmt(oldKey)} → ${w}  (edge ${u}–${v})`),
+          tr(`노드 ${v}의 key 갱신: ${fmt(oldKey)} → ${w}  (간선 ${u}-${v})`, `Update node ${v}'s key: ${fmt(oldKey)} → ${w}  (edge ${u}-${v})`),
           u, v, v, 22,
         ));
       }
@@ -109,7 +109,7 @@ export function generatePrimSteps(
 
   steps.push(snap(
     'DONE',
-    tr(`MST 완성! 총 비용 = ${totalCost}  ✓ 크루스칼과 동일한 결과`, `MST complete! Total cost = ${totalCost}  ✓ same result as Kruskal`),
+    tr(`MST 완성! 총 비용 = ${totalCost}, 크루스칼과 동일한 결과`, `MST complete! Total cost = ${totalCost}, same result as Kruskal`),
     null, null, null, 28,
   ));
 

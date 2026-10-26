@@ -1,5 +1,6 @@
-import { Network } from 'lucide-react';
+import { Network, Lightbulb } from 'lucide-react';
 import InfoModal, { InfoSection, InfoCard, ComplexityChips } from '../../components/algorithm/InfoModal';
+import { cn } from '../../components/ui';
 import { toneText } from '../../components/ui/tone';
 import { useLang, useTr } from '../../i18n';
 
@@ -66,8 +67,9 @@ export default function BFSDFSInfoModal({ isOpen, onClose, mode, onStartVisualiz
         />
       </InfoSection>
 
-      <InfoSection n={3} title={tr('팁 💡', 'Tip 💡')}>
+      <InfoSection n={3} title={tr('팁', 'Tip')}>
         <InfoCard tone="current">
+          <Lightbulb className={cn('w-3.5 h-3.5 inline align-[-2px] mr-1', toneText.current)} aria-hidden />
           {lang === 'ko' ? (
             <>BFS와 DFS는 모두 모든 노드를 탐색하는 완전 탐색 기법입니다. 문제에 "최단 경로"라는 말이 있다면 대체로 <strong>BFS</strong>를, "모든 경로를 탐색하여 특정 조건 만족 여부 파악"이라면 재귀를 활용한 <strong>DFS(백트래킹)</strong>가 유리한 경우가 많습니다.</>
           ) : (

@@ -82,7 +82,7 @@ export function generateBFSSteps(
     const { value: u } = queue.shift()!;
     visitedNodes.push(u);
     
-    addStep('DEQUEUE', tr(`큐에서 노드 ${u}을(를) 꺼냄. 방문 순서 최종 확정.`, `Dequeue node ${u} — its place in the visit order is now final.`), u, null, null);
+    addStep('DEQUEUE', tr(`큐에서 노드 ${u}을(를) 꺼냄. 방문 순서 최종 확정.`, `Dequeue node ${u}. Its place in the visit order is now final.`), u, null, null);
 
     for (const v of adj[u]) {
       addStep('DISCOVER', tr(`노드 ${u}의 인접 노드 ${v} 탐색.`, `Check neighbor ${v} of node ${u}.`), u, v, [u, v]);
@@ -93,7 +93,7 @@ export function generateBFSSteps(
         treeEdges.push([u, v]);
         addStep('ENQUEUE', tr(`노드 ${v} 방문 안됨 → 큐에 삽입.`, `Node ${v} is undiscovered → mark it discovered and enqueue it.`), u, v, [u, v]);
       } else {
-        addStep('DISCOVER', tr(`노드 ${v}는 이미 방문(발견)되어 무시함.`, `Node ${v} is already discovered — skip it.`), u, v, [u, v]);
+        addStep('DISCOVER', tr(`노드 ${v}는 이미 방문(발견)되어 무시함.`, `Node ${v} is already discovered, so skip it.`), u, v, [u, v]);
       }
     }
   }
