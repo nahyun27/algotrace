@@ -117,13 +117,3 @@ def is_bipartite(n, graph):
                     return False
     return True`;
 
-/** Highlighted line range per step type (1-based, inclusive). */
-export const CODE_RANGES: Record<number, [number, number]> = {
-  4: [4, 4],    // INIT
-  8: [5, 9],    // START
-  11: [10, 11], // DEQUEUE
-  14: [13, 15], // COLOR
-  16: [16, 16], // CHECK
-  17: [16, 17], // CONFLICT / DONE (NO)
-  18: [18, 18], // DONE (YES)
-};

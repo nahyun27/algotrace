@@ -1,5 +1,6 @@
 import CodePanel from '../../components/algorithm/CodePanel';
-import { SORT_CODES } from './types';
+import { highlighter, type LineMap } from '../../components/algorithm/codeLines';
+import { SORT_CODES, SORT_CODES_CPP, SORT_CODES_JAVA } from './types';
 import type { SortAlgorithm } from './types';
 
 interface Props {
@@ -8,23 +9,53 @@ interface Props {
 }
 
 /**
- * Lines highlighted together with the step's codeLine, keyed by algorithm → codeLine.
- * counting: placing reads `count[arr[i]] -= 1` (10) and writes the output (11).
- * radix: a bucket step computes the digit (6) and appends (7).
+ * Keys are the solver's codeLine values per algorithm.
+ * Python: the line itself, plus companions for counting (placing reads `count[arr[i]] -= 1` and writes the output)
+ * and radix (a bucket step computes the digit and appends).
  */
-const COMPANION_LINES: Partial<Record<SortAlgorithm, Record<number, number[]>>> = {
-  counting: { 11: [10], 5: [4], 7: [6] },
-  radix: { 7: [6], 3: [4] },
+const PY_LINES: Record<SortAlgorithm, LineMap> = {
+  bubble: { 1: [[1, 1]], 3: [[3, 3]], 5: [[5, 5]], 7: [[7, 7]], 10: [[10, 10]], 11: [[11, 11]] },
+  selection: { 1: [[1, 1]], 4: [[4, 4]], 6: [[6, 6]], 8: [[8, 8]], 9: [[9, 9]] },
+  insertion: { 1: [[1, 1]], 2: [[2, 2]], 3: [[3, 3]], 5: [[5, 5]], 6: [[6, 6]], 7: [[7, 7]], 8: [[8, 8]] },
+  merge: { 1: [[1, 1]], 4: [[4, 4]], 7: [[7, 7]], 9: [[9, 9]], 12: [[12, 12]], 13: [[13, 13]], 18: [[18, 18]] },
+  quick: { 1: [[1, 1]], 4: [[4, 4]], 6: [[6, 6]], 9: [[9, 9]], 11: [[11, 11]], 13: [[13, 13]], 14: [[14, 14]] },
+  heap: { 1: [[1, 1]], 3: [[3, 3]], 5: [[5, 5]], 6: [[6, 6]], 10: [[10, 10]], 12: [[12, 12]], 15: [[15, 15]] },
+  counting: { 3: [[3, 3]], 5: [[4, 5]], 7: [[6, 7]], 11: [[10, 11]], 12: [[12, 12]] },
+  radix: { 2: [[2, 2]], 3: [[3, 4]], 7: [[6, 7]], 8: [[8, 8]], 10: [[10, 10]] },
+};
+
+const CPP_LINES: Record<SortAlgorithm, LineMap> = {
+  bubble: { 1: [[4, 5]], 3: [[6, 6]], 5: [[8, 9]], 7: [[10, 11]], 10: [[14, 15]], 11: [[17, 17]] },
+  selection: { 1: [[4, 5]], 4: [[7, 7]], 6: [[8, 10]], 8: [[11, 11]], 9: [[13, 13]] },
+  insertion: { 1: [[4, 4]], 2: [[5, 5]], 3: [[6, 7]], 5: [[8, 8]], 6: [[9, 10]], 7: [[12, 12]], 8: [[14, 14]] },
+  merge: { 1: [[5, 5]], 4: [[7, 7]], 7: [[10, 10]], 9: [[13, 15]], 12: [[16, 17]], 13: [[18, 18], [20, 20]], 18: [[24, 29]] },
+  quick: { 1: [[5, 5]], 4: [[7, 7]], 6: [[9, 9]], 9: [[13, 14]], 11: [[15, 16]], 13: [[17, 18]], 14: [[21, 22]] },
+  heap: { 1: [[5, 6]], 3: [[7, 8]], 5: [[10, 11]], 6: [[13, 13]], 10: [[18, 19]], 12: [[20, 21]], 15: [[22, 24]] },
+  counting: { 3: [[5, 6]], 5: [[7, 8]], 7: [[9, 10]], 11: [[13, 14]], 12: [[16, 17]] },
+  radix: { 2: [[5, 5]], 3: [[6, 7]], 7: [[9, 10]], 8: [[12, 13]], 10: [[16, 16]] },
+};
+
+const JAVA_LINES: Record<SortAlgorithm, LineMap> = {
+  bubble: { 1: [[4, 5]], 3: [[6, 6]], 5: [[8, 9]], 7: [[10, 11]], 10: [[14, 15]], 11: [[17, 17]] },
+  selection: { 1: [[4, 5]], 4: [[7, 7]], 6: [[8, 10]], 8: [[11, 11]], 9: [[13, 13]] },
+  insertion: { 1: [[4, 4]], 2: [[5, 5]], 3: [[6, 7]], 5: [[8, 8]], 6: [[9, 10]], 7: [[12, 12]], 8: [[14, 14]] },
+  merge: { 1: [[4, 4]], 4: [[6, 6]], 7: [[9, 9]], 9: [[12, 14]], 12: [[15, 16]], 13: [[17, 17], [19, 19]], 18: [[23, 28]] },
+  quick: { 1: [[4, 4]], 4: [[6, 6]], 6: [[8, 8]], 9: [[12, 13]], 11: [[14, 15]], 13: [[16, 17]], 14: [[20, 21]] },
+  heap: { 1: [[4, 5]], 3: [[6, 7]], 5: [[9, 10]], 6: [[12, 12]], 10: [[17, 18]], 12: [[19, 20]], 15: [[21, 23]] },
+  counting: { 3: [[5, 6]], 5: [[7, 8]], 7: [[9, 10]], 11: [[13, 14]], 12: [[16, 17]] },
+  radix: { 2: [[5, 5]], 3: [[6, 8]], 7: [[10, 11]], 8: [[13, 14]], 10: [[17, 17]] },
 };
 
 export default function SortingCodeViewer({ codeLine, algorithm }: Props) {
-  const code = SORT_CODES[algorithm];
-
   return (
     <CodePanel
       title={`${algorithm}_sort.py`}
-      code={code}
-      isLineHighlighted={(line) => codeLine > 0 && (line === codeLine || !!COMPANION_LINES[algorithm]?.[codeLine]?.includes(line))}
+      code={SORT_CODES[algorithm]}
+      isLineHighlighted={highlighter(PY_LINES[algorithm], codeLine)}
+      sources={{
+        cpp: { code: SORT_CODES_CPP[algorithm], isLineHighlighted: highlighter(CPP_LINES[algorithm], codeLine) },
+        java: { code: SORT_CODES_JAVA[algorithm], isLineHighlighted: highlighter(JAVA_LINES[algorithm], codeLine) },
+      }}
     />
   );
 }

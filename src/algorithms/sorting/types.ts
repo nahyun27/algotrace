@@ -192,3 +192,351 @@ def heapify(arr, n, root):
         exp *= 10
     return arr`,
 };
+
+export const SORT_CODES_CPP: Record<SortAlgorithm, string> = {
+  bubble: `#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> bubbleSort(vector<int> arr) {
+    int n = arr.size();
+    for (int i = n - 1; i > 0; i--) {
+        bool swapped = false;
+        for (int j = 0; j < i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+                swapped = true;
+            }
+        }
+        if (!swapped)
+            break;
+    }
+    return arr;
+}`,
+
+  selection: `#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> selectionSort(vector<int> arr) {
+    int n = arr.size();
+    for (int i = 0; i < n - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < n; j++)
+            if (arr[j] < arr[minIdx])
+                minIdx = j;
+        swap(arr[i], arr[minIdx]);
+    }
+    return arr;
+}`,
+
+  insertion: `#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> insertionSort(vector<int> arr) {
+    for (int i = 1; i < (int)arr.size(); i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+    return arr;
+}`,
+
+  merge: `#include <bits/stdc++.h>
+using namespace std;
+void merge(vector<int>& arr, int l, int mid, int r);
+
+void mergeSort(vector<int>& arr, int l, int r) {  // call with (arr, 0, n - 1)
+    if (l >= r) return;
+    int mid = (l + r) / 2;
+    mergeSort(arr, l, mid);
+    mergeSort(arr, mid + 1, r);
+    merge(arr, l, mid, r);
+}
+
+void merge(vector<int>& arr, int l, int mid, int r) {
+    vector<int> temp(arr.begin() + l, arr.begin() + r + 1);
+    int i = 0, j = mid - l + 1, k = l;
+    while (i <= mid - l && j <= r - l) {
+        if (temp[i] <= temp[j]) {
+            arr[k] = temp[i]; i++;
+        } else {
+            arr[k] = temp[j]; j++;
+        }
+        k++;
+    }
+    while (i <= mid - l) {
+        arr[k] = temp[i]; i++; k++;
+    }
+    while (j <= r - l) {
+        arr[k] = temp[j]; j++; k++;
+    }
+}`,
+
+  quick: `#include <bits/stdc++.h>
+using namespace std;
+int partition(vector<int>& arr, int low, int high);
+
+void quickSort(vector<int>& arr, int low, int high) {  // call with (arr, 0, n - 1)
+    if (low >= high) return;
+    int pivotIdx = partition(arr, low, high);
+    quickSort(arr, low, pivotIdx - 1);
+    quickSort(arr, pivotIdx + 1, high);
+}
+
+int partition(vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}`,
+
+  heap: `#include <bits/stdc++.h>
+using namespace std;
+void heapify(vector<int>& arr, int n, int root);
+
+void heapSort(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+    for (int i = n - 1; i > 0; i--) {
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0);
+    }
+}
+
+void heapify(vector<int>& arr, int n, int root) {
+    int largest = root;
+    int left = 2 * root + 1, right = 2 * root + 2;
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+    if (largest != root) {
+        swap(arr[root], arr[largest]);
+        heapify(arr, n, largest);
+    }
+}`,
+
+  counting: `#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> countingSort(vector<int> arr) {
+    int k = *max_element(arr.begin(), arr.end()) + 1;
+    vector<int> count(k, 0);
+    for (int x : arr)
+        count[x]++;
+    for (int v = 1; v < k; v++)
+        count[v] += count[v - 1];
+    vector<int> output(arr.size());
+    for (int i = (int)arr.size() - 1; i >= 0; i--) {
+        count[arr[i]]--;
+        output[count[arr[i]]] = arr[i];
+    }
+    arr = output;
+    return arr;
+}`,
+
+  radix: `#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> radixSort(vector<int> arr) {
+    long long exp = 1;
+    while (*max_element(arr.begin(), arr.end()) / exp > 0) {
+        vector<vector<int>> buckets(10);
+        for (int x : arr) {
+            int d = (x / exp) % 10;
+            buckets[d].push_back(x);
+        }
+        arr.clear();
+        for (auto& b : buckets) arr.insert(arr.end(), b.begin(), b.end());
+        exp *= 10;
+    }
+    return arr;
+}`,
+};
+
+export const SORT_CODES_JAVA: Record<SortAlgorithm, string> = {
+  bubble: `import java.util.*;
+
+class BubbleSort {
+    static int[] bubbleSort(int[] arr) {
+        int n = arr.length;
+        for (int i = n - 1; i > 0; i--) {
+            boolean swapped = false;
+            for (int j = 0; j < i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int t = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = t;
+                    swapped = true;
+                }
+            }
+            if (!swapped)
+                break;
+        }
+        return arr;
+    }
+}`,
+
+  selection: `import java.util.*;
+
+class SelectionSort {
+    static int[] selectionSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            int minIdx = i;
+            for (int j = i + 1; j < n; j++)
+                if (arr[j] < arr[minIdx])
+                    minIdx = j;
+            int t = arr[i]; arr[i] = arr[minIdx]; arr[minIdx] = t;
+        }
+        return arr;
+    }
+}`,
+
+  insertion: `import java.util.*;
+
+class InsertionSort {
+    static int[] insertionSort(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+        return arr;
+    }
+}`,
+
+  merge: `import java.util.*;
+
+class MergeSort {
+    static void mergeSort(int[] arr, int l, int r) {  // call with (arr, 0, n - 1)
+        if (l >= r) return;
+        int mid = (l + r) / 2;
+        mergeSort(arr, l, mid);
+        mergeSort(arr, mid + 1, r);
+        merge(arr, l, mid, r);
+    }
+
+    static void merge(int[] arr, int l, int mid, int r) {
+        int[] temp = Arrays.copyOfRange(arr, l, r + 1);
+        int i = 0, j = mid - l + 1, k = l;
+        while (i <= mid - l && j <= r - l) {
+            if (temp[i] <= temp[j]) {
+                arr[k] = temp[i]; i++;
+            } else {
+                arr[k] = temp[j]; j++;
+            }
+            k++;
+        }
+        while (i <= mid - l) {
+            arr[k] = temp[i]; i++; k++;
+        }
+        while (j <= r - l) {
+            arr[k] = temp[j]; j++; k++;
+        }
+    }
+}`,
+
+  quick: `import java.util.*;
+
+class QuickSort {
+    static void quickSort(int[] arr, int low, int high) {  // call with (arr, 0, n - 1)
+        if (low >= high) return;
+        int pivotIdx = partition(arr, low, high);
+        quickSort(arr, low, pivotIdx - 1);
+        quickSort(arr, pivotIdx + 1, high);
+    }
+
+    static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high];
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                int t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+            }
+        }
+        int t = arr[i + 1]; arr[i + 1] = arr[high]; arr[high] = t;
+        return i + 1;
+    }
+}`,
+
+  heap: `import java.util.*;
+
+class HeapSort {
+    static void heapSort(int[] arr) {
+        int n = arr.length;
+        for (int i = n / 2 - 1; i >= 0; i--)
+            heapify(arr, n, i);
+        for (int i = n - 1; i > 0; i--) {
+            int t = arr[0]; arr[0] = arr[i]; arr[i] = t;
+            heapify(arr, i, 0);
+        }
+    }
+
+    static void heapify(int[] arr, int n, int root) {
+        int largest = root;
+        int left = 2 * root + 1, right = 2 * root + 2;
+        if (left < n && arr[left] > arr[largest])
+            largest = left;
+        if (right < n && arr[right] > arr[largest])
+            largest = right;
+        if (largest != root) {
+            int t = arr[root]; arr[root] = arr[largest]; arr[largest] = t;
+            heapify(arr, n, largest);
+        }
+    }
+}`,
+
+  counting: `import java.util.*;
+
+class CountingSort {
+    static int[] countingSort(int[] arr) {
+        int k = Arrays.stream(arr).max().getAsInt() + 1;
+        int[] count = new int[k];
+        for (int x : arr)
+            count[x]++;
+        for (int v = 1; v < k; v++)
+            count[v] += count[v - 1];
+        int[] output = new int[arr.length];
+        for (int i = arr.length - 1; i >= 0; i--) {
+            count[arr[i]]--;
+            output[count[arr[i]]] = arr[i];
+        }
+        System.arraycopy(output, 0, arr, 0, arr.length);
+        return arr;
+    }
+}`,
+
+  radix: `import java.util.*;
+
+class RadixSort {
+    static int[] radixSort(int[] arr) {
+        long exp = 1;
+        while (Arrays.stream(arr).max().getAsInt() / exp > 0) {
+            List<List<Integer>> buckets = new ArrayList<>();
+            for (int b = 0; b < 10; b++) buckets.add(new ArrayList<>());
+            for (int x : arr) {
+                int d = (int) (x / exp % 10);
+                buckets.get(d).add(x);
+            }
+            int k = 0;
+            for (List<Integer> b : buckets) for (int x : b) arr[k++] = x;
+            exp *= 10;
+        }
+        return arr;
+    }
+}`,
+};
