@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ArrowRight, Clock, Play, Code2, PencilRuler, X } from 'lucide-react';
-import { ALGORITHMS, CATEGORIES, DIFFICULTY_LABEL, getCategory, type CategoryId, type Difficulty } from '../algorithms/registry';
+import { ALGORITHMS, ACTIVE_CATEGORIES as CATEGORIES, DIFFICULTY_LABEL, getCategory, type CategoryId, type Difficulty } from '../algorithms/registry';
 import { useLang, useTr } from '../i18n';
 import { cn } from '../components/ui';
 import { NODE_COLORS, EDGE_COLORS, type VizState } from '../components/viz/palette';

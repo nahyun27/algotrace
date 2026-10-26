@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ChevronDown, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ALGORITHMS, CATEGORIES } from '../../algorithms/registry';
+import { ALGORITHMS, ACTIVE_CATEGORIES as CATEGORIES } from '../../algorithms/registry';
 import { useLang, useTr } from '../../i18n';
 import { cn, IconButton } from '../ui';
 import Logo from './Logo';
