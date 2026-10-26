@@ -1,4 +1,5 @@
 import { type DijkstraStep, INF, N as DEFAULT_N, ADJ as DEFAULT_ADJ } from './types';
+import { makeTr, type Lang } from '../../i18n';
 
 /** Build adjacency list from edge array */
 function buildAdj(edges: [number, number, number][], n: number): { v: number; w: number }[][] {
@@ -10,7 +11,10 @@ function buildAdj(edges: [number, number, number][], n: number): { v: number; w:
 export function generateDijkstraSteps(
   customEdges?: [number, number, number][],
   customN?: number,
+  lang: Lang = 'ko',
 ): DijkstraStep[] {
+  const tr = makeTr(lang);
+  const fmt = (d: number) => (d === INF ? '∞' : String(d));
   const N   = customN ?? DEFAULT_N;
   const ADJ = customEdges ? buildAdj(customEdges, N) : DEFAULT_ADJ;
   const steps: DijkstraStep[] = [];
@@ -34,7 +38,7 @@ export function generateDijkstraSteps(
     currentNode: 0, neighborNode: null, activeEdge: null,
     dist: cloneDist(), pq: clonePQ(), visited: cloneVisited(),
     updatedCell: 0, isImprovement: true,
-    description: '초기화: dist[0] = 0, 나머지 = ∞. 시작 노드 0을 큐에 삽입.',
+    description: tr('초기화: dist[0] = 0, 나머지 = ∞. 시작 노드 0을 큐에 넣어요.', 'Init: dist[0] = 0, others = ∞. Push start node 0 into the queue.'),
     codeLine: 1,
   });
 
@@ -48,7 +52,9 @@ export function generateDijkstraSteps(
       currentNode: u, neighborNode: null, activeEdge: null,
       dist: cloneDist(), pq: clonePQ(), visited: cloneVisited(),
       updatedCell: null, isImprovement: false,
-      description: `큐에서 (dist=${cost}, 노드=${u}) 꺼냄. ${visited[u] ? '이미 방문 확정된 노드 → 건너뜀.' : ''}`,
+      description: visited[u]
+        ? tr(`큐에서 (dist=${cost}, 노드=${u})를 꺼냈지만 이미 확정된 노드라 건너뛰어요.`, `Popped (dist=${cost}, node=${u}) — already settled, skip.`)
+        : tr(`큐에서 가장 가까운 (dist=${cost}, 노드=${u})를 꺼내요.`, `Pop the closest entry (dist=${cost}, node=${u}).`),
       codeLine: 4,
     });
 
@@ -62,7 +68,7 @@ export function generateDijkstraSteps(
       currentNode: u, neighborNode: null, activeEdge: null,
       dist: cloneDist(), pq: clonePQ(), visited: cloneVisited(),
       updatedCell: u, isImprovement: true,
-      description: `노드 ${u} 방문 확정! 최단 거리 = ${dist[u]}`,
+      description: tr(`노드 ${u} 방문 확정! 최단 거리 = ${dist[u]}`, `Node ${u} settled! Shortest distance = ${dist[u]}`),
       codeLine: 6,
     });
 
@@ -78,8 +84,8 @@ export function generateDijkstraSteps(
         updatedCell: improved ? v : null,
         isImprovement: improved,
         description: improved
-          ? `완화 성공: dist[${v}] ${dist[v] === INF ? '∞' : dist[v]} → ${newDist} (경유: 노드 ${u}, 가중치 ${w})`
-          : `완화 실패: dist[${v}]=${dist[v] === INF ? '∞' : dist[v]} ≤ ${newDist} — 갱신 없음`,
+          ? tr(`완화 성공: dist[${v}] ${fmt(dist[v])} → ${newDist} (노드 ${u} 경유, 가중치 ${w})`, `Relaxed: dist[${v}] ${fmt(dist[v])} → ${newDist} (via node ${u}, weight ${w})`)
+          : tr(`완화 실패: dist[${v}]=${fmt(dist[v])} ≤ ${newDist} — 갱신하지 않아요`, `No improvement: dist[${v}]=${fmt(dist[v])} ≤ ${newDist} — keep it`),
         codeLine: improved ? 10 : 9,
       });
 
@@ -96,7 +102,7 @@ export function generateDijkstraSteps(
     currentNode: -1, neighborNode: null, activeEdge: null,
     dist: cloneDist(), pq: [], visited: cloneVisited(),
     updatedCell: null, isImprovement: false,
-    description: `[완료] 최단 거리: ${dist.map((d, i) => `${i}→${d === INF ? '∞' : d}`).join(', ')}`,
+    description: tr('[완료] 최단 거리: ', '[Done] Shortest distances: ') + dist.map((d, i) => `${i}→${fmt(d)}`).join(', '),
     codeLine: 12,
   });
 

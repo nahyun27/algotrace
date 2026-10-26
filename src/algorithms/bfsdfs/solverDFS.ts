@@ -1,5 +1,6 @@
 import type { DFSStep, DataItem } from './types';
 import { BFS_DFS_DEFAULT_GRAPH } from './types';
+import { makeTr, type Lang } from '../../i18n';
 
 // Converts edges into undirected adjacency list
 function buildAdj(edges: [number, number, number][], n: number): number[][] {
@@ -15,8 +16,10 @@ function buildAdj(edges: [number, number, number][], n: number): number[][] {
 
 export function generateDFSSteps(
   customEdges?: [number, number, number][],
-  customN?: number
+  customN?: number,
+  lang: Lang = 'ko',
 ): DFSStep[] {
+  const tr = makeTr(lang);
   const N = customN ?? BFS_DFS_DEFAULT_GRAPH.nodes.length;
   const edges: [number, number, number][] = customEdges ?? BFS_DFS_DEFAULT_GRAPH.edges.map(e => [e.from, e.to, e.weight]);
   
@@ -72,37 +75,37 @@ export function generateDFSSteps(
   // INIT
   stack.push({ id: `e-${entryId++}`, value: start });
   
-  addStep('INIT', `초기화: 시작 노드 ${start}을(를) 스택에 삽입.`, null, null, null);
+  addStep('INIT', tr(`초기화: 시작 노드 ${start}을(를) 스택에 삽입.`, `Init: push start node ${start} onto the stack.`), null, null, null);
 
   while (stack.length > 0) {
     const { value: u } = stack.pop()!;
-    addStep('POP', `스택에서 노드 ${u}을(를) 꺼냄.`, u, null, null);
+    addStep('POP', tr(`스택에서 노드 ${u}을(를) 꺼냄.`, `Pop node ${u} from the stack.`), u, null, null);
     
     if (!visitedSet.has(u)) {
       visitedSet.add(u);
       visitedNodes.push(u);
       
-      addStep('POP', `노드 ${u} 방문 처리 및 방문 순서 확정.`, u, null, null);
+      addStep('POP', tr(`노드 ${u} 방문 처리 및 방문 순서 확정.`, `Mark node ${u} as visited and fix its place in the visit order.`), u, null, null);
 
       // To maintain numeric smallest-first, we process reversed children so smallest is at top of stack.
       const neighbors = [...adj[u]].reverse();
       for (const v of neighbors) {
-        addStep('DISCOVER', `노드 ${u}의 인접 노드 ${v} 탐색.`, u, v, [u, v]);
+        addStep('DISCOVER', tr(`노드 ${u}의 인접 노드 ${v} 탐색.`, `Look at neighbor ${v} of node ${u}.`), u, v, [u, v]);
         
         if (!visitedSet.has(v)) {
           treeEdges.push([u, v]);
           stack.push({ id: `e-${entryId++}`, value: v });
-          addStep('PUSH', `노드 ${v} 아직 방문 안됨 → 스택에 삽입.`, u, v, [u, v]);
+          addStep('PUSH', tr(`노드 ${v} 아직 방문 안됨 → 스택에 삽입.`, `Node ${v} isn't visited yet → push it onto the stack.`), u, v, [u, v]);
         } else {
-          addStep('DISCOVER', `노드 ${v}는 이미 방문되어 무시함.`, u, v, [u, v]);
+          addStep('DISCOVER', tr(`노드 ${v}는 이미 방문되어 무시함.`, `Node ${v} is already visited — skip it.`), u, v, [u, v]);
         }
       }
     } else {
-      addStep('POP', `스택에서 꺼낸 노드 ${u}는 이미 방문 완료됨 → 무시.`, u, null, null);
+      addStep('POP', tr(`스택에서 꺼낸 노드 ${u}는 이미 방문 완료됨 → 무시.`, `Popped node ${u} was already visited → skip.`), u, null, null);
     }
   }
   
-  addStep('DONE', `스택이 비었습니다. 깊이 우선 탐색(DFS) 완료!`, null, null, null);
+  addStep('DONE', tr('스택이 비었습니다. 깊이 우선 탐색(DFS) 완료!', 'The stack is empty. Depth-first search complete!'), null, null, null);
   
   return steps;
 }

@@ -1,7 +1,10 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import type { BaseStep } from './types';
+import { Panel, Badge, cn } from '../../components/ui';
+import { toneSoft, toneBorder } from '../../components/ui/tone';
+import { useTr } from '../../i18n';
 
 interface VisitOrderDisplayProps {
   step: BaseStep;
@@ -9,47 +12,47 @@ interface VisitOrderDisplayProps {
 }
 
 export default function VisitOrderDisplay({ step, totalNodes }: VisitOrderDisplayProps) {
+  const tr = useTr();
   const visited = step.visitedNodes;
+  const done = step.type === 'DONE';
 
   return (
-    <div className="bg-card rounded-xl border p-4 shadow-sm h-full flex flex-col">
-      <h3 className="font-semibold tracking-tight text-sm mb-4">📍 방문 순서 (Visit Order)</h3>
-      
-      <div className="flex-1 flex items-center justify-start flex-wrap gap-y-4 px-2 min-h-[40px]">
-        <AnimatePresence>
-          {visited.map((node, i) => (
-            <React.Fragment key={`visit-${node}-${i}`}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/40 border-2 border-emerald-400 dark:border-emerald-600 flex items-center justify-center font-bold text-emerald-800 dark:text-emerald-300 shadow-sm"
-              >
-                {node}
-              </motion.div>
-              {i < visited.length - 1 && (
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="text-muted-foreground mx-1"
-                >
-                  <ArrowRight size={16} />
-                </motion.div>
+    <Panel
+      title={tr('📍 방문 순서', '📍 Visit order')}
+      actions={
+        <Badge tone={done ? 'path' : 'neutral'}>
+          <span className="font-mono">{visited.length} / {totalNodes}</span>
+        </Badge>
+      }
+      className="h-full"
+      bodyClassName="p-4 flex items-center flex-wrap gap-y-3 min-h-[88px]"
+    >
+      <AnimatePresence>
+        {visited.map((node, i) => (
+          <Fragment key={`visit-${node}-${i}`}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              className={cn(
+                'w-10 h-10 rounded-full border-2 flex items-center justify-center font-mono font-bold shadow-sm',
+                done ? `${toneSoft.path} ${toneBorder.path}` : `${toneSoft.visited} ${toneBorder.visited}`,
               )}
-            </React.Fragment>
-          ))}
-        </AnimatePresence>
-        
-        {visited.length === 0 && (
-          <span className="text-sm text-muted-foreground italic pl-2">아직 방문한 노드가 없습니다.</span>
-        )}
-      </div>
+            >
+              {node}
+            </motion.div>
+            {i < visited.length - 1 && (
+              <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="text-muted-foreground mx-1">
+                <ArrowRight size={16} />
+              </motion.div>
+            )}
+          </Fragment>
+        ))}
+      </AnimatePresence>
 
-      <div className="flex justify-end mt-4">
-        <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">
-          진행률: {visited.length} / {totalNodes}
-        </span>
-      </div>
-    </div>
+      {visited.length === 0 && (
+        <span className="text-sm text-muted-foreground italic">{tr('아직 방문한 노드가 없어요.', 'No nodes visited yet.')}</span>
+      )}
+    </Panel>
   );
 }

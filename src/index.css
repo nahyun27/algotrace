@@ -1,110 +1,187 @@
 @import "tailwindcss";
 
+/* `dark:` follows the .dark class on <html> (toggled by ThemeProvider), not the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Custom responsive breakpoints */
-  --breakpoint-nw: 75rem;    /* 1200px – sidebar + code panel hide below this */
-  --breakpoint-wp: 87.5rem;  /* 1400px – code panel narrows below this */
+  --breakpoint-nw: 75rem;    /* 1200px – sidebar collapses to a drawer below this */
+  --breakpoint-wp: 87.5rem;  /* 1400px – roomy desktop */
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
   --color-hint: var(--hint);
   --color-accent: var(--accent);
   --color-code-bg: var(--code-bg);
   --color-code-highlight: var(--code-highlight);
 
-  /* Modern Shadow Tokens */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-glow: 0 0 20px 0 var(--primary);
+  /* Visualization state colors — every algorithm uses the same meaning for the same color */
+  --color-state-current: var(--state-current);      /* node/element being processed now */
+  --color-state-candidate: var(--state-candidate);  /* being compared / relaxed / considered */
+  --color-state-visited: var(--state-visited);      /* settled / finalized / accepted */
+  --color-state-path: var(--state-path);            /* final answer: shortest path, MST, order */
+  --color-state-danger: var(--state-danger);        /* rejected / negative cycle / no path */
+  --color-state-idle: var(--state-idle);            /* untouched node fill */
+  --color-state-idle-stroke: var(--state-idle-stroke);
+  --color-state-idle-fg: var(--state-idle-fg);
+
+  --radius-card: 1.25rem;
+
+  --shadow-sm: 0 1px 2px 0 rgb(20 24 60 / 0.05);
+  --shadow-md: 0 2px 4px -1px rgb(20 24 60 / 0.06), 0 4px 12px -2px rgb(20 24 60 / 0.06);
+  --shadow-lg: 0 4px 8px -2px rgb(20 24 60 / 0.06), 0 12px 28px -6px rgb(20 24 60 / 0.10);
+  --shadow-xl: 0 8px 16px -4px rgb(20 24 60 / 0.08), 0 24px 48px -12px rgb(20 24 60 / 0.16);
+  --shadow-card: 0 1px 2px rgb(20 24 60 / 0.04), 0 6px 20px -8px rgb(20 24 60 / 0.10);
 }
 
 @layer base {
   :root {
-    --background: #f1f5f9;
-    --foreground: #0f172a;
-    --border: #e2e8f0;
-    --primary: #4f46e5;
+    --background: #f5f6fb;
+    --foreground: #1d2140;
+    --border: #e2e5f0;
+    --primary: #5b5bef;
     --primary-foreground: #ffffff;
-    --muted: #f4f4f5;
-    --muted-foreground: #71717a;
+    --primary-soft: #ecedfe;
+    --muted: #eff1f8;
+    --muted-foreground: #5d6482;
     --card: #ffffff;
-    --card-foreground: #09090b;
-    --hint: #a1a1aa;
-    --accent: #f4f4f5;
-    --code-bg: #1e1e2e;
-    --code-highlight: #2d2d44;
+    --card-foreground: #1d2140;
     --popover: #ffffff;
-    
-    --graph-edge: #64748b;
-    
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(228, 228, 231, 0.4);
+    --hint: #9aa0b9;
+    --accent: #eef0fb;
+    --code-bg: #1c1e33;
+    --code-highlight: #2c2f52;
+
+    --state-current: #3b82f6;
+    --state-candidate: #f59e0b;
+    --state-visited: #10b981;
+    --state-path: #8b5cf6;
+    --state-danger: #ef4444;
+    --state-idle: #eef0f7;
+    --state-idle-stroke: #b9bed2;
+    --state-idle-fg: #3b4060;
+
+    --graph-edge: #8a91ab;
   }
-  
+
   .dark {
-    --background: #0f172a;
-    --foreground: #f8fafc;
-    --border: #334155;
-    --primary: #6366f1;
+    --background: #0e1020;
+    --foreground: #eceefb;
+    --border: #2a2e48;
+    --primary: #7c7cff;
     --primary-foreground: #ffffff;
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
-    --card: #1e293b;
-    --card-foreground: #f8fafc;
-    
-    /* Extra aesthetic tokens */
-    --hint: #475569;
-    --accent: #334155;
-    --code-bg: #0f172a;
-    --code-highlight: #1e293b;
-    --popover: #1e293b;
+    --primary-soft: #23264a;
+    --muted: #1b1e34;
+    --muted-foreground: #a0a6c4;
+    --card: #15182b;
+    --card-foreground: #eceefb;
+    --popover: #1b1e34;
+    --hint: #5f6584;
+    --accent: #23264a;
+    --code-bg: #101224;
+    --code-highlight: #262a4d;
 
-    --graph-edge: #e2e8f0;
+    --state-current: #60a5fa;
+    --state-candidate: #fbbf24;
+    --state-visited: #34d399;
+    --state-path: #a78bfa;
+    --state-danger: #f87171;
+    --state-idle: #252943;
+    --state-idle-stroke: #4a5072;
+    --state-idle-fg: #dfe2f3;
 
-    --glass-bg: rgba(30, 41, 59, 0.7);
-    --glass-border: rgba(51, 65, 85, 0.6);
+    --graph-edge: #9aa2c4;
+
+    color-scheme: dark;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
     @apply antialiased transition-colors duration-300;
-    background-image: 
-      radial-gradient(at 0% 0%, var(--primary) 0, transparent 25%),
-      radial-gradient(at 100% 0%, var(--primary) 0, transparent 25%);
-    background-size: 100% 100%;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    opacity: 0.98;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 25%, transparent);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 35%, transparent) transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply backdrop-blur-md border border-[--glass-border] bg-[--glass-bg];
+  .no-scrollbar {
+    scrollbar-width: none;
   }
-  
-  .spotlight {
-    position: relative;
-    overflow: hidden;
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
-  
-  .spotlight::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), var(--primary) 0%, transparent 60%);
-    opacity: 0.15;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+
+  /* Timeline scrubber (StepController) — filled up to --progress */
+  .scrubber {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: linear-gradient(to right, var(--primary) var(--progress, 0%), var(--muted) var(--progress, 0%));
+  }
+  .scrubber:disabled { cursor: default; }
+  .scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 3px solid var(--primary);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.2);
+    transition: transform 0.15s;
+  }
+  .scrubber:hover::-webkit-slider-thumb { transform: scale(1.15); }
+  .scrubber::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 3px solid var(--primary);
+  }
+
+  /* Soft dotted canvas background for visualization areas */
+  .viz-surface {
+    background-color: color-mix(in oklab, var(--muted) 45%, var(--card));
+    background-image: radial-gradient(color-mix(in oklab, var(--muted-foreground) 18%, transparent) 1px, transparent 1px);
+    background-size: 18px 18px;
   }
 }

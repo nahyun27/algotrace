@@ -1,87 +1,84 @@
 import { motion } from 'framer-motion';
 import type { SortStep } from './types';
+import { NODE_COLORS, type VizState } from '../../components/viz/palette';
+import Legend from '../../components/viz/Legend';
+import { useTr } from '../../i18n';
 
 interface Props {
   step: SortStep;
 }
 
-function getBarColor(
-  idx: number,
-  step: SortStep,
-): string {
-  if (step.sorted.includes(idx)) return '#22c55e';       // green — sorted
-  if (step.swapping.includes(idx)) return '#ef4444';      // red — swapping
-  if (step.pivot === idx) return '#8b5cf6';               // purple — pivot
-  if (step.comparing.length > 0 && step.comparing[0] === idx) return '#3b82f6'; // blue — compare left
-  if (step.comparing.includes(idx)) return '#f97316';     // orange — compare right
-  return '#94a3b8';                                        // slate — default
+function getBarState(idx: number, step: SortStep): VizState {
+  if (step.sorted.includes(idx)) return 'visited';
+  if (step.swapping.includes(idx)) return 'danger';
+  if (step.pivot === idx) return 'current';
+  if (step.comparing.includes(idx)) return 'candidate';
+  return 'idle';
 }
 
 export default function ArrayCanvas({ step }: Props) {
+  const tr = useTr();
   const { array } = step;
   const maxVal = Math.max(...array, 1);
   const n = array.length;
   const showValues = n <= 20;
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="viz-surface w-full h-full flex flex-col">
       {/* Bars */}
-      <div className="flex-1 flex items-end justify-center gap-[2px] sm:gap-1 px-2 sm:px-4 pb-1 min-h-[180px]">
+      <div className="flex-1 flex items-end justify-center gap-[2px] sm:gap-1 px-2 sm:px-4 pt-4 pb-1 min-h-[180px]">
         {array.map((val, idx) => {
           const heightPct = (val / maxVal) * 100;
-          const color = getBarColor(idx, step);
-          const isActive = step.comparing.includes(idx) || step.swapping.includes(idx) || step.pivot === idx;
+          const state = getBarState(idx, step);
+          const c = NODE_COLORS[state];
+          const isActive = state === 'candidate' || state === 'danger' || state === 'current';
 
           return (
-            <motion.div
-              key={idx}
-              className="flex flex-col items-center flex-1 max-w-[48px]"
-              style={{ height: '100%' }}
-            >
-              {/* Value label */}
+            <div key={idx} className="flex flex-col items-center flex-1 max-w-[48px] h-full">
               {showValues && (
                 <motion.span
-                  className="text-[9px] sm:text-[10px] font-bold mb-0.5 tabular-nums"
-                  style={{ color }}
+                  className="text-[11px] sm:text-xs font-bold mb-0.5 tabular-nums"
+                  style={{ color: state === 'idle' ? 'var(--muted-foreground)' : c.stroke }}
                   animate={{ scale: isActive ? 1.15 : 1 }}
                   transition={{ duration: 0.15 }}
                 >
                   {val}
                 </motion.span>
               )}
-              {/* Bar */}
               <div className="flex-1 w-full flex items-end">
                 <motion.div
-                  className="w-full rounded-t-sm"
-                  style={{ backgroundColor: color }}
+                  className="w-full rounded-t-md border-2 border-b-0 transition-colors duration-200"
+                  style={{ backgroundColor: c.fill, borderColor: c.stroke }}
                   animate={{ height: `${heightPct}%` }}
                   transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                 />
               </div>
-            </motion.div>
+            </div>
           );
         })}
       </div>
 
       {/* Index labels */}
       {showValues && (
-        <div className="flex justify-center gap-[2px] sm:gap-1 px-2 sm:px-4 pt-0.5 pb-1">
+        <div className="flex justify-center gap-[2px] sm:gap-1 px-2 sm:px-4 pt-1 pb-1 border-t border-border">
           {array.map((_, idx) => (
-            <div key={idx} className="flex-1 max-w-[48px] text-center text-[8px] sm:text-[9px] text-muted-foreground tabular-nums">
+            <div key={idx} className="flex-1 max-w-[48px] text-center text-[11px] font-mono text-hint tabular-nums">
               {idx}
             </div>
           ))}
         </div>
       )}
 
-      {/* Legend */}
-      <div className="flex justify-center gap-2 sm:gap-3 px-2 py-1.5 text-[9px] sm:text-[10px] text-muted-foreground font-medium flex-wrap border-t bg-muted/10">
-        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: '#3b82f6' }} />비교(i)</span>
-        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: '#f97316' }} />비교(j)</span>
-        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: '#ef4444' }} />교환</span>
-        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: '#8b5cf6' }} />피벗</span>
-        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ backgroundColor: '#22c55e' }} />확정</span>
-      </div>
+      <Legend
+        className="px-3 py-2"
+        items={[
+          { state: 'candidate', label: tr('비교 중', 'Comparing'), kind: 'cell' },
+          { state: 'danger', label: tr('교환 / 이동', 'Swapping'), kind: 'cell' },
+          { state: 'current', label: tr('피벗', 'Pivot'), kind: 'cell' },
+          { state: 'visited', label: tr('정렬 완료', 'Sorted'), kind: 'cell' },
+          { state: 'idle', label: tr('미정렬', 'Unsorted'), kind: 'cell' },
+        ]}
+      />
     </div>
   );
 }

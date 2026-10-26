@@ -1,7 +1,9 @@
 import type { FloydWarshallStep } from './types';
 import { INF, FW_N, FW_EDGES } from './types';
+import { makeTr, type Lang } from '../../i18n';
 
-export function generateFloydWarshallSteps(): FloydWarshallStep[] {
+export function generateFloydWarshallSteps(lang: Lang = 'ko'): FloydWarshallStep[] {
+  const tr = makeTr(lang);
   const N = FW_N;
   const EDGES = FW_EDGES;
   const steps: FloydWarshallStep[] = [];
@@ -27,7 +29,10 @@ export function generateFloydWarshallSteps(): FloydWarshallStep[] {
   // ── INIT ────────────────────────────────────────────────────────────────
   steps.push({
     type: 'INIT',
-    description: `초기화: 직접 연결된 간선으로 dist 행렬 설정. 나머지는 ∞, 대각선은 0.`,
+    description: tr(
+      '초기화: 직접 연결된 간선으로 dist 행렬 설정. 나머지는 ∞, 대각선은 0.',
+      'Init: fill the dist matrix with direct edges. Everything else is ∞, the diagonal is 0.',
+    ),
     distMatrix: cloneDist(),
     nextMatrix: cloneNext(),
     currentK: null, currentI: null, currentJ: null,
@@ -39,7 +44,10 @@ export function generateFloydWarshallSteps(): FloydWarshallStep[] {
   for (let k = 0; k < N; k++) {
     steps.push({
       type: 'ROUND_START',
-      description: `경유 노드 k = ${k} 로 모든 노드 쌍의 경로 갱신 시작.`,
+      description: tr(
+        `경유 노드 k = ${k} 로 모든 노드 쌍의 경로 갱신 시작.`,
+        `Intermediate node k = ${k}: try to improve every pair through it.`,
+      ),
       distMatrix: cloneDist(),
       nextMatrix: cloneNext(),
       currentK: k, currentI: null, currentJ: null,
@@ -67,8 +75,14 @@ export function generateFloydWarshallSteps(): FloydWarshallStep[] {
         }
 
         const description = isUpdate
-          ? `경유 노드 k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${newDist} 로 갱신`
-          : `경유 노드 k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${iStr(prevVal)}, 변화 없음`;
+          ? tr(
+              `경유 노드 k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${newDist} 로 갱신`,
+              `Via k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${newDist} — updated`,
+            )
+          : tr(
+              `경유 노드 k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${iStr(prevVal)}, 변화 없음`,
+              `Via k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${iStr(prevVal)} — no change`,
+            );
 
         steps.push({
           type: isUpdate ? 'UPDATE' : 'NO_UPDATE',
@@ -95,7 +109,10 @@ export function generateFloydWarshallSteps(): FloydWarshallStep[] {
   if (hasNegCycle) {
     steps.push({
       type: 'NEGATIVE_CYCLE',
-      description: `⚠️ 음수 사이클 감지! dist[i][i] < 0인 노드가 존재합니다. 최단 경로가 정의되지 않습니다.`,
+      description: tr(
+        '⚠️ 음수 사이클 감지! dist[i][i] < 0인 노드가 존재합니다. 최단 경로가 정의되지 않습니다.',
+        '⚠️ Negative cycle detected! Some node has dist[i][i] < 0, so shortest paths are undefined.',
+      ),
       distMatrix: cloneDist(),
       nextMatrix: cloneNext(),
       currentK: null, currentI: null, currentJ: null,
@@ -105,7 +122,10 @@ export function generateFloydWarshallSteps(): FloydWarshallStep[] {
   } else {
     steps.push({
       type: 'DONE',
-      description: `[완료] 플로이드-워셜 종료. 모든 노드 쌍의 최단거리 계산 완료.`,
+      description: tr(
+        '[완료] 플로이드-워셜 종료. 모든 노드 쌍의 최단거리 계산 완료.',
+        '[Done] Floyd-Warshall finished. Shortest distances for every pair are ready.',
+      ),
       distMatrix: cloneDist(),
       nextMatrix: cloneNext(),
       currentK: null, currentI: null, currentJ: null,

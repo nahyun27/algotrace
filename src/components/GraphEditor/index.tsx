@@ -4,6 +4,9 @@ import Toolbar from './Toolbar';
 import type { EditorMode } from './Toolbar';
 import EditorCanvas from './EditorCanvas';
 import { Play } from 'lucide-react';
+import { Button } from '../ui';
+import { toneSoft } from '../ui/tone';
+import { useTr } from '../../i18n';
 
 interface Preset { label: string; data: GraphData; }
 
@@ -20,6 +23,7 @@ let _edgeCounter = 0;
 function newEdgeId() { return `e${++_edgeCounter}`; }
 
 export default function GraphEditor({ initialData, maxNodes, onRun, presets, algorithmType }: GraphEditorProps) {
+  const tr = useTr();
   const [nodes, setNodes]       = useState<GraphNode[]>(initialData.nodes);
   const [edges, setEdges]       = useState<GraphEdge[]>(initialData.edges);
   const [directed, setDirected] = useState(initialData.directed);
@@ -58,12 +62,12 @@ export default function GraphEditor({ initialData, maxNodes, onRun, presets, alg
   // ─── Node operations ─────────────────────────────────────────────────────
   const handleAddNode = useCallback((x: number, y: number) => {
     if (nodes.length >= maxNodes) {
-      showToast(`${algorithmType === 'tsp' ? 'TSP' : '다익스트라'}는 최대 ${maxNodes}개 노드까지 지원합니다`);
+      showToast(tr(`이 알고리즘은 최대 ${maxNodes}개 노드까지 지원해요`, `This algorithm supports up to ${maxNodes} nodes`));
       return;
     }
     const id = nodes.length === 0 ? 0 : Math.max(...nodes.map(n => n.id)) + 1;
     setNodes(prev => [...prev, { id, x, y, label: String(id) }]);
-  }, [nodes, maxNodes, algorithmType, showToast]);
+  }, [nodes, maxNodes, showToast, tr]);
 
   const handleMoveNode = useCallback((id: number, x: number, y: number) => {
     setNodes(prev => prev.map(n => n.id === id ? { ...n, x, y } : n));
@@ -133,11 +137,11 @@ export default function GraphEditor({ initialData, maxNodes, onRun, presets, alg
     setError(null);
     // Basic checks
     if (algorithmType === 'dijkstra' && nodes.length < 2) {
-      setError('노드가 2개 이상 있어야 합니다.');
+      setError(tr('노드가 2개 이상 있어야 해요.', 'Add at least 2 nodes.'));
       return;
     }
     if (algorithmType === 'tsp') {
-      if (nodes.length < 2) { setError('노드가 2개 이상 있어야 합니다.'); return; }
+      if (nodes.length < 2) { setError(tr('노드가 2개 이상 있어야 해요.', 'Add at least 2 nodes.')); return; }
       // Check directed complete graph
       const edgeSet = new Set(edges.map(e => `${e.from}-${e.to}`));
       const missing: string[] = [];
@@ -149,7 +153,8 @@ export default function GraphEditor({ initialData, maxNodes, onRun, presets, alg
         }
       }
       if (missing.length > 0) {
-        setError(`완전 그래프가 아닙니다. 없는 간선: ${missing.slice(0, 4).join(', ')}${missing.length > 4 ? ' ...' : ''}`);
+        const list = `${missing.slice(0, 4).join(', ')}${missing.length > 4 ? ' …' : ''}`;
+        setError(tr(`완전 그래프가 아니에요. 없는 간선: ${list}`, `Not a complete graph. Missing edges: ${list}`));
         return;
       }
     }
@@ -160,7 +165,7 @@ export default function GraphEditor({ initialData, maxNodes, onRun, presets, alg
   const canDelete = selectedNodeId !== null || selectedEdgeId !== null;
 
   return (
-    <div className="flex flex-col h-full border rounded-xl overflow-hidden bg-card shadow-sm">
+    <div className="flex flex-col h-full overflow-hidden bg-card">
       <Toolbar
         mode={mode}
         onModeChange={(m) => { setMode(m); setPendingEdgeFrom(null); }}
@@ -178,7 +183,7 @@ export default function GraphEditor({ initialData, maxNodes, onRun, presets, alg
       />
 
       {/* Canvas */}
-      <div className="flex-1 bg-muted/5 min-h-[360px] overflow-hidden relative">
+      <div className="flex-1 min-h-[360px] overflow-hidden relative flex">
         <EditorCanvas
           nodes={nodes} edges={edges} directed={directed}
           mode={mode}
@@ -193,27 +198,24 @@ export default function GraphEditor({ initialData, maxNodes, onRun, presets, alg
       </div>
 
       {/* Footer: error + run button */}
-      <div className="border-t p-3 flex items-center gap-3 bg-muted/10 flex-wrap">
+      <div className="border-t border-border px-3 sm:px-4 py-3 flex items-center gap-3 bg-card flex-wrap">
         {error && (
-          <p className="text-xs text-red-600 dark:text-red-400 font-medium flex-1">{error}</p>
+          <p className={`text-xs font-semibold flex-1 rounded-lg px-3 py-2 ${toneSoft.danger}`}>{error}</p>
         )}
-        <div className="ml-auto flex items-center gap-2">
-          <span className="text-[11px] text-muted-foreground">
-            노드 {nodes.length}개 · 간선 {edges.length}개
+        <div className="ml-auto flex items-center gap-3">
+          <span className="text-xs text-muted-foreground tabular-nums">
+            {tr(`노드 ${nodes.length}개 · 간선 ${edges.length}개`, `${nodes.length} nodes · ${edges.length} edges`)}
           </span>
-          <button
-            onClick={handleRun}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-semibold transition-colors shadow-sm"
-          >
-            <Play size={14} />
-            이 그래프로 시각화 실행
-          </button>
+          <Button variant="primary" size="md" onClick={handleRun}>
+            <Play size={15} fill="currentColor" />
+            {tr('이 그래프로 시각화하기', 'Visualize this graph')}
+          </Button>
         </div>
       </div>
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-[9999] bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-sm font-medium px-4 py-2.5 rounded-lg shadow-xl animate-in slide-in-from-bottom-2 duration-200">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] bg-foreground text-background text-sm font-semibold px-4 py-2.5 rounded-xl shadow-xl">
           {toast}
         </div>
       )}

@@ -1,3 +1,5 @@
+import type { Lang } from '../../i18n';
+
 // ── Step types ────────────────────────────────────────────────────────────────
 
 export type KahnStepType =
@@ -44,6 +46,13 @@ export interface DFSTopoStep {
 
 // ── Graph data ────────────────────────────────────────────────────────────────
 
+/** Display text in both languages */
+export interface LocalizedText {
+  ko: string;
+  en: string;
+}
+
+/** Node as consumed by solvers and components (label already localized) */
 export interface TopoNode {
   id: number;
   label: string;
@@ -51,16 +60,24 @@ export interface TopoNode {
   y: number;
 }
 
+/** Node as defined in the example data (label in both languages) */
+export interface TopoNodeDef {
+  id: number;
+  label: LocalizedText;
+  x: number;
+  y: number;
+}
+
 export const TOPO_N = 7;
 
-export const TOPO_NODES: TopoNode[] = [
-  { id: 0, label: '수학',     x: 70,  y: 190 },
-  { id: 1, label: '물리',     x: 200, y: 90  },
-  { id: 2, label: '알고리즘', x: 200, y: 290 },
-  { id: 3, label: '자료구조', x: 335, y: 190 },
-  { id: 4, label: '운영체제', x: 465, y: 90  },
-  { id: 5, label: '컴파일러', x: 465, y: 290 },
-  { id: 6, label: '졸업',     x: 590, y: 190 },
+export const TOPO_NODES: TopoNodeDef[] = [
+  { id: 0, label: { ko: '수학',     en: 'Math' },     x: 70,  y: 190 },
+  { id: 1, label: { ko: '물리',     en: 'Physics' },  x: 200, y: 90  },
+  { id: 2, label: { ko: '알고리즘', en: 'Algo' },     x: 200, y: 290 },
+  { id: 3, label: { ko: '자료구조', en: 'DS' },       x: 335, y: 190 },
+  { id: 4, label: { ko: '운영체제', en: 'OS' },       x: 465, y: 90  },
+  { id: 5, label: { ko: '컴파일러', en: 'Compiler' }, x: 465, y: 290 },
+  { id: 6, label: { ko: '졸업',     en: 'Graduate' }, x: 590, y: 190 },
 ];
 
 export const TOPO_EDGES: [number, number][] = [
@@ -75,15 +92,34 @@ export const TOPO_EDGES: [number, number][] = [
 // Cycle example
 export const CYCLE_N = 3;
 
-export const CYCLE_NODES: TopoNode[] = [
-  { id: 0, label: 'A', x: 150, y: 190 },
-  { id: 1, label: 'B', x: 370, y: 90  },
-  { id: 2, label: 'C', x: 370, y: 290 },
+export const CYCLE_NODES: TopoNodeDef[] = [
+  { id: 0, label: { ko: 'A', en: 'A' }, x: 150, y: 190 },
+  { id: 1, label: { ko: 'B', en: 'B' }, x: 370, y: 90  },
+  { id: 2, label: { ko: 'C', en: 'C' }, x: 370, y: 290 },
 ];
 
 export const CYCLE_EDGES: [number, number][] = [
   [0, 1], [1, 2], [2, 0],
 ];
+
+export type TopoExampleId = 'dag' | 'cycle';
+
+export interface TopoExample {
+  name: LocalizedText;
+  nodes: TopoNodeDef[];
+  edges: [number, number][];
+  N: number;
+}
+
+export const TOPO_EXAMPLES: Record<TopoExampleId, TopoExample> = {
+  dag:   { name: { ko: '수강신청 (DAG)', en: 'Course plan (DAG)' }, nodes: TOPO_NODES,  edges: TOPO_EDGES,  N: TOPO_N },
+  cycle: { name: { ko: '사이클',         en: 'Cycle' },             nodes: CYCLE_NODES, edges: CYCLE_EDGES, N: CYCLE_N },
+};
+
+/** Resolve node labels for the current language */
+export function localizeNodes(nodes: TopoNodeDef[], lang: Lang): TopoNode[] {
+  return nodes.map(n => ({ ...n, label: n.label[lang] }));
+}
 
 // ── Source code ────────────────────────────────────────────────────────────────
 

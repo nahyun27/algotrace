@@ -1,10 +1,13 @@
 import type { DFSTopoStep, TopoNode } from './types';
+import { makeTr, type Lang } from '../../i18n';
 
 export function generateDFSTopoSteps(
   nodes: TopoNode[],
   edges: [number, number][],
   N: number,
+  lang: Lang = 'ko',
 ): DFSTopoStep[] {
+  const tr = makeTr(lang);
   const steps: DFSTopoStep[] = [];
 
   const adj: number[][] = Array.from({ length: N }, () => []);
@@ -29,7 +32,7 @@ export function generateDFSTopoSteps(
 
     steps.push({
       type: 'VISIT',
-      description: `"${nodes[u].label}" 방문 시작`,
+      description: tr(`"${nodes[u].label}" 방문 시작`, `Start visiting "${nodes[u].label}"`),
       visited: snapV(), inStack: snapIS(), finished: snapF(), stack: snapS(),
       result: [], currentNode: u, activeEdge: null,
       hasCycle: false, codeLine: 7,
@@ -41,7 +44,7 @@ export function generateDFSTopoSteps(
       if (!visited[v]) {
         steps.push({
           type: 'VISIT',
-          description: `간선 ${nodes[u].label}→${nodes[v].label} 탐색`,
+          description: tr(`간선 ${nodes[u].label}→${nodes[v].label} 탐색`, `Follow edge ${nodes[u].label}→${nodes[v].label}`),
           visited: snapV(), inStack: snapIS(), finished: snapF(), stack: snapS(),
           result: [], currentNode: u, activeEdge: [u, v],
           hasCycle: false, codeLine: 11,
@@ -51,7 +54,7 @@ export function generateDFSTopoSteps(
         hasCycle = true;
         steps.push({
           type: 'CYCLE_DETECTED',
-          description: `⚠️ 역방향 간선 ${nodes[u].label}→${nodes[v].label} 발견! 사이클 존재.`,
+          description: tr(`⚠️ 역방향 간선 ${nodes[u].label}→${nodes[v].label} 발견! 사이클 존재.`, `⚠️ Back edge ${nodes[u].label}→${nodes[v].label} found! The graph has a cycle.`),
           visited: snapV(), inStack: snapIS(), finished: snapF(), stack: snapS(),
           result: [], currentNode: u, activeEdge: [u, v],
           hasCycle: true, codeLine: 13,
@@ -67,7 +70,10 @@ export function generateDFSTopoSteps(
 
       steps.push({
         type: 'FINISH',
-        description: `"${nodes[u].label}" DFS 완료 → 스택 push. 스택: [${stack.map(n => nodes[n].label).join(', ')}]`,
+        description: tr(
+          `"${nodes[u].label}" DFS 완료 → 스택 push. 스택: [${stack.map(n => nodes[n].label).join(', ')}]`,
+          `"${nodes[u].label}" finished → push onto stack. Stack: [${stack.map(n => nodes[n].label).join(', ')}]`,
+        ),
         visited: snapV(), inStack: snapIS(), finished: snapF(), stack: snapS(),
         result: [], currentNode: u, activeEdge: null,
         hasCycle: false, codeLine: 16,
@@ -84,8 +90,8 @@ export function generateDFSTopoSteps(
   steps.push({
     type: hasCycle ? 'CYCLE_DETECTED' : 'DONE',
     description: hasCycle
-      ? '⚠️ 사이클이 감지되어 위상정렬 불가능합니다.'
-      : `[완료] 스택 역순 = 위상정렬: ${result.map(n => nodes[n].label).join(' → ')}`,
+      ? tr('⚠️ 사이클이 감지되어 위상정렬 불가능합니다.', '⚠️ A cycle was detected, so no topological order exists.')
+      : tr(`[완료] 스택 역순 = 위상정렬: ${result.map(n => nodes[n].label).join(' → ')}`, `[Done] Reversed stack = topological order: ${result.map(n => nodes[n].label).join(' → ')}`),
     visited: snapV(), inStack: snapIS(), finished: snapF(), stack: snapS(),
     result: hasCycle ? [] : result,
     currentNode: null, activeEdge: null,

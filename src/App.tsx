@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import AlgorithmPage from './pages/AlgorithmPage';
-import './App.css';
 
 function App() {
   return (

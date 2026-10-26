@@ -1,8 +1,4 @@
-import { useState } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Copy, Check, Maximize2 } from 'lucide-react';
-import CodeModal from '../../components/algorithm/CodeModal';
+import CodePanel from '../../components/algorithm/CodePanel';
 
 interface CodeViewerProps {
   codeLine: number;
@@ -67,103 +63,17 @@ function isHighlightedBottomUp(lineNum: number, codeLine: number): boolean {
 }
 
 export default function CodeViewer({ codeLine, solverType }: CodeViewerProps) {
-  const [copied, setCopied] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-
   const codeStr = solverType === 'topDown' ? TSP_CODE_TOP_DOWN : TSP_CODE_BOTTOM_UP;
-  const title = solverType === 'topDown' ? 'Source Code (Top-down DP)' : 'Source Code (Bottom-up DP)';
   const isHighlighted = (lineNum: number) =>
     solverType === 'topDown'
       ? isHighlightedTopDown(lineNum, codeLine)
       : isHighlightedBottomUp(lineNum, codeLine);
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(codeStr);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      const ta = document.createElement('textarea');
-      ta.value = codeStr;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
-
   return (
-    <>
-      <div className="flex flex-col flex-shrink-0 max-h-[540px] overflow-hidden">
-      {/* Header */}
-      <div className="p-3 bg-muted/40 flex items-center justify-between gap-2">
-        <h2 className="font-semibold tracking-tight text-sm truncate">{title}</h2>
-        <div className="flex items-center gap-1.5 shrink-0">
-        <button
-          onClick={() => setIsExpanded(true)}
-          className="flex items-center justify-center w-7 h-7 rounded-md border bg-card hover:bg-muted/60 text-muted-foreground hover:text-foreground border-border transition-all shrink-0"
-          title="코드 확대"
-          aria-label="코드 확대"
-        >
-          <Maximize2 className="w-3 h-3" />
-        </button>
-        </div>
-                <button
-          onClick={handleCopy}
-          className={`flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-md border transition-all shrink-0 ${
-            copied
-              ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700'
-              : 'bg-card hover:bg-muted/60 text-muted-foreground hover:text-foreground border-border'
-          }`}
-          title="코드 복사"
-        >
-          {copied ? (
-            <><Check className="w-3 h-3" /> 복사됨!</>
-          ) : (
-            <><Copy className="w-3 h-3" /> 복사</>
-          )}
-        </button>
-      </div>
-
-      {/* Code */}
-      <div className="dark flex-1 overflow-auto text-[11px] sm:text-[13px] bg-[var(--code-bg)]" style={{ overflowX: 'auto' }}>
-        <SyntaxHighlighter
-          language="python"
-          style={vscDarkPlus}
-          showLineNumbers
-          wrapLines={true}
-          lineProps={(lineNumber) => ({
-            style: {
-              display: 'block',
-              backgroundColor: isHighlighted(lineNumber) ? 'var(--code-highlight)' : 'transparent',
-              borderLeft: isHighlighted(lineNumber)
-                ? '3px solid #3b82f6'
-                : '3px solid transparent',
-              paddingLeft: '10px',
-              whiteSpace: 'pre',
-            }
-          })}
-          customStyle={{
-            margin: 0,
-            padding: '16px 0',
-            background: 'transparent',
-            minWidth: 'max-content',
-          }}
-        >
-          {codeStr}
-        </SyntaxHighlighter>
-      </div>
-    </div>
-      <CodeModal
-        isOpen={isExpanded}
-        onClose={() => setIsExpanded(false)}
-        code={codeStr}
-        title="Source Code"
-        isLineHighlighted={(line) => isHighlighted(line)}
-        highlightColor="#6366f1"
-      />
-    </>
+    <CodePanel
+      title={solverType === 'topDown' ? 'tsp_top_down.py' : 'tsp_bottom_up.py'}
+      code={codeStr}
+      isLineHighlighted={(line) => isHighlighted(line)}
+    />
   );
 }
