@@ -1,19 +1,12 @@
 import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { ALGORITHMS } from '../algorithms/registry';
 import { useTr } from '../i18n';
 
-// Each algorithm page is its own chunk, loaded on first visit
-const PAGES: Record<string, LazyExoticComponent<ComponentType>> = {
-  'tsp':            lazy(() => import('./algorithms/TSPPage')),
-  'dijkstra':       lazy(() => import('./algorithms/DijkstraPage')),
-  'astar':          lazy(() => import('./algorithms/AStarPage')),
-  'bfsdfs':         lazy(() => import('./algorithms/BFSDFSPage')),
-  'bellmanford':    lazy(() => import('./algorithms/BellmanFordPage')),
-  'floyd-warshall': lazy(() => import('./algorithms/FloydWarshallPage')),
-  'topological':    lazy(() => import('./algorithms/TopologicalPage')),
-  'kruskal':        lazy(() => import('./algorithms/KruskalPage')),
-  'sorting':        lazy(() => import('./algorithms/SortingPage')),
-};
+// One lazy component per registered algorithm — each page is its own chunk, loaded on first visit
+const PAGES: Record<string, LazyExoticComponent<ComponentType>> = Object.fromEntries(
+  ALGORITHMS.map(a => [a.slug, lazy(a.load)]),
+);
 
 function PageLoading() {
   return (
