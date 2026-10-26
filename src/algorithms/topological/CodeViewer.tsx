@@ -83,7 +83,7 @@ const KAHN_JAVA_LINES: LineMap = {
   4: [[5, 8]], 11: [[10, 13]], 16: [[16, 18]], 19: [[20, 21]], 21: [[20, 23]], 24: [[27, 28]], 25: [[29, 29]],
 };
 
-const DFS_PY_LINES: LineMap = { 7: [[7, 8]], 11: [[10, 12]], 13: [[13, 14]], 16: [[16, 17]], 22: [[22, 22]] };
+const DFS_PY_LINES: LineMap = { 7: [[7, 8]], 11: [[10, 12]], 13: [[13, 14]], 16: [[16, 17]], 22: [[23, 23]] };
 
 const DFS_CPP = `#include <bits/stdc++.h>
 using namespace std;
