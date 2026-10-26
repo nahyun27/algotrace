@@ -18,6 +18,8 @@ import BFSDFSInfoModal from '../../algorithms/bfsdfs/InfoModal';
 import { generateBFSSteps } from '../../algorithms/bfsdfs/solverBFS';
 import { generateDFSSteps } from '../../algorithms/bfsdfs/solverDFS';
 import { BFS_DFS_DEFAULT_GRAPH } from '../../algorithms/bfsdfs/types';
+import type { BFSStep, DFSStep } from '../../algorithms/bfsdfs/types';
+import { buildBFSQuiz, buildDFSQuiz } from '../../algorithms/bfsdfs/quiz';
 import type { BaseStep } from '../../algorithms/bfsdfs/types';
 import { graphDataToBFSDFS } from './graphConvert';
 import { useLang, useTr } from '../../i18n';
@@ -54,7 +56,11 @@ export default function BFSDFSPage() {
     return customGraph ? gen(customGraph.edges, customGraph.N, lang) : gen(undefined, undefined, lang);
   }, [algoMode, customGraph, lang]);
 
-  const pb = usePlayback(steps.length);
+  const quiz = useMemo(
+    () => (algoMode === 'BFS' ? buildBFSQuiz(steps as BFSStep[], lang) : buildDFSQuiz(steps as DFSStep[], lang)),
+    [algoMode, steps, lang],
+  );
+  const pb = usePlayback(steps.length, { quiz });
   const step = steps[pb.index];
   const { reset } = pb;
   const numNodes = customGraph?.N ?? BFS_DFS_DEFAULT_GRAPH.nodes.length;

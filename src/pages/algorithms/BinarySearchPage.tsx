@@ -11,6 +11,7 @@ import BinarySearchCodeViewer from '../../algorithms/binary-search/CodeViewer';
 import BinarySearchProblemList from '../../algorithms/binary-search/ProblemList';
 import BinarySearchInfoModal from '../../algorithms/binary-search/InfoModal';
 import { generateFindSteps, generateLowerBoundSteps, generateParametricSteps } from '../../algorithms/binary-search/solver';
+import { buildFindQuiz } from '../../algorithms/binary-search/quiz';
 import { DEFAULT_FIND, DEFAULT_LOWER, DEFAULT_PARAM, type BSStepType, type BSVariant } from '../../algorithms/binary-search/types';
 import { useLang, useTr } from '../../i18n';
 
@@ -151,7 +152,11 @@ export default function BinarySearchPage() {
     if (variant === 'lower') return generateLowerBoundSteps(lowerInput.arr, lowerInput.target, lang);
     return generateParametricSteps(paramInput.trees, paramInput.m, lang);
   }, [variant, findInput, lowerInput, paramInput, lang]);
-  const pb = usePlayback(steps.length);
+  const quiz = useMemo(
+    () => (variant === 'find' ? buildFindQuiz(steps, findInput.arr, findInput.target, lang) : undefined),
+    [variant, steps, findInput, lang],
+  );
+  const pb = usePlayback(steps.length, { quiz });
   const step = steps[pb.index] ?? steps[0];
 
   const probes = useMemo(

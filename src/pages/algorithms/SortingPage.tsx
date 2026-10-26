@@ -17,6 +17,7 @@ import SortingDistributionView from '../../algorithms/sorting/DistributionView';
 import { COUNTING_MAX, DEFAULT_ARRAY, DISTRIBUTION_SORTS, SORT_LABELS, sanitizeInput } from '../../algorithms/sorting/types';
 import type { SortStep, SortAlgorithm, SortStepType } from '../../algorithms/sorting/types';
 import { generateBubbleSortSteps } from '../../algorithms/sorting/bubbleSort';
+import { buildBubbleQuiz } from '../../algorithms/sorting/quiz';
 import { generateSelectionSortSteps } from '../../algorithms/sorting/selectionSort';
 import { generateInsertionSortSteps } from '../../algorithms/sorting/insertionSort';
 import { generateMergeSortSteps } from '../../algorithms/sorting/mergeSort';
@@ -78,7 +79,8 @@ export default function SortingPage() {
     () => SORT_GENERATORS[algorithm](sanitized.array, lang),
     [algorithm, sanitized, lang],
   );
-  const pb = usePlayback(steps.length);
+  const quiz = useMemo(() => (algorithm === 'bubble' ? buildBubbleQuiz(steps, lang) : undefined), [algorithm, steps, lang]);
+  const pb = usePlayback(steps.length, { quiz });
   const step = steps[pb.index] ?? steps[0];
 
   const markers = useMemo(
