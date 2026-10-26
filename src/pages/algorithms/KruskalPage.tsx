@@ -5,6 +5,7 @@ import AlgorithmLayout from '../../components/algorithm/AlgorithmLayout';
 import AlgorithmHeader from '../../components/algorithm/AlgorithmHeader';
 import StepBanner from '../../components/algorithm/StepBanner';
 import { usePlayback } from '../../components/algorithm/usePlayback';
+import { useUrlState } from '../../components/algorithm/useUrlState';
 import { Badge, SegmentedControl, type Tone } from '../../components/ui';
 import KruskalGraphCanvas from '../../algorithms/kruskal/GraphCanvas';
 import KruskalCodeViewer from '../../algorithms/kruskal/CodeViewer';
@@ -49,7 +50,7 @@ const PRIM_TONE: Record<PrimStepType, Tone> = {
 export default function KruskalPage() {
   const { lang } = useLang();
   const tr = useTr();
-  const [tab, setTab] = useState<KruskalPrimTab>('kruskal');
+  const [tab, setTab] = useUrlState<KruskalPrimTab>('tab', ['kruskal', 'prim'], 'kruskal');
   const [isKruskalModalOpen, setKruskalModal] = useState(false);
   const [isPrimModalOpen, setPrimModal] = useState(false);
 
@@ -57,8 +58,8 @@ export default function KruskalPage() {
   const primSteps = useMemo(() => generatePrimSteps(KRUSKAL_NODES, KRUSKAL_EDGES, KRUSKAL_N, lang), [lang]);
 
   // Separate playback (and step index) per tab
-  const kPb = usePlayback(kruskalSteps.length);
-  const pPb = usePlayback(primSteps.length);
+  const kPb = usePlayback(kruskalSteps.length, { syncUrl: tab === 'kruskal' });
+  const pPb = usePlayback(primSteps.length, { syncUrl: tab === 'prim' });
   const kStep = kruskalSteps[kPb.index];
   const pStep = primSteps[pPb.index];
 

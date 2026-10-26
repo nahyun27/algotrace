@@ -5,6 +5,7 @@ import AlgorithmLayout from '../../components/algorithm/AlgorithmLayout';
 import AlgorithmHeader, { BackToVisualizationButton, EditGraphButton } from '../../components/algorithm/AlgorithmHeader';
 import StepBanner from '../../components/algorithm/StepBanner';
 import { usePlayback } from '../../components/algorithm/usePlayback';
+import { useUrlState } from '../../components/algorithm/useUrlState';
 import { Badge, SegmentedControl, type Tone } from '../../components/ui';
 import GraphEditor from '../../components/GraphEditor';
 import type { GraphData } from '../../types/graph';
@@ -49,7 +50,7 @@ export default function TSPPage() {
   const { lang } = useLang();
   const tr = useTr();
   const [mode, setMode]               = useState<PageMode>('example');
-  const [solverType, setSolverType]   = useState<SolverType>('topDown');
+  const [solverType, setSolverType]   = useUrlState<SolverType>('solver', ['topDown', 'bottomUp'], 'topDown');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customGraph, setCustomGraph] = useState<ReturnType<typeof graphDataToTSP> | null>(null);
 

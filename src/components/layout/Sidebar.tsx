@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ChevronDown, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { Home, Check, ChevronDown, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ALGORITHMS, ACTIVE_CATEGORIES as CATEGORIES } from '../../algorithms/registry';
 import { useLang, useTr } from '../../i18n';
 import { cn, IconButton } from '../ui';
+import { toneSolid } from '../ui/tone';
+import { useProgress } from '../../progress/useProgress';
 import Logo from './Logo';
 
 interface Props {
@@ -19,6 +21,7 @@ export default function Sidebar({ onClose, collapsed = false, onToggleCollapsed 
   const { lang } = useLang();
   const tr = useTr();
   const [closedCats, setClosedCats] = useState<Record<string, boolean>>({});
+  const { isCompleted } = useProgress();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -92,6 +95,8 @@ export default function Sidebar({ onClose, collapsed = false, onToggleCollapsed 
                           onClick={onClose}
                           icon={<Icon className="w-[18px] h-[18px]" />}
                           label={algo.name[lang]}
+                          completed={isCompleted(algo.slug)}
+                          completedLabel={tr('학습 완료', 'Completed')}
                         />
                       );
                     })}
@@ -125,14 +130,17 @@ interface NavItemProps {
   label: string;
   onClick?: () => void;
   strong?: boolean;
+  /** Learning progress: show a check badge */
+  completed?: boolean;
+  completedLabel?: string;
 }
 
-function NavItem({ to, active, collapsed, icon, label, onClick, strong }: NavItemProps) {
+function NavItem({ to, active, collapsed, icon, label, onClick, strong, completed, completedLabel }: NavItemProps) {
   return (
     <Link
       to={to}
       onClick={onClick}
-      title={collapsed ? label : undefined}
+      title={collapsed ? (completed ? `${label} · ${completedLabel}` : label) : undefined}
       aria-current={active ? 'page' : undefined}
       className={cn(
         'relative flex items-center gap-3 rounded-xl text-sm transition-colors',
@@ -146,6 +154,19 @@ function NavItem({ to, active, collapsed, icon, label, onClick, strong }: NavIte
       )}
       <span className="shrink-0">{icon}</span>
       {!collapsed && <span className="truncate">{label}</span>}
+      {completed && (
+        <span
+          aria-label={completedLabel}
+          title={completedLabel}
+          className={cn(
+            'shrink-0 rounded-full flex items-center justify-center',
+            toneSolid.visited,
+            collapsed ? 'absolute top-1 right-1 w-3.5 h-3.5 ring-2 ring-card' : 'ml-auto w-4 h-4',
+          )}
+        >
+          <Check className={collapsed ? 'w-2.5 h-2.5' : 'w-3 h-3'} strokeWidth={3.5} />
+        </span>
+      )}
     </Link>
   );
 }
