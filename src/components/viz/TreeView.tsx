@@ -27,6 +27,8 @@ interface TreeViewProps {
   badgeOf?: (id: TreeNode['id']) => string | undefined;
   /** Node radius in SVG units (default 20) */
   radius?: number;
+  /** Vertical space between levels in SVG units, on top of the node diameter (default 40) */
+  levelGap?: number;
   legend?: LegendItem[];
   className?: string;
   /** Text shown when the tree is empty */
@@ -78,6 +80,7 @@ export default function TreeView({
   edgeLabelOf,
   badgeOf,
   radius = 20,
+  levelGap = 40,
   legend,
   className,
   emptyText,
@@ -86,7 +89,7 @@ export default function TreeView({
   const { placed, columns, depth } = layout(roots);
 
   const colW = radius * 2 + 18;
-  const rowH = radius * 2 + 40;
+  const rowH = radius * 2 + levelGap;
   const pad = radius + 14;
   const width = (columns - 1) * colW + pad * 2;
   const height = depth * rowH + pad * 2 + 16;
