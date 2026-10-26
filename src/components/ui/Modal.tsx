@@ -10,6 +10,7 @@ const sizeClass = {
   lg: 'max-w-2xl',
   xl: 'max-w-4xl',
   full: 'max-w-6xl h-[90vh]',
+  wide: 'max-w-5xl h-[92vh]',
 };
 
 interface ModalProps {
