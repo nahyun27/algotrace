@@ -66,6 +66,8 @@ export interface GridViewProps {
    */
   markerStyle?: 'fill' | 'badge';
   cellSize?: keyof typeof SIZE;
+  /** Extra classes per cell, appended last (e.g. thicker box borders for a sudoku) */
+  cellClassName?: (r: number, c: number) => string | undefined;
   editable?: boolean;
   onCellMouseDown?: (r: number, c: number, e: MouseEvent) => void;
   onCellMouseEnter?: (r: number, c: number, e: MouseEvent) => void;
@@ -86,6 +88,7 @@ export default function GridView({
   goal,
   markerStyle = 'fill',
   cellSize = 'md',
+  cellClassName,
   editable,
   onCellMouseDown,
   onCellMouseEnter,
@@ -136,6 +139,7 @@ export default function GridView({
           (hatched || (marker && markerStyle === 'badge')) && 'relative',
           editable && 'cursor-pointer',
           cls,
+          cellClassName?.(r, c),
         )}
         style={hatched ? HATCH_STYLE : undefined}
       >
