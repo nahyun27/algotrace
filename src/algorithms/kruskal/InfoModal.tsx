@@ -19,7 +19,7 @@ export default function KruskalInfoModal({ isOpen, onClose, onStartVisualization
       onClose={onClose}
       onStartVisualization={onStartVisualization}
       icon={Network}
-      title={tr('크루스칼 알고리즘', "Kruskal's Algorithm")}
+      title={tr('크루스칼 알고리즘', "Kruskal's algorithm")}
       subtitle={tr('간선 정렬 + Union-Find로 MST(최소 신장 트리) 구축', 'Build a minimum spanning tree with sorted edges + Union-Find')}
     >
       <InfoSection n={1} title={tr('MST(최소 신장 트리)란?', 'What is an MST?')}>

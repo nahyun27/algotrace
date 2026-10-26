@@ -35,6 +35,6 @@ export function generateInsertionSortSteps(input: number[], lang: Lang = 'ko'): 
     for (let k = 0; k <= i; k++) if (!sorted.includes(k)) sorted.push(k);
     snap('SORTED', tr(`인덱스 0~${i} 정렬 완료`, `Indices 0–${i} are sorted`), 2);
   }
-  snap('DONE', tr(`삽입 정렬 완료! 비교 ${compares}회, 이동 ${swaps}회`, `Insertion sort done! ${compares} comparisons, ${swaps} shifts`), 8);
+  snap('DONE', tr(`삽입 정렬 완료! 비교 ${compares}회, 이동 ${swaps}회`, `Insertion sort done! ${compares} comparison${compares === 1 ? '' : 's'}, ${swaps} shift${swaps === 1 ? '' : 's'}`), 8);
   return steps;
 }

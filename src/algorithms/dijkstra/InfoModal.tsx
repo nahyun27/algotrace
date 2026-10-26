@@ -17,7 +17,7 @@ export default function DijkstraInfoModal({ isOpen, onClose, onStartVisualizatio
       onClose={onClose}
       onStartVisualization={onStartVisualization}
       icon={Waypoints}
-      title={tr('다익스트라 알고리즘', "Dijkstra's Algorithm")}
+      title={tr('다익스트라 알고리즘', "Dijkstra's algorithm")}
       subtitle={tr('단일 출발점 최단 경로 (SSSP)', 'Single-source shortest paths (SSSP)')}
     >
       <InfoSection n={1} title={tr('문제 정의', 'The problem')}>
@@ -37,7 +37,7 @@ export default function DijkstraInfoModal({ isOpen, onClose, onStartVisualizatio
           <InfoCard tone="visited" title={tr('🟢 탐욕 선택 (Greedy)', '🟢 Greedy choice')}>
             {tr(
               '매 단계에서 현재 dist가 가장 작은 미방문 노드를 고릅니다. 음수 간선이 없으면 이 선택이 항상 최적이에요.',
-              'At every step pick the unvisited node with the smallest dist. Without negative edges this choice is always optimal.',
+              'At every step, pick the unsettled node with the smallest dist. Without negative edges this choice is always optimal.',
             )}
           </InfoCard>
           <InfoCard tone="current" title={tr('⚡ 우선순위 큐', '⚡ Priority queue')}>

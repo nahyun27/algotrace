@@ -56,7 +56,7 @@ export default function KruskalEdgeList({ step }: Props) {
       actions={
         <Badge>
           <span className="font-mono">{step.mstEdges.length} / {step.sortedEdges.length}</span>
-          {tr('MST 채택', 'in MST')}
+          {tr('MST 채택', 'in the MST')}
         </Badge>
       }
       className="h-full flex flex-col"

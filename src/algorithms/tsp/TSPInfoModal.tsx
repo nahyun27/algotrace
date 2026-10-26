@@ -17,7 +17,7 @@ export default function TSPInfoModal({ isOpen, onClose, onStartVisualization }: 
   const growth = [
     { n: 4,  count: '6',                                  note: tr('✅ 즉시 계산', '✅ Instant') },
     { n: 10, count: '362,880',                            note: tr('✅ 빠름', '✅ Fast') },
-    { n: 15, count: tr('약 1.3조', '≈ 1.3 × 10¹²'),       note: tr('⚠️ 수십 분', '⚠️ Tens of minutes') },
+    { n: 15, count: tr('약 872억', '≈ 8.7 × 10¹⁰'),       note: tr('⚠️ 수십 분', '⚠️ Tens of minutes') },
     { n: 20, count: tr('약 1.2 × 10¹⁷', '≈ 1.2 × 10¹⁷'), note: tr('❌ 수백 년', '❌ Centuries') },
   ];
 
@@ -55,7 +55,7 @@ export default function TSPInfoModal({ isOpen, onClose, onStartVisualization }: 
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-muted/60 text-muted-foreground text-xs">
-                <th className="px-4 py-2 text-left font-semibold">{tr('도시 수 N', 'Cities N')}</th>
+                <th className="px-4 py-2 text-left font-semibold">{tr('도시 수 N', 'Cities (N)')}</th>
                 <th className="px-4 py-2 text-left font-semibold">{tr('경우의 수 (N-1)!', 'Routes (N-1)!')}</th>
                 <th className="px-4 py-2 text-left font-semibold">{tr('비고', 'Notes')}</th>
               </tr>
@@ -84,7 +84,7 @@ export default function TSPInfoModal({ isOpen, onClose, onStartVisualization }: 
           </InfoCard>
           <InfoCard tone="visited" title={tr('♻️ 동적 프로그래밍', '♻️ Dynamic programming')}>
             {lang === 'ko' ? (
-              <>부분 문제 <code className="font-mono">dp[mask][i]</code>의 결과를 저장해 중복 계산을 제거하고 지수 시간을 다항 수준으로 줄입니다.</>
+              <>부분 문제 <code className="font-mono">dp[mask][i]</code>의 결과를 저장해 중복 계산을 제거하고, (N-1)! 완전 탐색을 N²·2ᴺ 수준으로 줄입니다.</>
             ) : (
               <>Save the answer of each subproblem <code className="font-mono">dp[mask][i]</code> so it's never recomputed, cutting the factorial search down to N² × 2ᴺ.</>
             )}

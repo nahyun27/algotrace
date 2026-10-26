@@ -38,7 +38,7 @@ export function generateDijkstraSteps(
     currentNode: 0, neighborNode: null, activeEdge: null,
     dist: cloneDist(), pq: clonePQ(), visited: cloneVisited(),
     updatedCell: 0, isImprovement: true,
-    description: tr('초기화: dist[0] = 0, 나머지 = ∞. 시작 노드 0을 큐에 넣어요.', 'Init: dist[0] = 0, others = ∞. Push start node 0 into the queue.'),
+    description: tr('초기화: dist[0] = 0, 나머지 = ∞. 시작 노드 0을 큐에 넣어요.', 'Init: dist[0] = 0, all others = ∞. Push source node 0 into the priority queue.'),
     codeLine: 1,
   });
 
@@ -53,8 +53,8 @@ export function generateDijkstraSteps(
       dist: cloneDist(), pq: clonePQ(), visited: cloneVisited(),
       updatedCell: null, isImprovement: false,
       description: visited[u]
-        ? tr(`큐에서 (dist=${cost}, 노드=${u})를 꺼냈지만 이미 확정된 노드라 건너뛰어요.`, `Popped (dist=${cost}, node=${u}) — already settled, skip.`)
-        : tr(`큐에서 가장 가까운 (dist=${cost}, 노드=${u})를 꺼내요.`, `Pop the closest entry (dist=${cost}, node=${u}).`),
+        ? tr(`큐에서 (dist=${cost}, 노드=${u})를 꺼냈지만 이미 확정된 노드라 건너뛰어요.`, `Pop (dist=${cost}, node=${u}) — node ${u} is already settled, so skip it.`)
+        : tr(`큐에서 가장 가까운 (dist=${cost}, 노드=${u})를 꺼내요.`, `Pop the closest entry (dist=${cost}, node=${u}) from the priority queue.`),
       codeLine: 4,
     });
 
@@ -85,7 +85,7 @@ export function generateDijkstraSteps(
         isImprovement: improved,
         description: improved
           ? tr(`완화 성공: dist[${v}] ${fmt(dist[v])} → ${newDist} (노드 ${u} 경유, 가중치 ${w})`, `Relaxed: dist[${v}] ${fmt(dist[v])} → ${newDist} (via node ${u}, weight ${w})`)
-          : tr(`완화 실패: dist[${v}]=${fmt(dist[v])} ≤ ${newDist} — 갱신하지 않아요`, `No improvement: dist[${v}]=${fmt(dist[v])} ≤ ${newDist} — keep it`),
+          : tr(`완화 실패: dist[${v}]=${fmt(dist[v])} ≤ ${newDist} — 갱신하지 않아요`, `No improvement: dist[${v}]=${fmt(dist[v])} ≤ ${newDist} — no change`),
         codeLine: improved ? 10 : 9,
       });
 

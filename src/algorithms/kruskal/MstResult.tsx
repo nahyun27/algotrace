@@ -18,7 +18,7 @@ export default function MstResult({ edges, totalCost, isDone, doneLabel, classNa
   return (
     <Panel
       title={tr('MST 결과', 'MST result')}
-      actions={<Badge tone="path">{edges.length} {tr('간선', 'edges')}</Badge>}
+      actions={<Badge tone="path">{edges.length} {tr('간선', edges.length === 1 ? 'edge' : 'edges')}</Badge>}
       className={cn('h-full flex flex-col', className)}
       bodyClassName="p-3 flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto"
     >

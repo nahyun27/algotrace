@@ -46,7 +46,7 @@ export default function FWDistMatrix({ step }: Props) {
         <div className={cn('text-xs font-semibold px-4 py-2 rounded-xl border text-center', toneSoft.current, toneBorder.current)}>
           {tr(
             `경유 노드 k = ${currentK} 라운드 시작 — 파란색 행/열이 경유 노드에 해당합니다`,
-            `Round for intermediate node k = ${currentK} — the blue row/column belongs to k`,
+            `Round k = ${currentK} begins — the blue row and column belong to intermediate node k`,
           )}
         </div>
       )}
@@ -164,7 +164,7 @@ export default function FWDistMatrix({ step }: Props) {
         <div className={cn('rounded-2xl border p-3 text-[13px] font-medium text-center', toneSoft.visited, toneBorder.visited)}>
           {tr(
             '모든 쌍 최단거리 계산 완료 — 위의 경로 탐색에서 출발·도착 노드를 골라 최단 경로를 확인하세요',
-            'All-pairs shortest distances are ready — pick a start and end node in the path finder above to see the route',
+            'All-pairs shortest distances are ready — choose From and To in the path finder above to see the route',
           )}
         </div>
       )}

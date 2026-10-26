@@ -25,7 +25,7 @@ export default function BFInfoModal({ isOpen, onClose, onStartVisualization }: P
       onClose={onClose}
       onStartVisualization={onStartVisualization}
       icon={TrendingDown}
-      title={tr('벨만-포드 알고리즘', 'Bellman-Ford Algorithm')}
+      title={tr('벨만-포드 알고리즘', 'Bellman-Ford algorithm')}
       subtitle={tr('음수 간선이 있는 그래프의 단일 출발점 최단경로', 'Single-source shortest paths with negative edges')}
     >
       <InfoSection n={1} title={tr('왜 다익스트라가 음수 간선에서 실패할까?', 'Why does Dijkstra fail with negative edges?')}>

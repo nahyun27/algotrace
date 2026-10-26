@@ -20,7 +20,7 @@ export default function GridAStarInfoModal({ isOpen, onClose, onStartVisualizati
       title={tr('A* (격자 기반)', 'A* on a grid')}
       subtitle={tr('맨해튼 휴리스틱으로 격자에서 최단 경로 탐색', 'Shortest paths on a grid with the Manhattan heuristic')}
     >
-      <InfoSection n={1} title={tr('A* 핵심 공식', 'The core formula')}>
+      <InfoSection n={1} title={tr('A* 핵심 공식', 'The A* formula')}>
         <InfoCode>{'f(n) = g(n) + h(n)'}</InfoCode>
         {lang === 'ko' ? (
           <ul className="space-y-1 text-[13px]">
@@ -59,13 +59,13 @@ export default function GridAStarInfoModal({ isOpen, onClose, onStartVisualizati
 
       <InfoSection n={4} title={tr('Admissible 조건', 'Admissibility')}>
         {lang === 'ko' ? (
-          <p>h(n) ≤ 실제 남은 거리 — 즉 휴리스틱이 <strong>실제 비용을 과대평가하지 않아야</strong> 최적해 보장. 맨해튼 거리는 항상 이를 만족합니다 (대각선 없으므로 실제 최단).</p>
+          <p>h(n) ≤ 실제 남은 거리 — 즉 휴리스틱이 <strong>실제 비용을 과대평가하지 않아야</strong> 최적해 보장. 상하좌우로만 움직이는 격자에서 맨해튼 거리는 항상 이를 만족합니다 (벽이 없을 때의 최단 거리이므로).</p>
         ) : (
           <p>h(n) ≤ true remaining distance — the heuristic must <strong>never overestimate the real cost</strong> for the answer to be optimal. Manhattan distance always satisfies this (without diagonals it is the true shortest distance on an empty grid).</p>
         )}
       </InfoSection>
 
-      <InfoSection n={5} title={tr('시간 복잡도', 'Complexity')}>
+      <InfoSection n={5} title={tr('복잡도', 'Complexity')}>
         <ComplexityChips
           time="O(b^d)"
           space="O(b^d)"

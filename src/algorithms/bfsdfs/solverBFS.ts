@@ -76,24 +76,24 @@ export function generateBFSSteps(
   queue.push({ id: `e-${entryId++}`, value: start });
   visitedSet.add(start);
   
-  addStep('INIT', tr(`초기화: 시작 노드 ${start}을(를) 큐에 삽입하고 방문 처리.`, `Init: push start node ${start} into the queue and mark it as seen.`), null, null, null);
+  addStep('INIT', tr(`초기화: 시작 노드 ${start}을(를) 큐에 삽입하고 방문 처리.`, `Init: push start node ${start} into the queue and mark it discovered.`), null, null, null);
 
   while (queue.length > 0) {
     const { value: u } = queue.shift()!;
     visitedNodes.push(u);
     
-    addStep('DEQUEUE', tr(`큐에서 노드 ${u}을(를) 꺼냄. 방문 순서 최종 확정.`, `Dequeue node ${u} — its place in the visit order is now fixed.`), u, null, null);
+    addStep('DEQUEUE', tr(`큐에서 노드 ${u}을(를) 꺼냄. 방문 순서 최종 확정.`, `Dequeue node ${u} — its place in the visit order is now final.`), u, null, null);
 
     for (const v of adj[u]) {
-      addStep('DISCOVER', tr(`노드 ${u}의 인접 노드 ${v} 탐색.`, `Look at neighbor ${v} of node ${u}.`), u, v, [u, v]);
+      addStep('DISCOVER', tr(`노드 ${u}의 인접 노드 ${v} 탐색.`, `Check neighbor ${v} of node ${u}.`), u, v, [u, v]);
       
       if (!visitedSet.has(v)) {
         visitedSet.add(v);
         queue.push({ id: `e-${entryId++}`, value: v });
         treeEdges.push([u, v]);
-        addStep('ENQUEUE', tr(`노드 ${v} 방문 안됨 → 큐에 삽입.`, `Node ${v} hasn't been seen yet → enqueue it.`), u, v, [u, v]);
+        addStep('ENQUEUE', tr(`노드 ${v} 방문 안됨 → 큐에 삽입.`, `Node ${v} is undiscovered → mark it discovered and enqueue it.`), u, v, [u, v]);
       } else {
-        addStep('DISCOVER', tr(`노드 ${v}는 이미 방문(발견)되어 무시함.`, `Node ${v} was already seen — skip it.`), u, v, [u, v]);
+        addStep('DISCOVER', tr(`노드 ${v}는 이미 방문(발견)되어 무시함.`, `Node ${v} is already discovered — skip it.`), u, v, [u, v]);
       }
     }
   }

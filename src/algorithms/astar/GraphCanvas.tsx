@@ -181,8 +181,8 @@ export default function GraphCanvas({ step, shortestEdges, customNodes, customEd
         <Legend
           items={[
             { state: 'current',   label: tr('현재 노드', 'Current node') },
-            { state: 'candidate', label: 'Open Set' },
-            { state: 'visited',   label: 'Closed Set' },
+            { state: 'candidate', label: tr('Open Set', 'Open set') },
+            { state: 'visited',   label: tr('Closed Set', 'Closed set') },
             { state: 'path',      label: tr('최단 경로', 'Shortest path'), kind: 'edge' },
           ]}
         />

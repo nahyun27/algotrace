@@ -32,7 +32,7 @@ export function generateDFSTopoSteps(
 
     steps.push({
       type: 'VISIT',
-      description: tr(`"${nodes[u].label}" 방문 시작`, `Start visiting "${nodes[u].label}"`),
+      description: tr(`"${nodes[u].label}" 방문 시작`, `Visit "${nodes[u].label}"`),
       visited: snapV(), inStack: snapIS(), finished: snapF(), stack: snapS(),
       result: [], currentNode: u, activeEdge: null,
       hasCycle: false, codeLine: 7,
@@ -72,7 +72,7 @@ export function generateDFSTopoSteps(
         type: 'FINISH',
         description: tr(
           `"${nodes[u].label}" DFS 완료 → 스택 push. 스택: [${stack.map(n => nodes[n].label).join(', ')}]`,
-          `"${nodes[u].label}" finished → push onto stack. Stack: [${stack.map(n => nodes[n].label).join(', ')}]`,
+          `"${nodes[u].label}" finished → push it onto the stack. Stack: [${stack.map(n => nodes[n].label).join(', ')}]`,
         ),
         visited: snapV(), inStack: snapIS(), finished: snapF(), stack: snapS(),
         result: [], currentNode: u, activeEdge: null,

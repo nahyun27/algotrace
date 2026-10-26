@@ -21,7 +21,7 @@ export default function PrimInfoModal({ isOpen, onClose, onStartVisualization }:
       onClose={onClose}
       onStartVisualization={onStartVisualization}
       icon={Workflow}
-      title={tr('프림 알고리즘', "Prim's Algorithm")}
+      title={tr('프림 알고리즘', "Prim's algorithm")}
       subtitle={tr('우선순위 큐로 현재 트리에서 가장 가까운 노드를 반복 확장', 'Grow the tree by repeatedly adding the closest node from a priority queue')}
     >
       <InfoSection n={1} title={tr('MST(최소 신장 트리)란?', 'What is an MST?')}>
@@ -48,7 +48,7 @@ export default function PrimInfoModal({ isOpen, onClose, onStartVisualization }:
             <>Keep every candidate edge touching the tree in a <strong>priority queue</strong></>,
             <>Pop the node with the <strong>smallest key</strong></>,
             <>If it's already in the MST, skip it (lazy deletion)</>,
-            <>Add it to the MST, then <strong>update</strong> the keys of its unvisited neighbors</>,
+            <>Add it to the MST, then <strong>update</strong> the keys of its neighbors not yet in the MST</>,
             <>Done once N−1 edges are collected</>,
           ]}
         />

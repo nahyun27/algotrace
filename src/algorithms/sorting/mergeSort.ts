@@ -56,6 +56,6 @@ export function generateMergeSortSteps(input: number[], lang: Lang = 'ko'): Sort
 
   mergeSort(0, arr.length - 1);
   for (let i = 0; i < arr.length; i++) if (!sorted.includes(i)) sorted.push(i);
-  snap('DONE', tr(`병합 정렬 완료! 비교 ${compares}회, 대입 ${swaps}회`, `Merge sort done! ${compares} comparisons, ${swaps} writes`), 7);
+  snap('DONE', tr(`병합 정렬 완료! 비교 ${compares}회, 대입 ${swaps}회`, `Merge sort done! ${compares} comparison${compares === 1 ? '' : 's'}, ${swaps} write${swaps === 1 ? '' : 's'}`), 7);
   return steps;
 }

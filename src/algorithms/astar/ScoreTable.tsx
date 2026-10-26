@@ -26,7 +26,7 @@ export default function ScoreTable({ step }: { step: AStarStep }) {
   return (
     <div className="flex flex-col gap-4">
       <Panel
-        title={tr('비용 테이블', 'Score table')}
+        title={tr('비용 테이블', 'Cost table')}
         actions={
           <div className="flex gap-3 text-xs font-medium text-muted-foreground">
             <span className="flex items-center gap-1.5"><Eye className={cn('w-3.5 h-3.5', toneText.candidate)} /> Open Set</span>

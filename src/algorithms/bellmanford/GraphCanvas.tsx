@@ -118,7 +118,7 @@ export default function BFGraphCanvas({ step, nodes, edges }: Props) {
           { state: 'current',   label: tr('처리 중 (u)', 'Processing (u)') },
           { state: 'candidate', label: tr('완화 대상 (v)', 'Relaxing (v)') },
           { state: 'visited',   label: tr('최단 거리 확정', 'Final distance') },
-          { state: 'idle',      label: tr('미처리', 'Untouched') },
+          { state: 'idle',      label: tr('미처리', 'Unprocessed') },
           { state: 'visited',   label: tr('완화 성공', 'Improved'), kind: 'edge' },
           { state: 'danger',    label: tr('음수 간선 / 음수 사이클', 'Negative edge / cycle'), kind: 'edge' },
         ]}

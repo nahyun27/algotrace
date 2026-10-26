@@ -181,7 +181,7 @@ function AStarGraphMode({ onTabChange }: { onTabChange: (mode: ViewMode) => void
                 </div>
                 {step.type !== 'DONE' && (
                   <p className="text-xs text-muted-foreground italic">
-                    {tr('탐색이 끝나면 최종 탐색 수가 확정돼요.', 'The final count is fixed once the search finishes.')}
+                    {tr('탐색이 끝나면 최종 탐색 수가 확정돼요.', 'The count becomes final when the search finishes.')}
                   </p>
                 )}
                 {lang === 'ko' ? (
@@ -335,8 +335,8 @@ function AStarGridMode({ onTabChange }: { onTabChange: (mode: ViewMode) => void 
                   <Legend
                     items={[
                       { state: 'current',   label: tr('현재 셀', 'Current cell'), kind: 'cell' },
-                      { state: 'candidate', label: 'Open Set', kind: 'cell' },
-                      { state: 'visited',   label: 'Closed Set', kind: 'cell' },
+                      { state: 'candidate', label: tr('Open Set', 'Open set'), kind: 'cell' },
+                      { state: 'visited',   label: tr('Closed Set', 'Closed set'), kind: 'cell' },
                       { state: 'path',      label: tr('최종 경로', 'Final path'), kind: 'cell' },
                     ]}
                   />
@@ -400,7 +400,7 @@ function AStarGridMode({ onTabChange }: { onTabChange: (mode: ViewMode) => void 
                       <Badge tone="current"><span className="font-mono">f={fmtScore(curF)}</span></Badge>
                     </div>
                   ) : (
-                    <p className="text-xs text-muted-foreground italic">{tr('대기 중...', 'Waiting...')}</p>
+                    <p className="text-xs text-muted-foreground italic">{tr('대기 중...', 'Waiting…')}</p>
                   )}
                 </Panel>
 
@@ -438,7 +438,7 @@ function AStarGridMode({ onTabChange }: { onTabChange: (mode: ViewMode) => void 
                   {dijkstraStep.nodesExplored > 0 && (
                     <span className={cn('ml-2', toneText.visited)}>
                       {tr(
-                        `→ A*가 ${Math.round((1 - step.nodesExplored / dijkstraStep.nodesExplored) * 100)}% 더 효율적`,
+                        `→ A*가 ${Math.round((1 - step.nodesExplored / dijkstraStep.nodesExplored) * 100)}% 적은 셀 탐색`,
                         `→ A* explored ${Math.round((1 - step.nodesExplored / dijkstraStep.nodesExplored) * 100)}% fewer cells`,
                       )}
                     </span>

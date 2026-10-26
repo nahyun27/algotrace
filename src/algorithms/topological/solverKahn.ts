@@ -86,7 +86,7 @@ export function generateKahnSteps(
   steps.push({
     type: hasCycle ? 'CYCLE_DETECTED' : 'DONE',
     description: hasCycle
-      ? tr(`⚠️ 사이클 감지! 처리된 노드 수(${result.length}) < 전체(${N}). 위상정렬 불가.`, `⚠️ Cycle detected! Processed nodes (${result.length}) < total (${N}). No topological order exists.`)
+      ? tr(`⚠️ 사이클 감지! 처리된 노드 수(${result.length}) < 전체(${N}). 위상정렬 불가.`, `⚠️ Cycle detected! Only ${result.length} of ${N} nodes were processed, so no topological order exists.`)
       : tr(`[완료] 위상정렬: ${result.map(n => nodes[n].label).join(' → ')}`, `[Done] Topological order: ${result.map(n => nodes[n].label).join(' → ')}`),
     inDegree: snap(), queue: [...queue], result: [...result],
     currentNode: null, activeEdge: null,

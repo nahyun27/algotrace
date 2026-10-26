@@ -100,7 +100,7 @@ export function generateAStarSteps(
   f[start] = g[start] + h[start];
   openQueue.push([f[start], g[start], start]);
   
-  addStep('INIT', tr(`A* 시작: 출발점(S=${start}), 목표점(G=${goal}). 초기화 완료 f=g+h`, `A* starts: start S=${start}, goal G=${goal}. Initialized with f = g + h.`), null, null, false);
+  addStep('INIT', tr(`A* 시작: 출발점(S=${start}), 목표점(G=${goal}). 초기화 완료 f=g+h`, `A* begins: start S=${start}, goal G=${goal}. Initialize f = g + h.`), null, null, false);
 
   while (openQueue.length > 0) {
     // pop min f
@@ -147,7 +147,7 @@ export function generateAStarSteps(
     }
 
     closedSet.add(u);
-    addStep('CLOSE', tr(`노드 ${u} 처리 완료. Closed Set에 추가.`, `Node ${u} done. Added to the closed set.`), u, null, false);
+    addStep('CLOSE', tr(`노드 ${u} 처리 완료. Closed Set에 추가.`, `Node ${u} is done — add it to the closed set.`), u, null, false);
   }
 
   addStep('DONE', tr(`[종료] 목표 노드 ${goal}에 도달할 수 없습니다.`, `[Done] Goal node ${goal} cannot be reached.`), null, null, false);

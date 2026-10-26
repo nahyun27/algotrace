@@ -101,7 +101,7 @@ export default function KruskalGraphCanvas({ step, nodes, edges }: Props) {
                 {node.id}
               </text>
               <text y={R + 15} textAnchor="middle" fontSize={11} fontWeight={600}
-                style={{ fill: 'var(--muted-foreground)' }} className="font-mono">
+                style={{ fill: 'var(--muted-foreground)', stroke: 'var(--card)', strokeWidth: 4, paintOrder: 'stroke' }} className="font-mono">
                 {tr(`루트 ${root}`, `root ${root}`)}
               </text>
             </g>
@@ -111,9 +111,9 @@ export default function KruskalGraphCanvas({ step, nodes, edges }: Props) {
 
       <Legend
         items={[
-          { state: 'current',   label: tr('검토 중인 간선의 끝점', 'Endpoints of edge under review') },
+          { state: 'current',   label: tr('검토 중인 간선의 끝점', 'Endpoints of the checked edge') },
           { state: 'visited',   label: tr('연결된 집합', 'Joined set') },
-          { state: 'candidate', label: tr('검토 중인 간선', 'Edge under review'), kind: 'edge' },
+          { state: 'candidate', label: tr('검토 중인 간선', 'Edge being checked'), kind: 'edge' },
           { state: 'path',      label: tr('MST 간선', 'MST edge'), kind: 'edge' },
           { state: 'danger',    label: tr('사이클 → 제외', 'Cycle → rejected'), kind: 'edge' },
         ]}

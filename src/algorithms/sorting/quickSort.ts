@@ -19,7 +19,7 @@ export function generateQuickSortSteps(input: number[], lang: Lang = 'ko'): Sort
     if (low >= high) {
       if (low === high && !sorted.includes(low)) {
         sorted.push(low);
-        snap('SORTED', tr(`인덱스 ${low} 확정 (단일 원소)`, `Index ${low} fixed (single element)`), 4);
+        snap('SORTED', tr(`인덱스 ${low} 확정 (단일 원소)`, `Index ${low} is in its final place (single element)`), 4);
       }
       return;
     }
@@ -54,6 +54,6 @@ export function generateQuickSortSteps(input: number[], lang: Lang = 'ko'): Sort
 
   quickSort(0, n - 1);
   for (let i = 0; i < n; i++) if (!sorted.includes(i)) sorted.push(i);
-  snap('DONE', tr(`퀵 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Quick sort done! ${compares} comparisons, ${swaps} swaps`), 6);
+  snap('DONE', tr(`퀵 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Quick sort done! ${compares} comparison${compares === 1 ? '' : 's'}, ${swaps} swap${swaps === 1 ? '' : 's'}`), 6);
   return steps;
 }

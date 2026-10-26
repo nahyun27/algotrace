@@ -26,7 +26,7 @@ export function generateBellmanFordSteps(
     type: 'INIT',
     description: tr(
       `초기화: dist[0] = 0, 나머지 = ∞. 총 ${V_MINUS_1}라운드 진행 예정.`,
-      `Init: dist[0] = 0, others = ∞. Up to ${V_MINUS_1} rounds will run.`,
+      `Init: dist[0] = 0, all others = ∞. Up to ${V_MINUS_1} round${V_MINUS_1 === 1 ? '' : 's'} will run.`,
     ),
     dist: cloneDist(),
     currentNode: null, neighborNode: null, activeEdge: null,
@@ -48,7 +48,7 @@ export function generateBellmanFordSteps(
       type: 'ROUND_START',
       description: tr(
         `[ 라운드 ${round} / ${V_MINUS_1} ] 모든 간선 완화 시작.`,
-        `[ Round ${round} / ${V_MINUS_1} ] Relax every edge.`,
+        `[ Round ${round} / ${V_MINUS_1} ] Relax all edges.`,
       ),
       dist: cloneDist(),
       currentNode: null, neighborNode: null, activeEdge: null,
@@ -73,7 +73,7 @@ export function generateBellmanFordSteps(
             )
           : tr(
               `완화 실패: dist[${u}]${w >= 0 ? '+' : ''}${w} = ${newDist} ≥ dist[${v}]=${fmt(dist[v])}  변화 없음`,
-              `No improvement: dist[${u}]${w >= 0 ? '+' : ''}${w} = ${newDist} ≥ dist[${v}]=${fmt(dist[v])}`,
+              `No improvement: dist[${u}]${w >= 0 ? '+' : ''}${w} = ${newDist} ≥ dist[${v}]=${fmt(dist[v])} — no change`,
             ),
         dist: cloneDist(),
         currentNode: u, neighborNode: v, activeEdge: [u, v],
@@ -96,7 +96,7 @@ export function generateBellmanFordSteps(
       type: 'ROUND_END',
       description: tr(
         `라운드 ${round} 완료. 이번 라운드 갱신 횟수: ${updatesThisRound}회.${updatesThisRound === 0 ? ' (조기 종료 가능)' : ''}`,
-        `Round ${round} finished with ${updatesThisRound} update${updatesThisRound === 1 ? '' : 's'}.${updatesThisRound === 0 ? ' (we can stop early)' : ''}`,
+        `Round ${round} done: ${updatesThisRound} update${updatesThisRound === 1 ? '' : 's'}.${updatesThisRound === 0 ? ' (we can stop early)' : ''}`,
       ),
       dist: cloneDist(),
       currentNode: null, neighborNode: null, activeEdge: null,
