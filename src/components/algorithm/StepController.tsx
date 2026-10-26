@@ -134,7 +134,7 @@ export default function StepController({
 
         {/* Playback buttons */}
         <div className="flex-1 flex items-center justify-center gap-0.5 sm:gap-1">
-          <IconButton label={tr('처음으로 (Home)', 'First (Home)')} onClick={onFirst} disabled={currentStep === 0} className="hidden sm:inline-flex">
+          <IconButton label={tr('처음으로 (Home)', 'First (Home)')} onClick={onFirst} disabled={currentStep === 0} className="max-sm:hidden">
             <ChevronsLeft className="w-[18px] h-[18px]" />
           </IconButton>
           <IconButton label={tr('이전 (←)', 'Previous (←)')} onClick={onPrev} disabled={currentStep === 0}>
@@ -156,7 +156,7 @@ export default function StepController({
           <IconButton label={tr('다음 (→)', 'Next (→)')} onClick={onNext} disabled={atEnd}>
             <ChevronRight className="w-5 h-5" />
           </IconButton>
-          <IconButton label={tr('마지막으로 (End)', 'Last (End)')} onClick={onLast} disabled={atEnd} className="hidden sm:inline-flex">
+          <IconButton label={tr('마지막으로 (End)', 'Last (End)')} onClick={onLast} disabled={atEnd} className="max-sm:hidden">
             <ChevronsRight className="w-[18px] h-[18px]" />
           </IconButton>
         </div>
