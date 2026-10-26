@@ -17,7 +17,7 @@ interface AlgoDetail {
   stable: boolean;
 }
 
-const SORT_ORDER: SortAlgorithm[] = ['bubble', 'selection', 'insertion', 'merge', 'quick', 'heap'];
+const SORT_ORDER: SortAlgorithm[] = ['bubble', 'selection', 'insertion', 'merge', 'quick', 'heap', 'counting', 'radix'];
 
 const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
   bubble: {
@@ -217,6 +217,74 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
     complexity: ['O(n log n)', 'O(n log n)', 'O(n log n)', 'O(1)'],
     stable: false,
   },
+  counting: {
+    sections: [
+      {
+        title: { ko: '세어서 정렬하기', en: 'Sort by counting' },
+        body: {
+          ko: '값의 범위가 0~k-1로 작을 때, 각 값이 몇 번 나오는지 count 배열에 셉니다. 원소끼리 한 번도 비교하지 않아요.',
+          en: 'When values lie in a small range 0..k-1, count how often each value appears in a count array. No two elements are ever compared.',
+        },
+      },
+      {
+        title: { ko: '누적합으로 자리 정하기', en: 'Prefix sums give the positions' },
+        body: {
+          ko: 'count[v] += count[v-1]로 누적하면 count[v]는 "v 이하인 원소의 개수", 즉 값 v가 들어갈 마지막 자리 + 1이 됩니다.',
+          en: 'After count[v] += count[v-1], count[v] is "how many values are ≤ v", which is one past the last slot that value v occupies in the output.',
+        },
+      },
+      {
+        title: { ko: '오른쪽부터 놓아 안정 정렬', en: 'Placing right-to-left keeps it stable' },
+        body: {
+          ko: '배열을 오른쪽 끝부터 읽으며 count[x]를 1 줄인 자리에 x를 씁니다. 같은 값 중 뒤에 있던 원소가 뒤 칸에 놓이므로 원래 순서가 유지돼요.',
+          en: 'Scan the array from the right, decrement count[x] and write x to that slot. Among equal values the later one lands further right, so their original order is kept.',
+        },
+      },
+      {
+        title: { ko: '비교 정렬이 아니라서 O(n log n)보다 빠를 수 있어요', en: 'Not a comparison sort, so it can beat O(n log n)' },
+        body: {
+          ko: '비교 정렬은 최악에 Ω(n log n)번 비교해야 한다는 하한이 있지만, 계수 정렬은 값을 인덱스로 써서 O(n + k)에 끝납니다. 대신 k가 크면 메모리와 시간이 k에 비례해 늘어나요 (이 화면은 0~99만 받아요).',
+          en: 'Comparison sorts need Ω(n log n) comparisons in the worst case, but counting sort uses values as indices and runs in O(n + k). The catch: memory and time grow with the value range k (this page accepts 0 to 99).',
+        },
+      },
+    ],
+    complexity: ['O(n + k)', 'O(n + k)', 'O(n + k)', 'O(n + k)'],
+    stable: true,
+  },
+  radix: {
+    sections: [
+      {
+        title: { ko: '자릿수별로 나눠 담기 (LSD)', en: 'Digit by digit (LSD)' },
+        body: {
+          ko: '1의 자리부터 시작해, 그 자리 숫자(0~9)에 맞는 버킷에 원소를 차례로 넣고 버킷 0부터 순서대로 꺼냅니다. 이를 최댓값의 자릿수 d번 반복해요.',
+          en: 'Starting from the ones digit, drop each element into the bucket for that digit (0 to 9), then collect the buckets in order from 0. Repeat once per digit of the maximum (d passes).',
+        },
+      },
+      {
+        title: { ko: '왜 정렬이 되나요?', en: 'Why does it work?' },
+        body: {
+          ko: '각 패스가 안정적이라서, 높은 자리가 같은 원소들은 앞선 패스에서 정한 낮은 자리 순서를 그대로 유지합니다. 마지막 패스가 끝나면 모든 자리 기준으로 정렬돼 있어요.',
+          en: 'Every pass is stable, so elements that tie on a higher digit keep the order the earlier passes gave them by lower digits. After the last pass the array is ordered on all digits.',
+        },
+      },
+      {
+        title: { ko: '비교 정렬이 아니라서 O(n log n)보다 빠를 수 있어요', en: 'Not a comparison sort, so it can beat O(n log n)' },
+        body: {
+          ko: '원소끼리 비교하지 않고 자릿수만 보므로 비교 정렬의 Ω(n log n) 하한을 받지 않습니다. 시간은 O(d·(n + b)) (b = 기수 10)로, 자릿수가 작으면 사실상 선형이에요.',
+          en: 'It only looks at digits and never compares elements, so the Ω(n log n) bound for comparison sorts does not apply. Time is O(d·(n + b)) with base b = 10, so it is effectively linear when d is small.',
+        },
+      },
+      {
+        title: { ko: '언제 쓰는가?', en: 'When to use it' },
+        body: {
+          ko: '자릿수가 정해진 정수나 고정 길이 문자열(전화번호, 날짜 등)을 대량으로 정렬할 때 좋습니다. 음수나 실수는 따로 처리해야 해요.',
+          en: 'Great for large batches of fixed-width integers or strings (phone numbers, dates and so on). Negative numbers and floats need extra handling.',
+        },
+      },
+    ],
+    complexity: ['O(d·(n + b))', 'O(d·(n + b))', 'O(d·(n + b))', 'O(n + b)'],
+    stable: true,
+  },
 };
 
 const complexityLabels = (tr: Tr) => [tr('최선', 'Best'), tr('평균', 'Average'), tr('최악', 'Worst'), tr('공간', 'Space')];
@@ -286,6 +354,8 @@ const SUMMARY: Record<SortAlgorithm, Text> = {
   merge:     { ko: '분할 → 재귀 → 병합', en: 'Split → recurse → merge' },
   quick:     { ko: '피벗 파티션 → 재귀', en: 'Partition around a pivot → recurse' },
   heap:      { ko: '최대 힙 → 루트 추출', en: 'Build a max-heap → extract the root' },
+  counting:  { ko: '값별 개수 세기 → 누적합 → 오른쪽부터 배치', en: 'Count each value → prefix sums → place from the right' },
+  radix:     { ko: '1의 자리부터 버킷 0~9에 나눠 담고 꺼내기', en: 'Bucket by each digit (0 to 9) from the ones place, then collect' },
 };
 
 const WHEN_TO_USE: { when: Text; pick: Text; tone: Tone }[] = [
@@ -294,6 +364,7 @@ const WHEN_TO_USE: { when: Text; pick: Text; tone: Tone }[] = [
   { when: { ko: '평균 성능', en: 'Best average speed' }, pick: { ko: '퀵 정렬 (실전 최강)', en: 'Quick sort (fastest in practice)' }, tone: 'candidate' },
   { when: { ko: '최악 성능 보장', en: 'Guaranteed worst case' }, pick: { ko: '힙 / 병합 정렬', en: 'Heap / merge sort' }, tone: 'path' },
   { when: { ko: '메모리 제한', en: 'Tight memory' }, pick: { ko: '힙 정렬 (in-place)', en: 'Heap sort (in-place)' }, tone: 'neutral' },
+  { when: { ko: '값 범위가 작은 정수', en: 'Integers in a small range' }, pick: { ko: '계수 정렬 / 기수 정렬', en: 'Counting / radix sort' }, tone: 'danger' },
 ];
 
 interface CompareModalProps {
@@ -312,7 +383,7 @@ export function SortCompareModal({ isOpen, onClose }: CompareModalProps) {
       onClose={onClose}
       icon={Scale}
       title={tr('정렬 알고리즘 비교', 'Comparing sorting algorithms')}
-      subtitle={tr('6가지 정렬의 복잡도와 특성 비교', 'Complexity and traits of six sorts')}
+      subtitle={tr('8가지 정렬의 복잡도와 특성 비교', 'Complexity and traits of eight sorts')}
     >
       <InfoSection n={1} title={tr('복잡도 비교표', 'Complexity table')}>
         <div className="overflow-x-auto rounded-2xl border border-border">
@@ -340,6 +411,11 @@ export function SortCompareModal({ isOpen, onClose }: CompareModalProps) {
             </tbody>
           </table>
         </div>
+        <p className="mt-2 text-xs text-muted-foreground">
+          {lang === 'ko'
+            ? <>k = 값의 범위, d = 자릿수, b = 기수(10). 계수·기수 정렬은 <strong className="font-semibold text-foreground">비교 정렬이 아니라서</strong> 비교 정렬의 Ω(n log n) 하한을 받지 않아요.</>
+            : <>k = value range, d = number of digits, b = base (10). Counting and radix sort are <strong className="font-semibold text-foreground">not comparison sorts</strong>, so the Ω(n log n) lower bound for comparison sorts does not apply.</>}
+        </p>
       </InfoSection>
 
       <InfoSection n={2} title={tr('한 줄 요약', 'In one line')}>
