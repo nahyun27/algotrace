@@ -15,6 +15,7 @@ import DijkstraProblemList from '../../algorithms/dijkstra/ProblemList';
 import DijkstraDistTable from '../../algorithms/dijkstra/DistanceTable';
 import DijkstraInfoModal from '../../algorithms/dijkstra/InfoModal';
 import { generateDijkstraSteps } from '../../algorithms/dijkstra/solver';
+import { buildDijkstraQuiz } from '../../algorithms/dijkstra/quiz';
 import type { DijkstraStep, StepType } from '../../algorithms/dijkstra/types';
 import { graphDataToDijkstra } from './graphConvert';
 import { useLang, useTr } from '../../i18n';
@@ -53,7 +54,8 @@ export default function DijkstraPage() {
       : generateDijkstraSteps(undefined, undefined, lang),
     [customGraph, lang],
   );
-  const pb = usePlayback(steps.length);
+  const quiz = useMemo(() => buildDijkstraQuiz(steps, lang), [steps, lang]);
+  const pb = usePlayback(steps.length, { quiz });
   const step = steps[pb.index];
 
   const shortestEdges = useMemo(() => computeShortestEdges(steps, pb.index), [steps, pb.index]);

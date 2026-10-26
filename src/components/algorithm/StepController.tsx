@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { cn, IconButton, Kbd } from '../ui';
 import { toneVar, type Tone } from '../ui/tone';
 import { useTr } from '../../i18n';
+import { QuizCard, QuizToggle, type QuizState } from './QuizCard';
 
 const SPEEDS = [0.5, 1, 2, 4];
 
@@ -26,6 +27,8 @@ export interface StepControllerProps {
   onSeek?: (step: number) => void;
   /** Optional ticks on the timeline for notable steps (updates, results, …) */
   markers?: StepMarker[];
+  /** Prediction quiz (set by `usePlayback` when the page passes a quiz): toggle, score and the open question */
+  quiz?: QuizState;
 }
 
 export default function StepController({
@@ -41,12 +44,15 @@ export default function StepController({
   onSpeedChange,
   onSeek,
   markers,
+  quiz,
 }: StepControllerProps) {
   const tr = useTr();
   const [showShortcuts, setShowShortcuts] = useState(false);
   const last = Math.max(0, totalSteps - 1);
   const progress = last > 0 ? currentStep / last : 0;
   const atEnd = currentStep >= last;
+  // Side columns stay equal so the playback buttons remain centred; the quiz toggle needs a little more room
+  const sideWidth = quiz ? 'w-20 sm:w-40' : 'w-20 sm:w-28';
 
   /* ── Keyboard shortcuts ── */
   const handleKey = useCallback((e: KeyboardEvent) => {
@@ -54,6 +60,26 @@ export default function StepController({
     const tag = el?.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el?.isContentEditable) return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
+    // An open quiz question: 1-4 pick an option, Enter continues once answered, Esc closes it
+    const q = quiz?.question;
+    if (quiz && q) {
+      const n = Number(e.key);
+      if (Number.isInteger(n) && n >= 1 && n <= q.options.length) {
+        e.preventDefault();
+        if (!quiz.picked) quiz.onPick(q.options[n - 1].id);
+        return;
+      }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (quiz.picked) quiz.onContinue();
+        return;
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        quiz.onDismiss();
+        return;
+      }
+    }
     switch (e.key) {
       case 'ArrowLeft':  e.preventDefault(); onPrev(); break;
       case 'ArrowRight': e.preventDefault(); onNext(); break;
@@ -61,7 +87,7 @@ export default function StepController({
       case 'Home':       e.preventDefault(); onFirst(); break;
       case 'End':        e.preventDefault(); onLast(); break;
     }
-  }, [onPrev, onNext, onPlayPause, onFirst, onLast]);
+  }, [onPrev, onNext, onPlayPause, onFirst, onLast, quiz]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKey);
@@ -69,7 +95,8 @@ export default function StepController({
   }, [handleKey]);
 
   return (
-    <div className="w-full shrink-0 border-t border-border bg-card px-3 sm:px-5 pt-2.5 pb-2.5">
+    <div className="relative w-full shrink-0 border-t border-border bg-card px-3 sm:px-5 pt-2.5 pb-2.5">
+      {quiz?.question && <QuizCard quiz={quiz} />}
       {/* Timeline */}
       <div className="relative h-5 flex items-center">
         {markers && last > 0 && (
@@ -99,7 +126,7 @@ export default function StepController({
 
       <div className="mt-1 flex items-center gap-2">
         {/* Step count */}
-        <div className="w-20 sm:w-28 shrink-0 text-xs font-semibold text-muted-foreground tabular-nums">
+        <div className={cn(sideWidth, 'shrink-0 text-xs font-semibold text-muted-foreground tabular-nums')}>
           <span className="hidden sm:inline">{tr('단계', 'Step')} </span>
           <span className="text-foreground">{currentStep + 1}</span>
           <span className="opacity-50"> / {totalSteps}</span>
@@ -135,7 +162,7 @@ export default function StepController({
         </div>
 
         {/* Speed + shortcuts */}
-        <div className="w-20 sm:w-28 shrink-0 flex items-center justify-end gap-1">
+        <div className={cn(sideWidth, 'shrink-0 flex items-center justify-end gap-1')}>
           <div className="hidden sm:flex items-center rounded-lg bg-muted p-0.5" role="group" aria-label={tr('재생 속도', 'Playback speed')}>
             {SPEEDS.map(s => (
               <button
@@ -159,6 +186,8 @@ export default function StepController({
             {speed}×
           </button>
 
+          {quiz && <QuizToggle quiz={quiz} />}
+
           <div className="relative hidden md:block">
             <IconButton size="sm" label={tr('키보드 단축키', 'Keyboard shortcuts')} onClick={() => setShowShortcuts(p => !p)} active={showShortcuts}>
               <Keyboard className="w-4 h-4" />
@@ -177,6 +206,12 @@ export default function StepController({
                       <ShortcutRow keys={['←', '→']} label={tr('이전 / 다음', 'Prev / Next')} />
                       <ShortcutRow keys={['Space']} label={tr('재생 / 정지', 'Play / Pause')} />
                       <ShortcutRow keys={['Home', 'End']} label={tr('처음 / 끝', 'First / Last')} />
+                      {quiz?.enabled && (
+                        <>
+                          <ShortcutRow keys={['1-4']} label={tr('퀴즈 보기 고르기', 'Pick an answer')} />
+                          <ShortcutRow keys={['Enter']} label={tr('퀴즈 계속', 'Continue')} />
+                        </>
+                      )}
                     </div>
                   </motion.div>
                 </>
