@@ -34,9 +34,9 @@ export interface AlgorithmMeta {
 }
 
 export const CATEGORIES: Category[] = [
-  { id: 'shortest-path', name: { ko: '최단 경로', en: 'Shortest Path' },        gradient: 'from-sky-400 to-blue-500' },
-  { id: 'graph',         name: { ko: '그래프 & 트리', en: 'Graph & Tree' },      gradient: 'from-emerald-400 to-teal-500' },
-  { id: 'dp',            name: { ko: '동적 계획법', en: 'Dynamic Programming' }, gradient: 'from-violet-400 to-fuchsia-500' },
+  { id: 'shortest-path', name: { ko: '최단 경로', en: 'Shortest paths' },        gradient: 'from-sky-400 to-blue-500' },
+  { id: 'graph',         name: { ko: '그래프 & 트리', en: 'Graphs & trees' },      gradient: 'from-emerald-400 to-teal-500' },
+  { id: 'dp',            name: { ko: '동적 계획법', en: 'Dynamic programming' }, gradient: 'from-violet-400 to-fuchsia-500' },
   { id: 'sorting',       name: { ko: '정렬', en: 'Sorting' },                   gradient: 'from-amber-400 to-orange-500' },
 ];
 
@@ -52,12 +52,12 @@ export const ALGORITHMS: AlgorithmMeta[] = [
   },
   {
     slug: 'astar', category: 'shortest-path', icon: Navigation,
-    name: { ko: 'A* 탐색', en: 'A* Search' },
+    name: { ko: 'A* 탐색', en: 'A* search' },
     description: {
       ko: '휴리스틱으로 목적지 방향을 먼저 살펴서 더 빠르게 최단 경로를 찾아요.',
       en: 'Uses a heuristic to head toward the goal and find the shortest path faster.',
     },
-    difficulty: 'hard', time: 'O(E log V)', space: 'O(V)', keywords: ['astar', 'a*', 'heuristic', 'grid', 'maze'],
+    difficulty: 'hard', time: 'O((V+E) log V)', space: 'O(V)', keywords: ['astar', 'a*', 'heuristic', 'grid', 'maze'],
   },
   {
     slug: 'bellmanford', category: 'shortest-path', icon: TrendingDown,
@@ -88,10 +88,10 @@ export const ALGORITHMS: AlgorithmMeta[] = [
   },
   {
     slug: 'topological', category: 'graph', icon: ListOrdered,
-    name: { ko: '위상 정렬', en: 'Topological Sort' },
+    name: { ko: '위상 정렬', en: 'Topological sort' },
     description: {
       ko: '방향 비순환 그래프(DAG)에서 선후 관계를 지키는 순서를 찾아요.',
-      en: 'Orders the vertices of a DAG so every edge points forward.',
+      en: 'Orders the nodes of a DAG so every edge points forward.',
     },
     difficulty: 'medium', time: 'O(V+E)', space: 'O(V+E)', keywords: ['topological', 'kahn', 'dag', 'indegree'],
   },
@@ -106,7 +106,7 @@ export const ALGORITHMS: AlgorithmMeta[] = [
   },
   {
     slug: 'tsp', category: 'dp', icon: Route,
-    name: { ko: '외판원 순회 (TSP)', en: 'Traveling Salesperson' },
+    name: { ko: '외판원 순회 (TSP)', en: 'Traveling salesperson' },
     description: {
       ko: '모든 도시를 한 번씩 방문하고 돌아오는 가장 짧은 경로를 비트마스크 DP로 구해요.',
       en: 'Shortest tour visiting every city once, solved with bitmask DP.',
@@ -115,7 +115,7 @@ export const ALGORITHMS: AlgorithmMeta[] = [
   },
   {
     slug: 'sorting', category: 'sorting', icon: BarChart3,
-    name: { ko: '정렬 알고리즘', en: 'Sorting Suite' },
+    name: { ko: '정렬 알고리즘', en: 'Sorting algorithms' },
     description: {
       ko: '버블·선택·삽입·병합·퀵·힙 정렬이 배열을 정리하는 과정을 비교해요.',
       en: 'Compare bubble, selection, insertion, merge, quick and heap sort side by side.',

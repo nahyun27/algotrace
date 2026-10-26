@@ -204,7 +204,7 @@ export default function GraphEditor({ initialData, maxNodes, onRun, presets, alg
         )}
         <div className="ml-auto flex items-center gap-3">
           <span className="text-xs text-muted-foreground tabular-nums">
-            {tr(`노드 ${nodes.length}개 · 간선 ${edges.length}개`, `${nodes.length} nodes · ${edges.length} edges`)}
+            {tr(`노드 ${nodes.length}개 · 간선 ${edges.length}개`, `${nodes.length} node${nodes.length === 1 ? '' : 's'} · ${edges.length} edge${edges.length === 1 ? '' : 's'}`)}
           </span>
           <Button variant="primary" size="md" onClick={handleRun}>
             <Play size={15} fill="currentColor" />

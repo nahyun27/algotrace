@@ -19,8 +19,8 @@ export default function BFExtraInfo({ step }: Props) {
         title={tr('진행 요약', 'Progress')}
         bodyClassName="p-4 flex flex-wrap gap-2"
       >
-        <Badge tone="current">{tr(`완료한 라운드 ${roundUpdatesHistory.length} / ${totalRounds}`, `Rounds done ${roundUpdatesHistory.length} / ${totalRounds}`)}</Badge>
-        <Badge tone="candidate">{tr(`총 갱신 ${totalUpdates}회`, `${totalUpdates} updates total`)}</Badge>
+        <Badge tone="current">{tr(`완료한 라운드 ${roundUpdatesHistory.length} / ${totalRounds}`, `Rounds done: ${roundUpdatesHistory.length} / ${totalRounds}`)}</Badge>
+        <Badge tone="candidate">{tr(`총 갱신 ${totalUpdates}회`, `${totalUpdates} update${totalUpdates === 1 ? '' : 's'} total`)}</Badge>
         {stoppedEarly && <Badge tone="visited">{tr('조기 종료', 'Stopped early')}</Badge>}
         {type === 'NEGATIVE_CYCLE' && <Badge tone="danger">{tr('음수 사이클', 'Negative cycle')}</Badge>}
       </Panel>

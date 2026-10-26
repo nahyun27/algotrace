@@ -32,7 +32,7 @@ export function generateTSPStepsTopDown(
         activeEdge: [curr, 0],
         description: tr(
           `모든 도시 방문 완료. 시작 도시(0)로 귀환 가중치: ${w}`,
-          `All cities visited. Weight of the return to start city (0): ${w}`,
+          `All cities visited. Cost of returning to start city 0: ${w}`,
         ),
         isImprovement: returnVal !== INF, codeLine: 3
       });
@@ -57,7 +57,7 @@ export function generateTSPStepsTopDown(
       type: 'EXPLORE',
       mask, currentCity: curr, nextCity: null, edgeWeight: null, dpTable: cloneDP(),
       activeEdge: null,
-      description: tr(`방문하지 않은 도시들에 대해 재귀 탐색 시작`, `Start recursing into the unvisited cities`),
+      description: tr(`방문하지 않은 도시들에 대해 재귀 탐색 시작`, `Recurse into each unvisited city`),
       isImprovement: false, codeLine: 8
     });
 
@@ -70,7 +70,7 @@ export function generateTSPStepsTopDown(
           activeEdge: [curr, nxt],
           description: tr(
             `도시 ${nxt}(으)로 진행 확정 (가중치 ${W[curr][nxt]})`,
-            `Go to city ${nxt} (weight ${W[curr][nxt]})`,
+            `Move to city ${nxt} (weight ${W[curr][nxt]})`,
           ),
           isImprovement: false, codeLine: 11
         });

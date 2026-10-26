@@ -6,7 +6,7 @@ export default function MstComparisonTable() {
   const rows: [string, string, string][] = [
     [tr('탐색 기준', 'Works on'), tr('간선(Edge) 기준', 'Edges'), tr('노드(Vertex) 기준', 'Vertices')],
     [tr('자료구조', 'Data structure'), 'Union-Find', tr('우선순위 큐', 'Priority queue')],
-    [tr('적합한 그래프', 'Best for'), tr('희소 그래프 (E ≪ V²)', 'Sparse graphs (E ≪ V²)'), tr('밀집 그래프 (E ≈ V²)', 'Dense graphs (E ≈ V²)')],
+    [tr('적합한 그래프', 'Best for'), tr('희소 그래프 (E ≪ V²)', 'Sparse graphs (E ≪ V²)'), tr('밀집 그래프 (E ≈ V², 배열 구현 시 O(V²))', 'Dense graphs (E ≈ V², O(V²) with an array)')],
     [tr('시간복잡도', 'Time'), 'O(E log E)', 'O(E log V)'],
     [tr('MST 결과', 'Resulting MST'), tr('동일', 'Same'), tr('동일', 'Same')],
   ];

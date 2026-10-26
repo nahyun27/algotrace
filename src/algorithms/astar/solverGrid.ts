@@ -108,7 +108,7 @@ export function generateGridAStarSteps(map: GridMap, lang: Lang = 'ko'): GridSte
     }
   }
 
-  steps.push(snap('NO_PATH', tr('경로 없음! 목표에 도달할 수 없습니다.', 'No path! The goal cannot be reached.'), null, null, 32));
+  steps.push(snap('NO_PATH', tr('경로 없음! 목표에 도달할 수 없습니다.', 'No path! The goal is unreachable.'), null, null, 32));
   return steps;
 }
 

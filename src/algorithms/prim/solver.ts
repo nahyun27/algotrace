@@ -100,7 +100,7 @@ export function generatePrimSteps(
         pq.push({ node: v, key: w });
         steps.push(snap(
           'UPDATE',
-          tr(`노드 ${v}의 key 갱신: ${fmt(oldKey)} → ${w}  (간선 ${u}–${v})`, `Update key of node ${v}: ${fmt(oldKey)} → ${w}  (edge ${u}–${v})`),
+          tr(`노드 ${v}의 key 갱신: ${fmt(oldKey)} → ${w}  (간선 ${u}–${v})`, `Update node ${v}'s key: ${fmt(oldKey)} → ${w}  (edge ${u}–${v})`),
           u, v, v, 22,
         ));
       }

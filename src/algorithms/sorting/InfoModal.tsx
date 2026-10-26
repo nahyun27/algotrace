@@ -26,7 +26,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: '동작 원리', en: 'How it works' },
         body: {
           ko: '인접한 두 원소를 비교해 순서가 잘못되면 교환합니다. 한 패스가 끝나면 가장 큰 값이 배열 끝으로 "버블"처럼 떠오릅니다. 이 과정을 N-1회 반복하면 정렬이 완성됩니다.',
-          en: 'Compare each pair of neighbours and swap them if they are out of order. After one pass the largest value has "bubbled up" to the end of the array. Repeat N-1 times and the array is sorted.',
+          en: 'Compare each pair of neighbors and swap them if they are out of order. After one pass the largest value has "bubbled up" to the end of the array. Repeat N-1 times and the array is sorted.',
         },
       },
       {
@@ -37,7 +37,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         },
       },
       {
-        title: { ko: '조기 종료 최적화', en: 'Early-exit optimisation' },
+        title: { ko: '조기 종료 최적화', en: 'Early-exit optimization' },
         body: {
           ko: '한 패스에서 교환이 한 번도 일어나지 않으면 이미 정렬된 것이므로 즉시 종료합니다. 이 경우 최선 시간복잡도는 O(n)입니다.',
           en: 'If a whole pass makes no swaps, the array is already sorted and we can stop. That gives a best case of O(n).',
@@ -47,7 +47,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: '언제 쓰는가?', en: 'When to use it' },
         body: {
           ko: '교육 목적, 아주 작은 배열(N < 10), 거의 정렬된 데이터에서 간단하게 쓸 때 적합합니다.',
-          en: 'Teaching, tiny arrays (N < 10), or a quick fix for data that is almost sorted.',
+          en: 'Teaching, tiny arrays (N < 10), or simple jobs on nearly sorted data.',
         },
       },
     ],
@@ -121,7 +121,7 @@ const ALGO_DETAILS: Record<SortAlgorithm, AlgoDetail> = {
         title: { ko: '분할 정복 원리', en: 'Divide and conquer' },
         body: {
           ko: '배열을 반으로 나누고, 각각을 재귀적으로 정렬한 뒤, 두 정렬된 부분을 하나로 병합합니다. "나눠서 풀고, 합치면서 정렬"하는 전략입니다.',
-          en: 'Split the array in half, sort each half recursively, then merge the two sorted halves. "Divide, solve, and sort while merging."',
+          en: 'Split the array in half, sort each half recursively, then merge the two sorted halves: "divide and solve, then sort while merging."',
         },
       },
       {
@@ -280,7 +280,7 @@ export function SortAlgoModal({ isOpen, onClose, onStartVisualization, algorithm
 /* ─── Comparison table modal ─── */
 
 const SUMMARY: Record<SortAlgorithm, Text> = {
-  bubble:    { ko: '인접 비교·교환, 큰 값을 뒤로', en: 'Compare and swap neighbours, pushing big values back' },
+  bubble:    { ko: '인접 비교·교환, 큰 값을 뒤로', en: 'Compare and swap neighbors, pushing big values back' },
   selection: { ko: '최솟값 찾아 앞으로', en: 'Find the minimum and move it to the front' },
   insertion: { ko: '정렬 구간에 삽입', en: 'Insert into the sorted part' },
   merge:     { ko: '분할 → 재귀 → 병합', en: 'Split → recurse → merge' },

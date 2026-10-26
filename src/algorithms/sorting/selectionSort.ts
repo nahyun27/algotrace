@@ -17,7 +17,7 @@ export function generateSelectionSortSteps(input: number[], lang: Lang = 'ko'): 
 
   for (let i = 0; i < n - 1; i++) {
     let minIdx = i;
-    snap('COMPARE', tr(`i=${i}: 최솟값 탐색 시작 (현재 최소: arr[${minIdx}]=${arr[minIdx]})`, `i=${i}: searching for the minimum (current min: arr[${minIdx}]=${arr[minIdx]})`), 4, [i]);
+    snap('COMPARE', tr(`i=${i}: 최솟값 탐색 시작 (현재 최소: arr[${minIdx}]=${arr[minIdx]})`, `i=${i}: search for the minimum (current min: arr[${minIdx}]=${arr[minIdx]})`), 4, [i]);
     for (let j = i + 1; j < n; j++) {
       compares++;
       snap('COMPARE', tr(`arr[${j}]=${arr[j]}와 현재 최소 arr[${minIdx}]=${arr[minIdx]} 비교`, `Compare arr[${j}]=${arr[j]} with current min arr[${minIdx}]=${arr[minIdx]}`), 6, [minIdx, j]);
@@ -31,9 +31,9 @@ export function generateSelectionSortSteps(input: number[], lang: Lang = 'ko'): 
       snap('SWAP', tr(`arr[${i}]과 arr[${minIdx}] 교환`, `Swap arr[${i}] and arr[${minIdx}]`), 8, [], [i, minIdx]);
     }
     sorted.push(i);
-    snap('SORTED', tr(`인덱스 ${i}에 최솟값 ${arr[i]} 확정`, `Minimum ${arr[i]} fixed at index ${i}`), 8);
+    snap('SORTED', tr(`인덱스 ${i}에 최솟값 ${arr[i]} 확정`, `Index ${i} holds the minimum ${arr[i]} — now in its final place`), 8);
   }
   sorted.push(n - 1);
-  snap('DONE', tr(`선택 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Selection sort done! ${compares} comparisons, ${swaps} swaps`), 9);
+  snap('DONE', tr(`선택 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Selection sort done! ${compares} comparison${compares === 1 ? '' : 's'}, ${swaps} swap${swaps === 1 ? '' : 's'}`), 9);
   return steps;
 }

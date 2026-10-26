@@ -31,11 +31,11 @@ export function generateBubbleSortSteps(input: number[], lang: Lang = 'ko'): Sor
     snap('SORTED', tr(`인덱스 ${i} 정렬 확정`, `Index ${i} is now in its final place`), 3);
     if (!swapped) {
       for (let k = 0; k <= i - 1; k++) if (!sorted.includes(k)) sorted.push(k);
-      snap('DONE', tr(`교환 없음 → 조기 종료! 비교 ${compares}회, 교환 ${swaps}회`, `No swaps → early exit! ${compares} comparisons, ${swaps} swaps`), 10);
+      snap('DONE', tr(`교환 없음 → 조기 종료! 비교 ${compares}회, 교환 ${swaps}회`, `No swaps → early exit! ${compares} comparison${compares === 1 ? '' : 's'}, ${swaps} swap${swaps === 1 ? '' : 's'}`), 10);
       return steps;
     }
   }
   sorted.push(0);
-  snap('DONE', tr(`버블 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Bubble sort done! ${compares} comparisons, ${swaps} swaps`), 11);
+  snap('DONE', tr(`버블 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Bubble sort done! ${compares} comparison${compares === 1 ? '' : 's'}, ${swaps} swap${swaps === 1 ? '' : 's'}`), 11);
   return steps;
 }

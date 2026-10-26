@@ -21,12 +21,12 @@ export const DEFAULT_ARRAY = [38, 27, 43, 3, 9, 82, 10, 64, 15, 52, 29, 7];
 
 /** Display names — pick with `SORT_LABELS[algo][lang]` */
 export const SORT_LABELS: Record<SortAlgorithm, { ko: string; en: string }> = {
-  bubble:    { ko: '버블 정렬', en: 'Bubble Sort' },
-  selection: { ko: '선택 정렬', en: 'Selection Sort' },
-  insertion: { ko: '삽입 정렬', en: 'Insertion Sort' },
-  merge:     { ko: '병합 정렬', en: 'Merge Sort' },
-  quick:     { ko: '퀵 정렬',   en: 'Quick Sort' },
-  heap:      { ko: '힙 정렬',   en: 'Heap Sort' },
+  bubble:    { ko: '버블 정렬', en: 'Bubble sort' },
+  selection: { ko: '선택 정렬', en: 'Selection sort' },
+  insertion: { ko: '삽입 정렬', en: 'Insertion sort' },
+  merge:     { ko: '병합 정렬', en: 'Merge sort' },
+  quick:     { ko: '퀵 정렬',   en: 'Quick sort' },
+  heap:      { ko: '힙 정렬',   en: 'Heap sort' },
 };
 
 export const SORT_CODES: Record<SortAlgorithm, string> = {

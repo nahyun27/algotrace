@@ -34,7 +34,7 @@ export default function TopoInfoModal({ isOpen, onClose, onStartVisualization }:
       onClose={onClose}
       onStartVisualization={onStartVisualization}
       icon={ListOrdered}
-      title={tr('위상정렬 (Topological Sort)', 'Topological Sort')}
+      title={tr('위상정렬 (Topological Sort)', 'Topological sort')}
       subtitle={tr('DAG에서 선행 관계를 만족하는 노드 순서 결정', 'Order the nodes of a DAG so every prerequisite comes first')}
     >
       <InfoSection n={1} title={tr('위상정렬이란?', 'What is it?')}>

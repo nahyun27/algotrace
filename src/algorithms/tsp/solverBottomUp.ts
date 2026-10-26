@@ -36,7 +36,7 @@ export function generateTSPStepsBottomUp(
          activeEdge: null,
          description: tr(
            `dp[${bin(mask)}][${i}]를 구하기 위해 이전 상태들 탐색`,
-           `Look at previous states to compute dp[${bin(mask)}][${i}]`,
+           `Check the previous states to compute dp[${bin(mask)}][${i}]`,
          ),
          isImprovement: false, codeLine: 5
        });

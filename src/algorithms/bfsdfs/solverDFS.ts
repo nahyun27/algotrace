@@ -85,23 +85,23 @@ export function generateDFSSteps(
       visitedSet.add(u);
       visitedNodes.push(u);
       
-      addStep('POP', tr(`노드 ${u} 방문 처리 및 방문 순서 확정.`, `Mark node ${u} as visited and fix its place in the visit order.`), u, null, null);
+      addStep('POP', tr(`노드 ${u} 방문 처리 및 방문 순서 확정.`, `Mark node ${u} visited and add it to the visit order.`), u, null, null);
 
       // To maintain numeric smallest-first, we process reversed children so smallest is at top of stack.
       const neighbors = [...adj[u]].reverse();
       for (const v of neighbors) {
-        addStep('DISCOVER', tr(`노드 ${u}의 인접 노드 ${v} 탐색.`, `Look at neighbor ${v} of node ${u}.`), u, v, [u, v]);
+        addStep('DISCOVER', tr(`노드 ${u}의 인접 노드 ${v} 탐색.`, `Check neighbor ${v} of node ${u}.`), u, v, [u, v]);
         
         if (!visitedSet.has(v)) {
           treeEdges.push([u, v]);
           stack.push({ id: `e-${entryId++}`, value: v });
-          addStep('PUSH', tr(`노드 ${v} 아직 방문 안됨 → 스택에 삽입.`, `Node ${v} isn't visited yet → push it onto the stack.`), u, v, [u, v]);
+          addStep('PUSH', tr(`노드 ${v} 아직 방문 안됨 → 스택에 삽입.`, `Node ${v} is unvisited → push it onto the stack.`), u, v, [u, v]);
         } else {
           addStep('DISCOVER', tr(`노드 ${v}는 이미 방문되어 무시함.`, `Node ${v} is already visited — skip it.`), u, v, [u, v]);
         }
       }
     } else {
-      addStep('POP', tr(`스택에서 꺼낸 노드 ${u}는 이미 방문 완료됨 → 무시.`, `Popped node ${u} was already visited → skip.`), u, null, null);
+      addStep('POP', tr(`스택에서 꺼낸 노드 ${u}는 이미 방문 완료됨 → 무시.`, `Popped node ${u} is already visited → skip it.`), u, null, null);
     }
   }
   

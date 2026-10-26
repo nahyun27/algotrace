@@ -13,7 +13,7 @@ export default function FWInfoModal({ isOpen, onClose, onStartVisualization }: P
   const { lang } = useLang();
 
   const rows: [string, string, string, string][] = [
-    [tr('출발점', 'Sources'), tr('단일 출발', 'Single source'), tr('단일 출발', 'Single source'), tr('모든 쌍', 'All pairs')],
+    [tr('출발점', 'Source'), tr('단일 출발', 'Single source'), tr('단일 출발', 'Single source'), tr('모든 쌍', 'All pairs')],
     [tr('음수 간선', 'Negative edges'), tr('❌ 불가', '❌ No'), tr('✅ 가능', '✅ Yes'), tr('✅ 가능', '✅ Yes')],
     [tr('음수 사이클', 'Negative cycles'), tr('❌ 감지 불가', '❌ Not detected'), tr('✅ 감지 가능', '✅ Detected'), tr('✅ 감지 가능', '✅ Detected')],
     [tr('시간복잡도', 'Time'), 'O((V+E)logV)', 'O(V·E)', 'O(V³)'],
@@ -29,7 +29,7 @@ export default function FWInfoModal({ isOpen, onClose, onStartVisualization }: P
       onClose={onClose}
       onStartVisualization={onStartVisualization}
       icon={Grid3x3}
-      title={tr('플로이드-워셜 알고리즘', 'Floyd-Warshall Algorithm')}
+      title={tr('플로이드-워셜 알고리즘', 'Floyd-Warshall algorithm')}
       subtitle={tr('모든 노드 쌍의 최단거리 — 동적 계획법 기반', 'All-pairs shortest paths with dynamic programming')}
     >
       <InfoSection n={1} title={tr('문제 정의', 'The problem')}>
@@ -50,7 +50,7 @@ export default function FWInfoModal({ isOpen, onClose, onStartVisualization }: P
         <p className="text-muted-foreground text-[13px]">
           {tr(
             'k=0 라운드가 끝나면 "노드 0만 경유할 때의 최단거리", k=1이 끝나면 "노드 0과 1을 경유할 때의 최단거리"가 확정됩니다. V번 반복하면 모든 경유 노드를 고려한 최단거리가 완성됩니다.',
-            'After round k=0 you have the shortest distances using only node 0 as a stopover; after k=1, using nodes 0 and 1. After V rounds every node has been considered.',
+            'After round k=0 you have the shortest distances using only node 0 as an intermediate node; after k=1, using nodes 0 and 1. After V rounds, every node is allowed as an intermediate and the distances are final.',
           )}
         </p>
       </InfoSection>

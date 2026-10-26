@@ -17,7 +17,7 @@ export default function AStarInfoModal({ isOpen, onClose, onStartVisualization }
   const terms = [
     { key: 'g(x)', desc: tr('출발점에서 노드까지의 실제 누적 비용', 'Actual cost accumulated from the start to the node') },
     { key: 'h(x)', desc: tr('노드에서 목표점까지의 예상(휴리스틱) 비용', 'Estimated (heuristic) cost from the node to the goal') },
-    { key: 'f(x) = g(x) + h(x)', desc: tr('최단 경로를 찾기 위해 우선순위 큐에 담는 기준 값', 'The priority used to order the queue while searching'), main: true },
+    { key: 'f(x) = g(x) + h(x)', desc: tr('최단 경로를 찾기 위해 우선순위 큐에 담는 기준 값', 'The key that orders the priority queue during the search'), main: true },
   ];
 
   return (
@@ -26,7 +26,7 @@ export default function AStarInfoModal({ isOpen, onClose, onStartVisualization }
       onClose={onClose}
       onStartVisualization={onStartVisualization}
       icon={MapIcon}
-      title={tr('A* (A-Star) 알고리즘', 'A* (A-Star) Search')}
+      title={tr('A* (A-Star) 알고리즘', 'A* (A-star) search')}
       subtitle={tr('휴리스틱을 이용한 최단 경로 탐색', 'Shortest-path search guided by a heuristic')}
     >
       <InfoSection n={1} title={tr('문제 정의', 'The problem')}>
@@ -68,14 +68,14 @@ export default function AStarInfoModal({ isOpen, onClose, onStartVisualization }
         </div>
       </InfoSection>
 
-      <InfoSection n={3} title={tr('평균 기대 복잡도', 'Expected complexity')}>
+      <InfoSection n={3} title={tr('복잡도', 'Complexity')}>
         <ComplexityChips
-          time="O(E)"
+          time="O((V+E) log V)"
           space="O(V)"
           note={lang === 'ko' ? (
-            <>💡 <strong>완벽한 휴리스틱 (h(x) = 실제거리)</strong> 을 안다면 무조건 최단 경로 노드만 방문하며 즉시 발견합니다! (O(V))</>
+            <>💡 <strong>완벽한 휴리스틱 (h(x) = 실제거리)</strong> 을 안다면 최단 경로 위의 노드만 꺼내며 곧바로 목표에 도달합니다. 최악의 경우(h = 0)는 다익스트라와 같습니다.</>
           ) : (
-            <>💡 With a <strong>perfect heuristic (h(x) = true distance)</strong>, A* visits only the nodes on the shortest path and finds it right away! (O(V))</>
+            <>💡 With a <strong>perfect heuristic (h(x) = true distance)</strong>, A* only expands nodes on the shortest path and heads straight to the goal. In the worst case (h = 0) it is the same as Dijkstra.</>
           )}
         />
       </InfoSection>

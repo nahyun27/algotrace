@@ -119,8 +119,8 @@ export default function TSPPage() {
                 </>
               }
             />
-            <div className="flex flex-col xl:flex-row divide-y xl:divide-y-0 xl:divide-x divide-border border-b border-border">
-              <div className="w-full xl:w-2/5 relative min-h-[280px]">
+            <div className="flex flex-col 2xl:flex-row divide-y 2xl:divide-y-0 2xl:divide-x divide-border border-b border-border">
+              <div className="w-full 2xl:w-2/5 relative min-h-[280px]">
                 <TSPGraphCanvas
                   currentMask={step.mask}
                   currentCity={step.currentCity}
@@ -132,7 +132,7 @@ export default function TSPPage() {
                 />
                 <EditGraphButton onClick={() => { setMode('editor'); pb.setIsPlaying(false); }} />
               </div>
-              <div className="w-full xl:w-3/5 p-3 sm:p-5 min-h-[280px]">
+              <div className="w-full 2xl:w-3/5 p-3 sm:p-5 min-h-[280px]">
                 <TSPDPTable dpTable={step.dpTable} currentCity={step.currentCity} currentMask={step.mask} />
               </div>
             </div>

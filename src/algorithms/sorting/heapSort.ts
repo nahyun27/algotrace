@@ -49,10 +49,10 @@ export function generateHeapSortSteps(input: number[], lang: Lang = 'ko'): SortS
     [arr[0], arr[i]] = [arr[i], arr[0]];
     swaps++;
     sorted.push(i);
-    snap('SWAP', tr(`최댓값 arr[0]=${arr[i]}를 끝으로 이동 → 인덱스 ${i} 확정`, `Move max arr[0]=${arr[i]} to the end → index ${i} fixed`), 5, [], [0, i], i);
+    snap('SWAP', tr(`최댓값 arr[0]=${arr[i]}를 끝으로 이동 → 인덱스 ${i} 확정`, `Swap the max arr[0]=${arr[i]} to the end → index ${i} is in its final place`), 5, [], [0, i], i);
     heapify(i, 0);
   }
   sorted.push(0);
-  snap('DONE', tr(`힙 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Heap sort done! ${compares} comparisons, ${swaps} swaps`), 6, [], [], 0);
+  snap('DONE', tr(`힙 정렬 완료! 비교 ${compares}회, 교환 ${swaps}회`, `Heap sort done! ${compares} comparison${compares === 1 ? '' : 's'}, ${swaps} swap${swaps === 1 ? '' : 's'}`), 6, [], [], 0);
   return steps;
 }

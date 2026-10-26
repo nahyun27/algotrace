@@ -112,20 +112,20 @@ export default function KruskalPage() {
         description={kStep.description}
         aside={<Badge tone="path">{tr('비용', 'cost')} <span className="font-mono">{kStep.totalCost}</span></Badge>}
       />
-      <div className="flex flex-col lg:flex-row border-b border-border">
+      <div className="flex flex-col 2xl:flex-row border-b border-border">
         <div className="flex-1 min-w-0 min-h-[300px]">
           <KruskalGraphCanvas step={kStep} nodes={KRUSKAL_NODES} edges={KRUSKAL_EDGES} />
         </div>
-        <div className="hidden lg:block w-[280px] shrink-0 p-3 border-l border-border max-h-[480px]">
+        <div className="hidden 2xl:block w-[280px] shrink-0 p-3 border-l border-border max-h-[480px]">
           <KruskalEdgeList step={kStep} />
         </div>
       </div>
-      <div className="p-3 sm:p-5 flex flex-col gap-3 lg:flex-row lg:gap-4">
+      <div className="p-3 sm:p-5 flex flex-col gap-3 2xl:flex-row 2xl:gap-4">
         <div className="flex-1 min-w-0 min-h-[240px]">
           <UnionFindDisplay step={kStep} N={KRUSKAL_N} />
         </div>
-        <div className="hidden lg:block w-[220px] shrink-0">{kruskalMst}</div>
-        <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="hidden 2xl:block w-[220px] shrink-0">{kruskalMst}</div>
+        <div className="2xl:hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="max-h-[300px] min-h-0 flex flex-col"><KruskalEdgeList step={kStep} /></div>
           <div className="max-h-[300px] min-h-0 flex flex-col">{kruskalMst}</div>
         </div>
