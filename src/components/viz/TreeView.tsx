@@ -19,6 +19,8 @@ interface TreeViewProps {
   /** One tree, or several roots drawn side by side (a forest) */
   root: TreeNode | TreeNode[] | null;
   stateOf?: (id: TreeNode['id']) => VizState;
+  /** Draw a node (and the edge into it) faded, e.g. a segment-tree node outside the query range */
+  fadedOf?: (id: TreeNode['id']) => boolean;
   /** State of the edge from parent to child (default: idle) */
   edgeStateOf?: (parentId: TreeNode['id'], childId: TreeNode['id']) => VizState;
   /** Text on the edge from parent to child, e.g. the character on a trie edge */
@@ -74,6 +76,7 @@ function layout(roots: TreeNode[]) {
 export default function TreeView({
   root,
   stateOf = () => 'idle',
+  fadedOf,
   edgeStateOf = () => 'idle',
   edgeLabelOf,
   badgeOf,
@@ -105,7 +108,7 @@ export default function TreeView({
             const label = edgeLabelOf?.(parent.node.id, p.node.id);
             const x1 = X(parent), y1 = Y(parent), x2 = X(p), y2 = Y(p);
             return (
-              <g key={`e-${parent.node.id}-${p.node.id}`}>
+              <g key={`e-${parent.node.id}-${p.node.id}`} opacity={fadedOf?.(p.node.id) ? 0.3 : 1} style={{ transition: 'opacity .3s' }}>
                 <line
                   x1={x1} y1={y1} x2={x2} y2={y2}
                   strokeWidth={s === 'idle' ? 1.75 : 3}
@@ -130,7 +133,7 @@ export default function TreeView({
             const c = NODE_COLORS[s];
             const badge = badgeOf?.(p.node.id);
             return (
-              <g key={`n-${p.node.id}`} transform={`translate(${X(p)},${Y(p)})`} style={{ transition: 'transform .3s' }}>
+              <g key={`n-${p.node.id}`} transform={`translate(${X(p)},${Y(p)})`} opacity={fadedOf?.(p.node.id) ? 0.35 : 1} style={{ transition: 'transform .3s, opacity .3s' }}>
                 {(s === 'current' || s === 'candidate') && (
                   <circle r={radius + 7} style={{ fill: c.fill }} fillOpacity={0.18} />
                 )}
