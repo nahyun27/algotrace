@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import python from 'react-syntax-highlighter/dist/esm/languages/prism/python';
+import cpp from 'react-syntax-highlighter/dist/esm/languages/prism/cpp';
+import java from 'react-syntax-highlighter/dist/esm/languages/prism/java';
 import vscDarkPlus from 'react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus';
 import { cn } from '../ui';
 
 // Light build: register only the languages the code panels show
 SyntaxHighlighter.registerLanguage('python', python);
+SyntaxHighlighter.registerLanguage('cpp', cpp);
+SyntaxHighlighter.registerLanguage('java', java);
 
 interface CodeBlockProps {
   code: string;
