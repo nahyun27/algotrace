@@ -1,4 +1,4 @@
-import { Map as MapIcon } from 'lucide-react';
+import { Map as MapIcon, Compass, Star, Lightbulb } from 'lucide-react';
 import InfoModal, { InfoSection, InfoCard, ComplexityChips } from '../../components/algorithm/InfoModal';
 import { cn } from '../../components/ui';
 import { toneBorder, toneText } from '../../components/ui/tone';
@@ -53,13 +53,13 @@ export default function AStarInfoModal({ isOpen, onClose, onStartVisualization }
 
       <InfoSection n={2} title={tr('핵심 아이디어', 'Key ideas')}>
         <div className="grid sm:grid-cols-2 gap-3">
-          <InfoCard tone="current" title={tr('🧭 목적지 지향적', '🧭 Goal-directed')}>
+          <InfoCard tone="current" icon={Compass} title={tr('목적지 지향적', 'Goal-directed')}>
             {tr(
               '다익스트라는 원형으로 퍼져나가며 모든 방향을 탐색하지만, A*는 목적지 방향으로 나아가도록 휴리스틱이 유도합니다.',
               'Dijkstra spreads out in a circle in every direction, while A* uses the heuristic to push the search toward the goal.',
             )}
           </InfoCard>
-          <InfoCard tone="path" title={tr('⭐ 허용성 (Admissibility)', '⭐ Admissibility')}>
+          <InfoCard tone="path" icon={Star} title={tr('허용성 (Admissibility)', 'Admissibility')}>
             {tr(
               '최단 경로를 보장하기 위한 조건입니다. h(x)가 실제 남은 거리보다 과대평가되지 않아야만 완벽한 답을 찾아냅니다.',
               'The condition that guarantees a shortest path: h(x) must never overestimate the real remaining distance.',
@@ -73,9 +73,9 @@ export default function AStarInfoModal({ isOpen, onClose, onStartVisualization }
           time="O((V+E) log V)"
           space="O(V)"
           note={lang === 'ko' ? (
-            <>💡 <strong>완벽한 휴리스틱 (h(x) = 실제거리)</strong> 을 안다면 최단 경로 위의 노드만 꺼내며 곧바로 목표에 도달합니다. 최악의 경우(h = 0)는 다익스트라와 같습니다.</>
+            <><Lightbulb className={cn('w-3.5 h-3.5 inline align-[-2px] mr-1', toneText.candidate)} aria-hidden /><strong>완벽한 휴리스틱 (h(x) = 실제거리)</strong> 을 안다면 최단 경로 위의 노드만 꺼내며 곧바로 목표에 도달합니다. 최악의 경우(h = 0)는 다익스트라와 같습니다.</>
           ) : (
-            <>💡 With a <strong>perfect heuristic (h(x) = true distance)</strong>, A* only expands nodes on the shortest path and heads straight to the goal. In the worst case (h = 0) it is the same as Dijkstra.</>
+            <><Lightbulb className={cn('w-3.5 h-3.5 inline align-[-2px] mr-1', toneText.candidate)} aria-hidden />With a <strong>perfect heuristic (h(x) = true distance)</strong>, A* only expands nodes on the shortest path and heads straight to the goal. In the worst case (h = 0) it is the same as Dijkstra.</>
           )}
         />
       </InfoSection>

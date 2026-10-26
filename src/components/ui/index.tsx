@@ -1,6 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { toneSoft, toneBorder, type Tone } from './tone';
+import { toneSoft, toneBorder, toneText, type Tone } from './tone';
 
 export { type Tone } from './tone';
 
@@ -141,6 +142,10 @@ export function Badge({ tone = 'neutral', outline, children, className }: BadgeP
 
 interface PanelProps {
   title?: ReactNode;
+  /** Optional icon shown before the title */
+  icon?: LucideIcon;
+  /** Tone for the title icon (default neutral) */
+  iconTone?: Tone;
   subtitle?: ReactNode;
   actions?: ReactNode;
   children: ReactNode;
@@ -149,13 +154,20 @@ interface PanelProps {
 }
 
 /** Bordered section used inside the visualization area (tables, queues, results). */
-export function Panel({ title, subtitle, actions, children, className, bodyClassName }: PanelProps) {
+export function Panel({ title, icon: Icon, iconTone = 'neutral', subtitle, actions, children, className, bodyClassName }: PanelProps) {
   return (
     <section className={cn('rounded-2xl border border-border bg-card overflow-hidden', className)}>
       {(title || actions) && (
         <header className="flex items-center justify-between gap-2 px-4 py-2.5 border-b border-border bg-muted/40">
           <div className="min-w-0">
-            {title && <h3 className="text-sm font-bold tracking-tight truncate">{title}</h3>}
+            {title && (Icon ? (
+              <h3 className="flex items-center gap-1.5 text-sm font-bold tracking-tight">
+                <Icon className={cn('w-4 h-4 shrink-0', toneText[iconTone])} aria-hidden />
+                <span className="truncate">{title}</span>
+              </h3>
+            ) : (
+              <h3 className="text-sm font-bold tracking-tight truncate">{title}</h3>
+            ))}
             {subtitle && <p className="text-xs text-muted-foreground truncate">{subtitle}</p>}
           </div>
           {actions && <div className="flex items-center gap-1.5 shrink-0">{actions}</div>}

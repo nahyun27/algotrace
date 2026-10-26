@@ -121,8 +121,8 @@ export default function Home() {
             </h1>
             <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl text-pretty">
               {tr(
-                '최단 경로, 그래프 탐색, 동적 계획법, 정렬까지. 노드가 어떻게 선택되고 값이 어떻게 바뀌는지 코드와 함께 따라가 보세요.',
-                'Shortest paths, graph traversal, dynamic programming and sorting — follow how each node is chosen and every value changes, right next to the code.',
+                '탐색, 최단 경로, 그래프, 동적 계획법, 정렬까지. 노드가 어떻게 선택되고 값이 어떻게 바뀌는지 코드와 함께 따라가 보세요.',
+                'Searching, shortest paths, graphs, dynamic programming and sorting. Follow how each node is chosen and how every value changes, right next to the code.',
               )}
             </p>
             <div className="mt-6 flex flex-wrap gap-2.5">

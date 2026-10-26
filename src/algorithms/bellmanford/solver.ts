@@ -73,7 +73,7 @@ export function generateBellmanFordSteps(
             )
           : tr(
               `완화 실패: dist[${u}]${w >= 0 ? '+' : ''}${w} = ${newDist} ≥ dist[${v}]=${fmt(dist[v])}  변화 없음`,
-              `No improvement: dist[${u}]${w >= 0 ? '+' : ''}${w} = ${newDist} ≥ dist[${v}]=${fmt(dist[v])} — no change`,
+              `No improvement: dist[${u}]${w >= 0 ? '+' : ''}${w} = ${newDist} ≥ dist[${v}]=${fmt(dist[v])}, no change`,
             ),
         dist: cloneDist(),
         currentNode: u, neighborNode: v, activeEdge: [u, v],
@@ -124,8 +124,8 @@ export function generateBellmanFordSteps(
     steps.push({
       type: 'NEGATIVE_CYCLE',
       description: tr(
-        '⚠️ 음수 사이클 감지! V번째 라운드에서도 거리가 갱신됩니다. 최단 경로가 존재하지 않습니다.',
-        '⚠️ Negative cycle detected! Distances still improve in round V, so no shortest path exists.',
+        '음수 사이클을 감지했습니다. V번째 라운드에서도 거리가 갱신됩니다. 최단 경로가 존재하지 않습니다.',
+        'Negative cycle detected: distances still improve in round V, so no shortest path exists.',
       ),
       dist: cloneDist(),
       currentNode: null, neighborNode: null, activeEdge: null,

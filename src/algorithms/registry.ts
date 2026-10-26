@@ -3,7 +3,7 @@ import type { AlgorithmMeta, Category, CategoryId, Difficulty, Localized } from 
 export type { AlgorithmMeta, Category, CategoryId, Difficulty, Localized } from './catalog';
 
 /**
- * Single source of truth for the algorithm catalogue — the sidebar, home page,
+ * Single source of truth for the algorithm catalogue: the sidebar, home page,
  * top bar breadcrumb and router all read from here.
  *
  * Algorithms register themselves: every `src/algorithms/<folder>/meta.ts` is picked up

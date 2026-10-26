@@ -15,7 +15,7 @@ interface GraphEditorProps {
   maxNodes: number;
   onRun: (data: GraphData) => string | null; // returns error string or null on success
   presets: Preset[];
-  /** 'tsp' | 'dijkstra' | 'astar' | 'bfsdfs' — controls validation message wording */
+  /** 'tsp' | 'dijkstra' | 'astar' | 'bfsdfs': controls validation message wording */
   algorithmType: 'tsp' | 'dijkstra' | 'astar' | 'bfsdfs';
 }
 
@@ -86,7 +86,7 @@ export default function GraphEditor({ initialData, maxNodes, onRun, presets, alg
 
   const handleFinishEdge = useCallback((nodeId: number) => {
     pendingEdgeTo.current = nodeId;
-    // keep pendingEdgeFrom — popup will call onAddEdgeWithWeight
+    // keep pendingEdgeFrom: popup will call onAddEdgeWithWeight
   }, []);
 
   const handleAddEdgeWithWeight = useCallback((weight: number) => {

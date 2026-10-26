@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { Shuffle, Eraser } from 'lucide-react';
+import { Shuffle, Eraser, BrickWall, Circle, Zap } from 'lucide-react';
 import StepController from '../../components/algorithm/StepController';
 import RightPanel from '../../components/algorithm/RightPanel';
 import AlgorithmLayout from '../../components/algorithm/AlgorithmLayout';
@@ -166,7 +166,7 @@ function AStarGraphMode({ onTabChange }: { onTabChange: (mode: ViewMode) => void
             problems={<AStarProblemList />}
             extraLabel={tr('탐색 효율', 'Efficiency')}
             extra={
-              <Panel title={tr('⚡ 탐색 효율 (탐색한 노드 수)', '⚡ Search efficiency (nodes explored)')} bodyClassName="p-4 flex flex-col gap-3">
+              <Panel title={tr('탐색 효율 (탐색한 노드 수)', 'Search efficiency (nodes explored)')} icon={Zap} iconTone="candidate" bodyClassName="p-4 flex flex-col gap-3">
                 <div>
                   <div className="flex justify-between text-xs mb-1.5">
                     <span className={cn('font-bold', toneText.path)}>A*</span>
@@ -356,10 +356,10 @@ function AStarGridMode({ onTabChange }: { onTabChange: (mode: ViewMode) => void 
                   value={tool}
                   onChange={setTool}
                   options={[
-                    { value: 'wall',  label: tr('🧱 벽', '🧱 Wall') },
-                    { value: 'erase', label: tr('🧽 지우개', '🧽 Erase') },
-                    { value: 'start', label: tr('🟢 출발', '🟢 Start') },
-                    { value: 'goal',  label: tr('🔴 목표', '🔴 Goal') },
+                    { value: 'wall',  label: <span className="inline-flex items-center gap-1"><BrickWall className="w-3.5 h-3.5" aria-hidden />{tr('벽', 'Wall')}</span> },
+                    { value: 'erase', label: <span className="inline-flex items-center gap-1"><Eraser className="w-3.5 h-3.5" aria-hidden />{tr('지우개', 'Erase')}</span> },
+                    { value: 'start', label: <span className="inline-flex items-center gap-1"><Circle className={cn('w-3 h-3 fill-current', toneText.visited)} aria-hidden />{tr('출발', 'Start')}</span> },
+                    { value: 'goal',  label: <span className="inline-flex items-center gap-1"><Circle className={cn('w-3 h-3 fill-current', toneText.danger)} aria-hidden />{tr('목표', 'Goal')}</span> },
                   ]}
                 />
                 <div className="flex gap-1.5">

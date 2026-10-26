@@ -57,7 +57,7 @@ export default function KruskalGraphCanvas({ step, nodes, edges }: Props) {
             currentKey === key ? 'candidate' : 'idle';
           const emphasized = state !== 'idle';
 
-          // label offset — perpendicular to edge, small nudge
+          // label offset: perpendicular to edge, small nudge
           const perpX = -ny * 13;
           const perpY =  nx * 13;
 

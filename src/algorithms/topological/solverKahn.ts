@@ -70,8 +70,8 @@ export function generateKahnSteps(
       steps.push({
         type: 'DECREASE',
         description: tr(
-          `간선 ${nodes[u].label}→${nodes[v].label}: 진입차수 ${inDeg[v] + 1}→${inDeg[v]}${enqueued ? ` ✓ "${nodes[v].label}" 큐 삽입` : ''}`,
-          `Edge ${nodes[u].label}→${nodes[v].label}: in-degree ${inDeg[v] + 1}→${inDeg[v]}${enqueued ? ` ✓ enqueue "${nodes[v].label}"` : ''}`,
+          `간선 ${nodes[u].label}→${nodes[v].label}: 진입차수 ${inDeg[v] + 1}→${inDeg[v]}${enqueued ? `, "${nodes[v].label}" 큐 삽입` : ''}`,
+          `Edge ${nodes[u].label}→${nodes[v].label}: in-degree ${inDeg[v] + 1}→${inDeg[v]}${enqueued ? `, enqueue "${nodes[v].label}"` : ''}`,
         ),
         inDegree: snap(), queue: [...queue], result: [...result],
         currentNode: u, activeEdge: [u, v],
@@ -86,7 +86,7 @@ export function generateKahnSteps(
   steps.push({
     type: hasCycle ? 'CYCLE_DETECTED' : 'DONE',
     description: hasCycle
-      ? tr(`⚠️ 사이클 감지! 처리된 노드 수(${result.length}) < 전체(${N}). 위상정렬 불가.`, `⚠️ Cycle detected! Only ${result.length} of ${N} nodes were processed, so no topological order exists.`)
+      ? tr(`사이클 감지! 처리된 노드 수(${result.length}) < 전체(${N}). 위상정렬 불가.`, `Cycle detected! Only ${result.length} of ${N} nodes were processed, so no topological order exists.`)
       : tr(`[완료] 위상정렬: ${result.map(n => nodes[n].label).join(' → ')}`, `[Done] Topological order: ${result.map(n => nodes[n].label).join(' → ')}`),
     inDegree: snap(), queue: [...queue], result: [...result],
     currentNode: null, activeEdge: null,

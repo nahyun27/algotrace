@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ALGORITHMS } from '../algorithms/registry';
 import { useTr } from '../i18n';
 
-// One lazy component per registered algorithm — each page is its own chunk, loaded on first visit
+// One lazy component per registered algorithm: each page is its own chunk, loaded on first visit
 const PAGES: Record<string, LazyExoticComponent<ComponentType>> = Object.fromEntries(
   ALGORITHMS.map(a => [a.slug, lazy(a.load)]),
 );

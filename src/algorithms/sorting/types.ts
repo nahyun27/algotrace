@@ -35,7 +35,7 @@ export interface SortStep {
   outputIndex?: number | null;       // output slot just written
 
   // ── radix sort ──
-  buckets?: number[][];              // ten buckets 0–9 (values in append order)
+  buckets?: number[][];              // ten buckets 0..9 (values in append order)
   digit?: number;                    // digit position of this pass: 0 = ones, 1 = tens, …
   digitCount?: number;               // number of passes (digits of the max)
   bucketIndex?: number | null;       // bucket receiving / being collected
@@ -45,7 +45,7 @@ export interface SortStep {
 
 export const DEFAULT_ARRAY = [38, 27, 43, 3, 9, 82, 10, 64, 15, 52, 29, 7];
 
-/** Display names — pick with `SORT_LABELS[algo][lang]` */
+/** Display names: pick with `SORT_LABELS[algo][lang]` */
 export const SORT_LABELS: Record<SortAlgorithm, { ko: string; en: string }> = {
   bubble:    { ko: '버블 정렬', en: 'Bubble sort' },
   selection: { ko: '선택 정렬', en: 'Selection sort' },
@@ -67,7 +67,7 @@ export interface SanitizedInput {
 }
 
 /**
- * Counting sort needs integers 0–COUNTING_MAX, radix sort non-negative integers.
+ * Counting sort needs integers 0..COUNTING_MAX, radix sort non-negative integers.
  * Other sorts take the array as is.
  */
 export function sanitizeInput(algorithm: SortAlgorithm, input: number[]): SanitizedInput {

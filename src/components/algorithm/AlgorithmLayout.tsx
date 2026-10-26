@@ -25,7 +25,7 @@ interface AlgorithmLayoutProps {
  *   │ step controller               │ │          │
  *   └───────────────────────────────┘ └──────────┘
  *
- * Only the scrollable area shrinks when the window gets shorter — the header and
+ * Only the scrollable area shrinks when the window gets shorter: the header and
  * step controller always stay visible.
  */
 export default function AlgorithmLayout({

@@ -87,11 +87,11 @@ export function generateFloydWarshallSteps(
         const description = isUpdate
           ? tr(
               `경유 노드 k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${newDist} 로 갱신`,
-              `Via k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${newDist} — updated`,
+              `Via k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${newDist}, updated`,
             )
           : tr(
               `경유 노드 k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${iStr(prevVal)}, 변화 없음`,
-              `Via k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${iStr(prevVal)} — no change`,
+              `Via k=${k}: dist[${i}][${j}] = min(${iStr(prevVal)}, ${d_ik}+${d_kj}) = ${iStr(prevVal)}, no change`,
             );
 
         steps.push({
@@ -120,8 +120,8 @@ export function generateFloydWarshallSteps(
     steps.push({
       type: 'NEGATIVE_CYCLE',
       description: tr(
-        '⚠️ 음수 사이클 감지! dist[i][i] < 0인 노드가 존재합니다. 최단 경로가 정의되지 않습니다.',
-        '⚠️ Negative cycle detected! Some node has dist[i][i] < 0, so shortest paths are undefined.',
+        '음수 사이클을 감지했습니다. dist[i][i] < 0인 노드가 존재합니다. 최단 경로가 정의되지 않습니다.',
+        'Negative cycle detected: some node has dist[i][i] < 0, so shortest paths are undefined.',
       ),
       distMatrix: cloneDist(),
       nextMatrix: cloneNext(),

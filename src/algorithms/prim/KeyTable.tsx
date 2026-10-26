@@ -68,7 +68,7 @@ export default function PrimKeyTable({ step, N }: Props) {
               {nodes.map(i => (
                 <td key={i} className="px-4 py-2 text-center text-sm border-l border-border font-mono">
                   <span className={visited[i] ? cn(toneText.visited, 'font-bold') : 'text-muted-foreground'}>
-                    {parent[i] === -1 ? '—' : parent[i]}
+                    {parent[i] === -1 ? '-' : parent[i]}
                   </span>
                 </td>
               ))}

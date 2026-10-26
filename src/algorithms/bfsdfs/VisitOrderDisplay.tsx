@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, MapPin } from 'lucide-react';
 import type { BaseStep } from './types';
 import { Panel, Badge, cn } from '../../components/ui';
 import { toneSoft, toneBorder } from '../../components/ui/tone';
@@ -18,7 +18,9 @@ export default function VisitOrderDisplay({ step, totalNodes }: VisitOrderDispla
 
   return (
     <Panel
-      title={tr('📍 방문 순서', '📍 Visit order')}
+      title={tr('방문 순서', 'Visit order')}
+      icon={MapPin}
+      iconTone="visited"
       actions={
         <Badge tone={done ? 'path' : 'neutral'}>
           <span className="font-mono">{visited.length} / {totalNodes}</span>

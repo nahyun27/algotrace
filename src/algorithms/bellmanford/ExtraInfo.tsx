@@ -29,7 +29,7 @@ export default function BFExtraInfo({ step }: Props) {
         <InfoCard tone="candidate" title={tr('다익스트라', 'Dijkstra')}>
           {tr(
             '그리디 방식이라 음수 간선이 있으면 틀린 결과를 낼 수 있습니다.',
-            'Greedy — it can give wrong answers when negative edges exist.',
+            'Being greedy, it can give wrong answers when negative edges exist.',
           )}
         </InfoCard>
         <InfoCard tone="current" title={tr('벨만-포드', 'Bellman-Ford')}>

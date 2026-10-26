@@ -1,5 +1,5 @@
 /**
- * Step type codes (shown as the StepBanner badge — keep them English).
+ * Step type codes (shown as the StepBanner badge: keep them English).
  * Top-down:  CALL → BASE | MEMO | EXPLORE → MOVE → COMPARE … → SAVE (root save = DONE)
  * Bottom-up: INIT → STATE → MOVE → UPDATE … → RETURN → BEST … → DONE
  */

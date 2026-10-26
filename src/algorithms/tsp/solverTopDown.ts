@@ -101,8 +101,8 @@ export function generateTSPStepsTopDown(
       activeEdge: null,
       description: isRoot
         ? tr(
-            `dp[${bin(mask)}][${curr}] = ${ansStr} 저장 후 반환 — 최소 순회 비용이에요`,
-            `Store dp[${bin(mask)}][${curr}] = ${ansStr} and return — this is the minimum tour cost`,
+            `dp[${bin(mask)}][${curr}] = ${ansStr} 저장 후 반환. 최소 순회 비용이에요`,
+            `Store dp[${bin(mask)}][${curr}] = ${ansStr} and return. This is the minimum tour cost`,
           )
         : tr(
             `dp[${bin(mask)}][${curr}] = ${ansStr} 저장 후 반환`,

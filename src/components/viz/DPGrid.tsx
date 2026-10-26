@@ -17,7 +17,7 @@ interface DPGridProps {
   format?: (value: number | string | null, row: number, col: number) => ReactNode;
   /** Visual state of a cell (default: idle) */
   cellState?: (row: number, col: number) => VizState;
-  /** Cells the current cell reads from — outlined in the candidate color */
+  /** Cells the current cell reads from: outlined in the candidate color */
   deps?: [number, number][];
   /** Emphasize or fade a whole row */
   rowState?: (row: number) => DPRowState;

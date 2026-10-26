@@ -21,7 +21,7 @@ interface CodeBlockProps {
 export function CodeBlock({ code, language = 'python', isLineHighlighted, followHighlight = true, className, fontSize = 13 }: CodeBlockProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Signature of the highlighted lines — changes whenever the step moves to other lines
+  // Signature of the highlighted lines: changes whenever the step moves to other lines
   const lineCount = code.split('\n').length;
   let hlKey = '';
   for (let i = 1; i <= lineCount; i++) if (isLineHighlighted?.(i)) hlKey += i + ',';

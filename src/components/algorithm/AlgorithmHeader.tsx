@@ -59,7 +59,7 @@ export function CopyLinkButton() {
   );
 }
 
-/** "← 시각화로 돌아가기" — shown in the header while the graph editor is open. */
+/** "← 시각화로 돌아가기": shown in the header while the graph editor is open. */
 export function BackToVisualizationButton({ onClick }: { onClick: () => void }) {
   const tr = useTr();
   return (

@@ -144,7 +144,7 @@ describe('counting sort', () => {
     }
   });
 
-  it('clamps out-of-range input into integers 0–99', () => {
+  it('clamps out-of-range input into integers 0..99', () => {
     expect(sanitizeInput('counting', [-3, 4.6, 150, 7])).toEqual({ array: [0, 5, 99, 7], adjusted: true });
     expect(sanitizeInput('counting', [1, 2])).toEqual({ array: [1, 2], adjusted: false });
     expect(sanitizeInput('bubble', [150, 4.5]).array).toEqual([150, 4.5]);

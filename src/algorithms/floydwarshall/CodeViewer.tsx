@@ -43,15 +43,15 @@ import { FW_CODE } from './types';
 
 export default function FWCodeViewer({ codeLine }: { codeLine: number }) {
   const isHighlighted = (lineNum: number): boolean => {
-    // INIT: lines 5–11
+    // INIT: lines 5..11
     if (codeLine === 5 && lineNum >= 5 && lineNum <= 11) return true;
     // ROUND_START: line 14
     if (codeLine === 14 && lineNum >= 14 && lineNum <= 16) return true;
-    // NO_UPDATE: line 17–18 (comparison only)
+    // NO_UPDATE: line 17..18 (comparison only)
     if (codeLine === 17 && lineNum >= 17 && lineNum <= 18) return true;
-    // UPDATE: lines 17–20 (comparison + assignment)
+    // UPDATE: lines 17..20 (comparison + assignment)
     if (codeLine === 19 && lineNum >= 17 && lineNum <= 20) return true;
-    // NEGATIVE_CYCLE: lines 23–25
+    // NEGATIVE_CYCLE: lines 23..25
     if (codeLine === 24 && lineNum >= 23 && lineNum <= 25) return true;
     // DONE: line 27
     if (codeLine === 27 && lineNum === 27) return true;

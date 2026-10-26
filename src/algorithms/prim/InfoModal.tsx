@@ -37,14 +37,14 @@ export default function PrimInfoModal({ isOpen, onClose, onStartVisualization }:
       <InfoSection n={2} title={tr('프림 핵심 아이디어', 'How Prim works')}>
         <InfoSteps
           steps={ko ? [
-            <>임의의 시작 노드(0번)를 MST에 포함 — <code className={codeCls}>key[0] = 0</code></>,
+            <>임의의 시작 노드(0번)를 MST에 포함: <code className={codeCls}>key[0] = 0</code></>,
             <>현재 MST와 연결된 모든 후보 간선을 <strong>우선순위 큐</strong>에 관리</>,
             <>큐에서 <strong>key가 가장 작은 노드</strong>를 꺼냄</>,
             <>이미 MST에 포함됐으면 스킵 (지연 삭제)</>,
             <>MST에 추가 후, 미방문 인접 노드의 key값 <strong>갱신</strong></>,
             <>N−1개 간선이 모이면 완성</>,
           ] : [
-            <>Put any start node (node 0) into the MST — <code className={codeCls}>key[0] = 0</code></>,
+            <>Put any start node (node 0) into the MST: <code className={codeCls}>key[0] = 0</code></>,
             <>Keep every candidate edge touching the tree in a <strong>priority queue</strong></>,
             <>Pop the node with the <strong>smallest key</strong></>,
             <>If it's already in the MST, skip it (lazy deletion)</>,

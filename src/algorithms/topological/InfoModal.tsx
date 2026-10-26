@@ -1,4 +1,4 @@
-import { ListOrdered } from 'lucide-react';
+import { ListOrdered, GraduationCap, Hammer, Package, CalendarDays, X } from 'lucide-react';
 import InfoModal, { InfoSection, InfoCard, ComplexityChips } from '../../components/algorithm/InfoModal';
 import { toneText } from '../../components/ui/tone';
 import { useLang, useTr } from '../../i18n';
@@ -14,10 +14,10 @@ export default function TopoInfoModal({ isOpen, onClose, onStartVisualization }:
   const { lang } = useLang();
 
   const examples = [
-    { icon: '🎓', title: tr('수강신청 선수과목', 'Course prerequisites'), desc: tr('미적분 → 선형대수 → 알고리즘 순서로 이수해야 하는 커리큘럼', 'A curriculum where Calculus → Linear Algebra → Algorithms must be taken in order') },
-    { icon: '🔨', title: tr('빌드 시스템 의존성', 'Build dependencies'), desc: tr('make, gradle 등에서 파일 A가 B에 의존할 때 B를 먼저 컴파일', 'In make, gradle, etc., if A depends on B, compile B first') },
-    { icon: '📦', title: tr('패키지 설치 순서', 'Package install order'), desc: tr('npm, pip 등에서 의존 패키지를 먼저 설치한 뒤 상위 패키지 설치', 'npm, pip, etc. install dependencies before the packages that need them') },
-    { icon: '🗓️', title: tr('프로젝트 일정 계획', 'Project scheduling'), desc: tr('선행 작업이 끝나야 다음 작업을 시작할 수 있는 태스크 순서 결정', 'Order tasks so each one starts only after its prerequisites are done') },
+    { icon: GraduationCap, title: tr('수강신청 선수과목', 'Course prerequisites'), desc: tr('미적분 → 선형대수 → 알고리즘 순서로 이수해야 하는 커리큘럼', 'A curriculum where Calculus → Linear Algebra → Algorithms must be taken in order') },
+    { icon: Hammer, title: tr('빌드 시스템 의존성', 'Build dependencies'), desc: tr('make, gradle 등에서 파일 A가 B에 의존할 때 B를 먼저 컴파일', 'In make, gradle, etc., if A depends on B, compile B first') },
+    { icon: Package, title: tr('패키지 설치 순서', 'Package install order'), desc: tr('npm, pip 등에서 의존 패키지를 먼저 설치한 뒤 상위 패키지 설치', 'npm, pip, etc. install dependencies before the packages that need them') },
+    { icon: CalendarDays, title: tr('프로젝트 일정 계획', 'Project scheduling'), desc: tr('선행 작업이 끝나야 다음 작업을 시작할 수 있는 태스크 순서 결정', 'Order tasks so each one starts only after its prerequisites are done') },
   ];
 
   const rows: [string, string, string][] = [
@@ -50,7 +50,7 @@ export default function TopoInfoModal({ isOpen, onClose, onStartVisualization }:
       <InfoSection n={2} title={tr('실생활 예시', 'Real-world examples')}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {examples.map(item => (
-            <InfoCard key={item.icon} title={`${item.icon} ${item.title}`}>
+            <InfoCard key={item.title} icon={item.icon} title={item.title}>
               {item.desc}
             </InfoCard>
           ))}
@@ -88,7 +88,9 @@ export default function TopoInfoModal({ isOpen, onClose, onStartVisualization }:
         )}
         <InfoCard tone="danger">
           <span className="font-mono">A → B → C → A</span>
-          {tr(' (사이클 ❌ 위상정렬 불가)', ' (cycle ❌ no topological order)')}
+          {tr(' (사이클', ' (cycle')}
+          <X className="w-3.5 h-3.5 inline align-[-2px] mx-0.5" aria-hidden />
+          {tr('위상정렬 불가)', 'no topological order)')}
         </InfoCard>
       </InfoSection>
 

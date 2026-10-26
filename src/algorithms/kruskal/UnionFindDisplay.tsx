@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Check, X } from 'lucide-react';
 import type { KruskalStep } from './types';
 import { findRoot } from './types';
 import { Badge, Panel, SegmentedControl, cn, type Tone } from '../../components/ui';
@@ -258,8 +259,8 @@ export default function UnionFindDisplay({ step, N }: Props) {
           Find({step.currentEdge?.u}) = {step.findResult.ru} &nbsp;|&nbsp; Find({step.currentEdge?.v}) = {step.findResult.rv}
           <span className="font-sans">
             {step.findResult.ru === step.findResult.rv
-              ? tr(' → 같은 집합 ❌', ' → same set ❌')
-              : tr(' → 다른 집합 ✓', ' → different sets ✓')}
+              ? <>{tr(' → 같은 집합', ' → same set')}<X className="w-3.5 h-3.5 inline align-[-2px] ml-1" aria-hidden /></>
+              : <>{tr(' → 다른 집합', ' → different sets')}<Check className="w-3.5 h-3.5 inline align-[-2px] ml-1" aria-hidden /></>}
           </span>
         </div>
       )}

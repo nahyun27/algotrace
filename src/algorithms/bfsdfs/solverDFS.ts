@@ -97,7 +97,7 @@ export function generateDFSSteps(
           stack.push({ id: `e-${entryId++}`, value: v });
           addStep('PUSH', tr(`노드 ${v} 아직 방문 안됨 → 스택에 삽입.`, `Node ${v} is unvisited → push it onto the stack.`), u, v, [u, v]);
         } else {
-          addStep('DISCOVER', tr(`노드 ${v}는 이미 방문되어 무시함.`, `Node ${v} is already visited — skip it.`), u, v, [u, v]);
+          addStep('DISCOVER', tr(`노드 ${v}는 이미 방문되어 무시함.`, `Node ${v} is already visited, so skip it.`), u, v, [u, v]);
         }
       }
     } else {

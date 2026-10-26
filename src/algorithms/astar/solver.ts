@@ -153,7 +153,7 @@ export function generateAStarSteps(
     }
 
     closedSet.add(u);
-    addStep('CLOSE', tr(`노드 ${u} 처리 완료. Closed Set에 추가.`, `Node ${u} is done — add it to the closed set.`), u, null, false);
+    addStep('CLOSE', tr(`노드 ${u} 처리 완료. Closed Set에 추가.`, `Node ${u} is done. Add it to the closed set.`), u, null, false);
   }
 
   addStep('DONE', tr(`[종료] 목표 노드 ${goal}에 도달할 수 없습니다.`, `[Done] Goal node ${goal} cannot be reached.`), null, null, false);

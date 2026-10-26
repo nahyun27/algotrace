@@ -26,13 +26,15 @@ export interface AlgorithmMeta {
   order: number;
   icon: LucideIcon;
   name: Localized;
+  /** Shorter name for tight spots (sidebar, breadcrumb); defaults to `name` */
+  shortName?: Localized;
   description: Localized;
   difficulty: Difficulty;
   time: string;
   space: string;
   /** Lower-case search terms for the home page */
   keywords: string[];
-  /** Lazy page import — the page becomes its own chunk */
+  /** Lazy page import: the page becomes its own chunk */
   load: () => Promise<{ default: ComponentType }>;
 }
 

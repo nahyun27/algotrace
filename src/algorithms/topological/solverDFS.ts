@@ -54,7 +54,7 @@ export function generateDFSTopoSteps(
         hasCycle = true;
         steps.push({
           type: 'CYCLE_DETECTED',
-          description: tr(`⚠️ 역방향 간선 ${nodes[u].label}→${nodes[v].label} 발견! 사이클 존재.`, `⚠️ Back edge ${nodes[u].label}→${nodes[v].label} found! The graph has a cycle.`),
+          description: tr(`역방향 간선 ${nodes[u].label}→${nodes[v].label} 발견! 사이클이 존재합니다.`, `Back edge ${nodes[u].label}→${nodes[v].label} found! The graph has a cycle.`),
           visited: snapV(), inStack: snapIS(), finished: snapF(), stack: snapS(),
           result: [], currentNode: u, activeEdge: [u, v],
           hasCycle: true, codeLine: 13,
@@ -90,7 +90,7 @@ export function generateDFSTopoSteps(
   steps.push({
     type: hasCycle ? 'CYCLE_DETECTED' : 'DONE',
     description: hasCycle
-      ? tr('⚠️ 사이클이 감지되어 위상정렬 불가능합니다.', '⚠️ A cycle was detected, so no topological order exists.')
+      ? tr('사이클이 감지되어 위상정렬이 불가능합니다.', 'A cycle was detected, so no topological order exists.')
       : tr(`[완료] 스택 역순 = 위상정렬: ${result.map(n => nodes[n].label).join(' → ')}`, `[Done] Reversed stack = topological order: ${result.map(n => nodes[n].label).join(' → ')}`),
     visited: snapV(), inStack: snapIS(), finished: snapF(), stack: snapS(),
     result: hasCycle ? [] : result,

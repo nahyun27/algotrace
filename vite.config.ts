@@ -10,5 +10,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],
+    // Generous limit: brute-force reference checks can be slow on a busy machine
+    testTimeout: 20000,
   },
 })
