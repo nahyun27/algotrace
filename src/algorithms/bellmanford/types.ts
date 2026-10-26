@@ -54,26 +54,3 @@ export const EXAMPLE2_NODES = [
   { id: 2, x: 380, y: 180 },
   { id: 3, x: 230, y: 270 },
 ];
-
-export const BF_CODE = `import math
-
-def bellman_ford(graph, n, start):
-    dist = [math.inf] * n
-    dist[start] = 0
-
-    # V-1번 반복: 모든 간선 완화
-    for i in range(n - 1):
-        updated = 0
-        for u, v, w in graph:
-            if dist[u] != math.inf:
-                if dist[u] + w < dist[v]:
-                    dist[v] = dist[u] + w
-                    updated += 1
-
-    # V번째 라운드: 음수 사이클 감지
-    for u, v, w in graph:
-        if dist[u] != math.inf:
-            if dist[u] + w < dist[v]:
-                return None  # 음수 사이클 존재
-
-    return dist`;
