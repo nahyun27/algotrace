@@ -2,10 +2,13 @@ import type { FloydWarshallStep } from './types';
 import { INF, FW_N, FW_EDGES } from './types';
 import { makeTr, type Lang } from '../../i18n';
 
-export function generateFloydWarshallSteps(lang: Lang = 'ko'): FloydWarshallStep[] {
+export function generateFloydWarshallSteps(
+  lang: Lang = 'ko',
+  input: { n: number; edges: [number, number, number][] } = { n: FW_N, edges: FW_EDGES },
+): FloydWarshallStep[] {
   const tr = makeTr(lang);
-  const N = FW_N;
-  const EDGES = FW_EDGES;
+  const N = input.n;
+  const EDGES = input.edges;
   const steps: FloydWarshallStep[] = [];
 
   // Initialize dist matrix: 0 on diagonal, INF elsewhere
@@ -57,7 +60,14 @@ export function generateFloydWarshallSteps(lang: Lang = 'ko'): FloydWarshallStep
 
     for (let i = 0; i < N; i++) {
       for (let j = 0; j < N; j++) {
-        if (i === j) continue;
+        if (i === j) {
+          // The diagonal only changes when i lies on a negative cycle through k.
+          // Update it silently so the negative-cycle check below can fire.
+          if (dist[i][k] < INF && dist[k][i] < INF && dist[i][k] + dist[k][i] < dist[i][i]) {
+            dist[i][i] = dist[i][k] + dist[k][i];
+          }
+          continue;
+        }
         // Skip trivial: path i→k→k or k→k→j is never better
         if (i === k || j === k) continue;
         // Skip unreachable through k

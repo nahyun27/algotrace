@@ -37,10 +37,7 @@ function admissibleRandomGraph(seed: number) {
 }
 
 describe('A* (graph)', () => {
-  // BUG: HEURISTIC_SCALE = 30 makes the default graph's heuristic inadmissible
-  // (h(S) = 650/30 ≈ 21.7 while the true distance S→G is 12), so A* reaches G
-  // through S→2→4→G with g = 14 instead of the optimal S→2→1→3→G = 12.
-  it.fails('finds the optimal path cost on the default graph (inadmissible heuristic)', () => {
+  it('finds the optimal path cost on the default graph', () => {
     const { N, edges } = defaultGraph();
     const steps = generateAStarSteps(undefined, undefined, undefined, 'en');
     const last = steps.at(-1)!;

@@ -7,8 +7,6 @@ function calcDist(p1: {x: number, y: number}, p2: {x: number, y: number}) {
   return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 }
 
-// Custom scale factor to make euclidean distances (often 100-300 in pixels) mapped closer to logical weights (like 2-8).
-const HEURISTIC_SCALE = 30; 
 
 export function generateAStarSteps(
   edges?: [number, number, number][],
@@ -37,12 +35,20 @@ export function generateAStarSteps(
     adj[u].push([v, w]);
   }
 
-  // Pre-calculate h(x)
-  const goalPos = nodePositions.find(p => p.id === goal)!;
+  // Pre-calculate h(x) = straight-line distance × scale.
+  // Positions are in pixels, so scale them by the smallest weight-per-pixel ratio over all edges:
+  // every path then costs at least scale × (its straight-line length), which keeps h admissible.
+  const posOf = (id: number) => nodePositions!.find(p => p.id === id)!;
+  let scale = Infinity;
+  for (const [u, v, w] of edges) {
+    const len = calcDist(posOf(u), posOf(v));
+    if (len > 0) scale = Math.min(scale, w / len);
+  }
+  if (!Number.isFinite(scale) || scale < 0) scale = 0;
+  const goalPos = posOf(goal);
   const h = new Array(N).fill(0);
   for (let i = 0; i < N; i++) {
-    const pos = nodePositions.find(p => p.id === i)!;
-    h[i] = Math.round(calcDist(pos, goalPos) / HEURISTIC_SCALE * 10) / 10; // keep one decimal
+    h[i] = Math.floor(calcDist(posOf(i), goalPos) * scale * 10) / 10; // one decimal, rounded down to stay admissible
   }
 
   const g = new Array(N).fill(Infinity);
