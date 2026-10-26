@@ -9,17 +9,16 @@ interface Props {
 }
 
 /**
- * Keys are the solver's codeLine values per algorithm.
- * Python: the line itself, plus companions for counting (placing reads `count[arr[i]] -= 1` and writes the output)
- * and radix (a bucket step computes the digit and appends).
+ * Keys are the solver's codeLine values per algorithm; each maps to the lines the step actually describes
+ * (for example a compare step lights the comparison, a swap step the swap).
  */
 const PY_LINES: Record<SortAlgorithm, LineMap> = {
-  bubble: { 1: [[1, 1]], 3: [[3, 3]], 5: [[5, 5]], 7: [[7, 7]], 10: [[10, 10]], 11: [[11, 11]] },
+  bubble: { 1: [[1, 1]], 3: [[3, 3]], 5: [[5, 6]], 7: [[7, 8]], 10: [[9, 10]], 11: [[11, 11]] },
   selection: { 1: [[1, 1]], 4: [[4, 4]], 6: [[6, 6]], 8: [[8, 8]], 9: [[9, 9]] },
-  insertion: { 1: [[1, 1]], 2: [[2, 2]], 3: [[3, 3]], 5: [[5, 5]], 6: [[6, 6]], 7: [[7, 7]], 8: [[8, 8]] },
-  merge: { 1: [[1, 1]], 4: [[4, 4]], 7: [[7, 7]], 9: [[9, 9]], 12: [[12, 12]], 13: [[13, 13]], 18: [[18, 18]] },
-  quick: { 1: [[1, 1]], 4: [[4, 4]], 6: [[6, 6]], 9: [[9, 9]], 11: [[11, 11]], 13: [[13, 13]], 14: [[14, 14]] },
-  heap: { 1: [[1, 1]], 3: [[3, 3]], 5: [[5, 5]], 6: [[6, 6]], 10: [[10, 10]], 12: [[12, 12]], 15: [[15, 15]] },
+  insertion: { 1: [[1, 1]], 2: [[2, 2]], 3: [[3, 4]], 5: [[5, 5]], 6: [[6, 7]], 7: [[8, 8]], 8: [[9, 9]] },
+  merge: { 1: [[1, 1]], 4: [[4, 4]], 7: [[7, 7]], 9: [[9, 11]], 12: [[12, 13]], 13: [[14, 14], [16, 16]], 18: [[18, 21]] },
+  quick: { 1: [[1, 1]], 4: [[4, 4]], 6: [[6, 6]], 9: [[9, 10]], 11: [[11, 12]], 13: [[13, 14]], 14: [[15, 16]] },
+  heap: { 1: [[1, 1]], 3: [[3, 4]], 5: [[6, 7]], 6: [[5, 7]], 10: [[12, 13]], 12: [[14, 15]], 15: [[17, 18]] },
   counting: { 3: [[3, 3]], 5: [[4, 5]], 7: [[6, 7]], 11: [[10, 11]], 12: [[12, 12]] },
   radix: { 2: [[2, 2]], 3: [[3, 4]], 7: [[6, 7]], 8: [[8, 8]], 10: [[10, 10]] },
 };

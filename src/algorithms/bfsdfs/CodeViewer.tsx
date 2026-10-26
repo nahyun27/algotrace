@@ -64,7 +64,7 @@ class BFS {
 const BFS_JAVA_LINES: LineMap = { 4: [[5, 9]], 10: [[12, 13]], 12: [[15, 15]], 15: [[16, 18]], 17: [[22, 22]] };
 
 // Keys are the solver's codeLine values: 4 INIT, 7 POP, 13 DISCOVER, 16 PUSH, 18 DONE
-const DFS_PY_LINES: LineMap = { 4: [[2, 4]], 7: [[7, 11]], 13: [[14, 14]], 16: [[16, 17]], 18: [[19, 19]] };
+const DFS_PY_LINES: LineMap = { 4: [[2, 4]], 7: [[7, 11]], 13: [[15, 15]], 16: [[16, 17]], 18: [[19, 19]] };
 
 const DFS_CPP = `#include <bits/stdc++.h>
 using namespace std;
