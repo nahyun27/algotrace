@@ -26,6 +26,8 @@ export interface AlgorithmMeta {
   order: number;
   icon: LucideIcon;
   name: Localized;
+  /** Shorter name for tight spots (sidebar, breadcrumb); defaults to `name` */
+  shortName?: Localized;
   description: Localized;
   difficulty: Difficulty;
   time: string;

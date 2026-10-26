@@ -78,6 +78,7 @@ src/
 
   SVG는 `components/viz/palette.ts`의 `NODE_COLORS` · `EDGE_COLORS`를 `style`로, HTML은 `components/ui/tone.ts`의 클래스를 씁니다. hex 색과 Tailwind 기본 팔레트(`emerald-500` 등)는 쓰지 않습니다.
 - **글자는 11px 이상**으로 씁니다.
+- **이모지와 대시 구분자는 쓰지 않습니다.** 시각적 표시가 필요하면 lucide 아이콘을 쓰고, 문장 중간의 —, –, " - "는 문장을 나누거나 콜론, 쉼표, 괄호로 바꿉니다. 화살표(→)와 이름 안의 하이픈(Floyd-Warshall, 0-1 BFS)은 괜찮습니다.
 - **모든 문구는 한/영 둘 다** 씁니다. 굵은 글씨가 섞인 문장은 문장 단위로 `lang === 'ko' ? … : …`로 나눕니다.
 - 다크 모드를 코드에서 직접 확인하지 않습니다. 토큰이 테마를 따라갑니다.
 

@@ -68,7 +68,7 @@ function TopBar() {
           <>
             <span className="hidden sm:inline text-muted-foreground truncate">{category.name[lang]}</span>
             <ChevronRight className="hidden sm:block w-4 h-4 text-hint shrink-0" />
-            <span className="font-bold truncate">{algo.name[lang]}</span>
+            <span className="font-bold truncate">{(algo.shortName ?? algo.name)[lang]}</span>
           </>
         ) : (
           <span className="font-bold truncate nw:hidden">AlgoTrace</span>

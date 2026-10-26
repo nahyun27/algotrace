@@ -94,7 +94,7 @@ export default function Sidebar({ onClose, collapsed = false, onToggleCollapsed 
                           collapsed={collapsed}
                           onClick={onClose}
                           icon={<Icon className="w-[18px] h-[18px]" />}
-                          label={algo.name[lang]}
+                          label={(algo.shortName ?? algo.name)[lang]}
                           completed={isCompleted(algo.slug)}
                           completedLabel={tr('학습 완료', 'Completed')}
                         />

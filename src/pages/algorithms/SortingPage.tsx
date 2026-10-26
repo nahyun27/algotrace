@@ -154,7 +154,7 @@ export default function SortingPage() {
                 id="sorting-algorithm"
                 value={algorithm}
                 onChange={handleAlgorithmChange}
-                options={SORT_TABS.map(algo => ({ value: algo, label: SORT_LABELS[algo][lang] }))}
+                options={SORT_TABS.map(algo => ({ value: algo, label: SORT_LABELS[algo][lang].replace(/ (sort|정렬)$/, '') }))}
               />
             }
             controls={
