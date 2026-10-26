@@ -6,6 +6,7 @@ import AlgorithmLayout from '../../components/algorithm/AlgorithmLayout';
 import AlgorithmHeader, { BackToVisualizationButton, EditGraphButton } from '../../components/algorithm/AlgorithmHeader';
 import StepBanner from '../../components/algorithm/StepBanner';
 import { usePlayback } from '../../components/algorithm/usePlayback';
+import { useUrlState } from '../../components/algorithm/useUrlState';
 import { Badge, Button, Panel, SegmentedControl, cn, type Tone } from '../../components/ui';
 import { toneBorder, toneSoft, toneSolid, toneText } from '../../components/ui/tone';
 import Legend from '../../components/viz/Legend';
@@ -468,7 +469,7 @@ function AStarGridMode({ onTabChange }: { onTabChange: (mode: ViewMode) => void 
 /* ─────────────── A* page (mode switch) ─────────────── */
 
 export default function AStarPage() {
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [viewMode, setViewMode] = useUrlState<ViewMode>('mode', ['grid', 'graph'], 'grid');
   return viewMode === 'graph'
     ? <AStarGraphMode onTabChange={setViewMode} />
     : <AStarGridMode onTabChange={setViewMode} />;

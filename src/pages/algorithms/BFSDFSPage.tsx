@@ -5,6 +5,7 @@ import AlgorithmLayout from '../../components/algorithm/AlgorithmLayout';
 import AlgorithmHeader, { BackToVisualizationButton, EditGraphButton } from '../../components/algorithm/AlgorithmHeader';
 import StepBanner from '../../components/algorithm/StepBanner';
 import { usePlayback } from '../../components/algorithm/usePlayback';
+import { useUrlState } from '../../components/algorithm/useUrlState';
 import { SegmentedControl, type Tone } from '../../components/ui';
 import GraphEditor from '../../components/GraphEditor';
 import type { GraphData } from '../../types/graph';
@@ -43,7 +44,7 @@ const STEP_TONE: Record<BaseStep['type'], Tone> = {
 export default function BFSDFSPage() {
   const { lang } = useLang();
   const tr = useTr();
-  const [algoMode, setAlgoMode] = useState<BFSDFSMode>('BFS');
+  const [algoMode, setAlgoMode] = useUrlState<BFSDFSMode>('mode', ['BFS', 'DFS'], 'BFS');
   const [mode, setMode] = useState<PageMode>('example');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customGraph, setCustomGraph] = useState<CustomGraph | null>(null);

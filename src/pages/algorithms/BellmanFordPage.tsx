@@ -5,6 +5,7 @@ import AlgorithmLayout from '../../components/algorithm/AlgorithmLayout';
 import AlgorithmHeader from '../../components/algorithm/AlgorithmHeader';
 import StepBanner from '../../components/algorithm/StepBanner';
 import { usePlayback } from '../../components/algorithm/usePlayback';
+import { useUrlState } from '../../components/algorithm/useUrlState';
 import { Badge, SegmentedControl, type Tone } from '../../components/ui';
 import BFGraphCanvas from '../../algorithms/bellmanford/GraphCanvas';
 import BFCodeViewer from '../../algorithms/bellmanford/CodeViewer';
@@ -38,7 +39,7 @@ const STEP_TONE: Record<BFStepType, Tone> = {
 export default function BellmanFordPage() {
   const { lang } = useLang();
   const tr = useTr();
-  const [example, setExample] = useState<BFExample>('ex1');
+  const [example, setExample] = useUrlState<BFExample>('example', ['ex1', 'ex2'], 'ex1');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { nodes, edges, N } = EXAMPLES[example];

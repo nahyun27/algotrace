@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, ArrowRight, Clock, Play, Code2, PencilRuler, X } from 'lucide-react';
+import { Search, ArrowRight, Check, Clock, Play, Code2, PencilRuler, X } from 'lucide-react';
 import { ALGORITHMS, ACTIVE_CATEGORIES as CATEGORIES, DIFFICULTY_LABEL, getCategory, type CategoryId, type Difficulty } from '../algorithms/registry';
 import { useLang, useTr } from '../i18n';
 import { cn } from '../components/ui';
+import { toneSoft, toneSolid } from '../components/ui/tone';
+import { useProgress } from '../progress/useProgress';
 import { NODE_COLORS, EDGE_COLORS, type VizState } from '../components/viz/palette';
 
 const difficultyDots: Record<Difficulty, number> = { easy: 1, medium: 2, hard: 3 };
@@ -77,6 +79,8 @@ export default function Home() {
   const tr = useTr();
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState<CategoryId | 'all'>('all');
+  const { isCompleted } = useProgress();
+  const doneCount = ALGORITHMS.filter(a => isCompleted(a.slug)).length;
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -159,7 +163,13 @@ export default function Home() {
         <section id="algorithms" className="scroll-mt-6 space-y-5">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-black tracking-tight">{tr('알고리즘 둘러보기', 'Explore algorithms')}</h2>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <h2 className="text-2xl font-black tracking-tight">{tr('알고리즘 둘러보기', 'Explore algorithms')}</h2>
+                <span className={cn('inline-flex items-center gap-1 h-6 px-2.5 rounded-full text-xs font-bold', doneCount > 0 ? toneSoft.visited : toneSoft.neutral)}>
+                  <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                  {tr(`${doneCount} / ${ALGORITHMS.length} 완료`, `${doneCount} / ${ALGORITHMS.length} completed`)}
+                </span>
+              </div>
               <p className="mt-1 text-sm text-muted-foreground">
                 {tr(`${ALGORITHMS.length}개의 알고리즘을 시각화로 배워 보세요.`, `${ALGORITHMS.length} algorithms ready to visualize.`)}
               </p>
@@ -231,7 +241,14 @@ export default function Home() {
                         </span>
                       </div>
 
-                      <h3 className="mt-4 text-lg font-extrabold tracking-tight group-hover:text-primary transition-colors">{algo.name[lang]}</h3>
+                      <h3 className="mt-4 text-lg font-extrabold tracking-tight group-hover:text-primary transition-colors flex items-center gap-2">
+                        <span className="min-w-0">{algo.name[lang]}</span>
+                        {isCompleted(algo.slug) && (
+                          <span title={tr('학습 완료', 'Completed')} aria-label={tr('학습 완료', 'Completed')} className={cn('shrink-0 w-5 h-5 rounded-full flex items-center justify-center', toneSolid.visited)}>
+                            <Check className="w-3 h-3" strokeWidth={3.5} />
+                          </span>
+                        )}
+                      </h3>
                       {lang === 'ko' && <p className="text-xs font-semibold text-hint">{algo.name.en}</p>}
                       <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{algo.description[lang]}</p>
 

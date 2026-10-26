@@ -69,14 +69,16 @@ export function CodeBlock({ code, language = 'python', isLineHighlighted, follow
   );
 }
 
-export function useCopy(text: string) {
+/** Copy-to-clipboard with a short "copied" state. Pass a function to read the text at click time (e.g. the URL). */
+export function useCopy(text: string | (() => string)) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
+    const value = typeof text === 'function' ? text() : text;
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(value);
     } catch {
       const ta = document.createElement('textarea');
-      ta.value = text;
+      ta.value = value;
       document.body.appendChild(ta);
       ta.select();
       document.execCommand('copy');
