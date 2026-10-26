@@ -1,7 +1,10 @@
-import { Network } from 'lucide-react';
-import InfoModal, { InfoSection, InfoCard, InfoSteps, ComplexityChips } from '../../components/algorithm/InfoModal';
+import { Network, Construction } from 'lucide-react';
+import ConceptModal from '../../components/algorithm/ConceptModal';
+import MiniGraph, { type MiniEdge, type MiniNode } from '../../components/viz/MiniGraph';
+import TokenRow, { GraphWithRow } from '../../components/viz/TokenRow';
+import type { VizState } from '../../components/viz/palette';
 import MstComparisonTable from './MstComparisonTable';
-import { useLang, useTr } from '../../i18n';
+import { useTr } from '../../i18n';
 
 interface Props {
   isOpen: boolean;
@@ -9,82 +12,111 @@ interface Props {
   onStartVisualization: () => void;
 }
 
+/** Four islands, five possible bridges (already in cheapest-first order). Same example as Prim. */
+const EDGES: MiniEdge[] = [['A', 'B', 1], ['B', 'C', 2], ['A', 'C', 3], ['C', 'D', 4], ['B', 'D', 5]];
+const NODES: MiniNode[] = [
+  { id: 'A', x: 30, y: 140, label: 'A' },
+  { id: 'B', x: 130, y: 40, label: 'B' },
+  { id: 'C', x: 200, y: 195, label: 'C' },
+  { id: 'D', x: 340, y: 100, label: 'D' },
+];
+
+/** One frame: node and edge states, plus the sorted edge list with the same edge states */
+function frame(nodeState: Record<string, VizState>, edgeState: Record<string, VizState>, title: string) {
+  return (
+    <GraphWithRow
+      graph={<MiniGraph nodes={NODES} edges={EDGES} nodeState={nodeState} edgeState={edgeState} height={220} />}
+      row={<TokenRow title={title} items={EDGES.map(([u, v, w]) => ({ label: `${u}${v}`, sub: String(w), state: edgeState[`${u}-${v}`] ?? 'idle' }))} />}
+    />
+  );
+}
+
 export default function KruskalInfoModal({ isOpen, onClose, onStartVisualization }: Props) {
   const tr = useTr();
-  const { lang } = useLang();
-  const ko = lang === 'ko';
+  const list = tr('싼 순서', 'Cheapest first');
+
   return (
-    <InfoModal
+    <ConceptModal
       isOpen={isOpen}
       onClose={onClose}
       onStartVisualization={onStartVisualization}
       icon={Network}
       title={tr('크루스칼 알고리즘', "Kruskal's algorithm")}
-      subtitle={tr('간선 정렬 + Union-Find로 MST(최소 신장 트리) 구축', 'Build a minimum spanning tree with sorted edges + Union-Find')}
+      subtitle={tr('모든 점을 가장 싸게 잇는 방법 (최소 신장 트리)', 'Connect every point as cheaply as possible (minimum spanning tree)')}
+      summary={tr(
+        '가장 싼 선부터 하나씩 고르되, 이미 이어진 두 점을 또 잇는 선은 건너뛰면 모든 점을 가장 싸게 연결할 수 있어요.',
+        'Pick lines from cheapest to most expensive, skipping any line between two points that are already connected, and you link everything for the lowest total cost.',
+      )}
+      analogy={{
+        icon: Construction,
+        title: tr('섬과 섬 사이에 다리 놓기', 'Building bridges between islands'),
+        body: tr(
+          '섬 여러 개를 다리로 모두 연결하되 공사비는 최대한 아끼고 싶어요. 가장 싼 다리부터 놓는데, 이미 다른 다리로 오갈 수 있는 두 섬 사이라면 그 다리는 돈 낭비라서 건너뛰어요.',
+          'You want every island reachable by bridge while spending as little as possible. Build the cheapest bridges first, but skip any bridge between two islands you can already travel between: it would be wasted money.',
+        ),
+      }}
+      storyboard={[
+        {
+          visual: frame({}, {}, list),
+          caption: tr(
+            '섬(점) 4개와 놓을 수 있는 다리(선) 5개가 있어요. 숫자는 공사비예요. 먼저 다리를 싼 순서로 줄 세워요: 1, 2, 3, 4, 5.',
+            'There are 4 islands (points) and 5 possible bridges (lines). The numbers are costs. First, line the bridges up cheapest first: 1, 2, 3, 4, 5.',
+          ),
+        },
+        {
+          visual: frame({ A: 'visited', B: 'visited' }, { 'A-B': 'visited' }, list),
+          caption: tr(
+            '가장 싼 1짜리 다리(A, B)를 놓아요. 이제 A와 B는 서로 오갈 수 있는 한 팀이에요.',
+            'Build the cheapest bridge, cost 1 (A, B). A and B are now one team: you can travel between them.',
+          ),
+        },
+        {
+          visual: frame({ A: 'visited', B: 'visited', C: 'visited' }, { 'A-B': 'visited', 'B-C': 'visited' }, list),
+          caption: tr(
+            '다음은 2짜리(B, C). C는 아직 다른 팀이니 놓아요. A, B, C가 한 팀이 됐어요.',
+            'Next is cost 2 (B, C). C is on another team, so build it. A, B and C are one team now.',
+          ),
+        },
+        {
+          visual: frame({ A: 'danger', B: 'visited', C: 'danger' }, { 'A-B': 'visited', 'B-C': 'visited', 'A-C': 'danger' }, list),
+          caption: tr(
+            '3짜리(A, C)는 건너뛰어요. A와 C는 이미 B를 거쳐 오갈 수 있어서, 놓으면 쓸데없는 고리(사이클)만 생겨요.',
+            'Skip cost 3 (A, C). A and C are already connected through B, so this bridge would only make a useless loop (a cycle).',
+          ),
+        },
+        {
+          visual: frame({ A: 'path', B: 'path', C: 'path', D: 'path' }, { 'A-B': 'path', 'B-C': 'path', 'C-D': 'path', 'A-C': 'danger' }, list),
+          caption: tr(
+            '4짜리(C, D)를 놓으면 섬 4개가 다리 3개로 모두 이어져서 끝! 총공사비는 1 + 2 + 4 = 7이에요. 5짜리는 볼 필요도 없어요.',
+            'Build cost 4 (C, D) and all 4 islands are joined by 3 bridges. Done! Total cost 1 + 2 + 4 = 7. We never even need the 5.',
+          ),
+        },
+      ]}
+      steps={[
+        tr('모든 간선(두 점을 잇는 선)을 비용이 싼 순서로 정렬해요.', 'Sort every edge (a line between two points) from cheapest to most expensive.'),
+        tr('가장 싼 간선부터 하나씩 봐요.', 'Look at the edges one by one, cheapest first.'),
+        tr('양 끝이 이미 같은 팀이면 고리가 생기니 건너뛰어요. 같은 팀인지는 Union-Find(누가 어느 팀인지 적어 둔 명부)로 빠르게 확인해요.', 'If both ends are already on the same team, it would make a loop, so skip it. Union-Find (a roster of who is on which team) answers this quickly.'),
+        tr('다른 팀이면 그 간선을 고르고 두 팀을 하나로 합쳐요.', 'Otherwise, pick the edge and merge the two teams into one.'),
+        tr('고른 간선이 점 개수보다 1 적어지면 모두 이어진 거라 끝이에요.', 'Once you have picked one fewer edge than there are points, everything is connected. Stop.'),
+      ]}
+      useWhen={[
+        tr('전선, 도로, 네트워크 케이블로 모든 곳을 가장 싸게 연결하고 싶을 때', 'You want to connect every place as cheaply as possible: power lines, roads, network cables'),
+        tr('문제에서 간선 목록(누구와 누구, 비용 얼마)이 바로 주어질 때', 'The problem hands you a list of edges (who, who, how much)'),
+      ]}
+      watchOut={[
+        tr('최소 신장 트리는 "두 점 사이의 가장 짧은 길"이 아니에요. 그건 다익스트라가 풀어요.', 'A minimum spanning tree is not "the shortest route between two points". That is what Dijkstra solves.'),
+        tr('그래프가 끊겨 있으면 모두를 잇는 트리를 만들 수 없어요. 고른 간선 수로 확인하세요.', 'If the graph is split into parts, no single tree can connect everything. Check how many edges you picked.'),
+      ]}
+      complexity={{
+        time: 'O(E log E)',
+        space: 'O(V + E)',
+        plain: tr(
+          '시간 대부분은 간선을 정렬하는 데 써요. 간선(E)이 2배가 되면 시간은 2배보다 조금 더 걸려요. 간선이 수십만 개여도 순식간이에요.',
+          'Most of the time goes into sorting the edges. Twice as many edges (E) take a little more than twice as long. Hundreds of thousands of edges finish in an instant.',
+        ),
+      }}
     >
-      <InfoSection n={1} title={tr('MST(최소 신장 트리)란?', 'What is an MST?')}>
-        <InfoCard tone="path">
-          {ko ? (
-            <>그래프의 모든 노드를 <strong>사이클 없이</strong> 연결하되, 사용한 간선의 <strong>총 가중치가 최소</strong>인 트리입니다. N개 노드를 연결하는 MST는 정확히 <strong>N−1개의 간선</strong>으로 구성됩니다.</>
-          ) : (
-            <>A tree that connects every node of the graph <strong>without cycles</strong> while keeping the <strong>total edge weight as small as possible</strong>. An MST over N nodes always has exactly <strong>N−1 edges</strong>.</>
-          )}
-        </InfoCard>
-      </InfoSection>
-
-      <InfoSection n={2} title={tr('크루스칼 핵심 아이디어', 'How Kruskal works')}>
-        <InfoSteps
-          steps={ko ? [
-            <>모든 간선을 <strong>가중치 오름차순</strong>으로 정렬</>,
-            <>가장 가벼운 간선부터 순서대로 검토</>,
-            <><strong>Union-Find</strong>로 두 노드가 같은 컴포넌트인지 확인</>,
-            <>같은 컴포넌트면 <strong>사이클 발생 → 스킵</strong></>,
-            <>다른 컴포넌트면 <strong>MST에 추가 + Union</strong></>,
-            <>MST 간선 수 = N−1이 되면 종료</>,
-          ] : [
-            <>Sort every edge by <strong>weight, ascending</strong></>,
-            <>Look at the edges one by one, lightest first</>,
-            <>Use <strong>Union-Find</strong> to check whether both ends are already in the same component</>,
-            <>Same component → <strong>it would make a cycle, skip it</strong></>,
-            <>Different components → <strong>add it to the MST and Union them</strong></>,
-            <>Stop once the MST has N−1 edges</>,
-          ]}
-        />
-      </InfoSection>
-
-      <InfoSection n={3} title={tr('Union-Find 핵심 연산', 'Union-Find operations')}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <InfoCard tone="current" title={tr('Find (경로 압축)', 'Find (path compression)')}>
-            {tr(
-              '노드의 루트를 찾는 연산. 경로 압축으로 이후 조회를 O(1)에 가깝게 최적화해요.',
-              'Finds the root of a node. Path compression makes later lookups almost O(1).',
-            )}
-            <code className="block mt-2 text-xs bg-card/70 px-2 py-1 rounded-lg font-mono">parent[x] = find(parent[x])</code>
-          </InfoCard>
-          <InfoCard tone="visited" title={tr('Union (랭크 기반)', 'Union (by rank)')}>
-            {tr(
-              '두 집합을 합치는 연산. 랭크(트리 높이)가 낮은 쪽을 높은 쪽 아래에 붙여 트리를 얕게 유지해요.',
-              'Merges two sets. The lower-rank (shorter) tree is attached under the taller one so trees stay shallow.',
-            )}
-            <code className="block mt-2 text-xs bg-card/70 px-2 py-1 rounded-lg font-mono">parent[ry] = rx</code>
-          </InfoCard>
-        </div>
-      </InfoSection>
-
-      <InfoSection n={4} title={tr('크루스칼 vs 프림', 'Kruskal vs Prim')}>
-        <MstComparisonTable />
-      </InfoSection>
-
-      <InfoSection n={5} title={tr('복잡도', 'Complexity')}>
-        <ComplexityChips
-          time="O(E log E)"
-          space="O(V + E)"
-          note={tr(
-            '간선 정렬이 병목이에요 (Union-Find는 사실상 O(1)). 공간: parent/rank 배열 O(V), 간선 목록 O(E).',
-            'Sorting the edges is the bottleneck (Union-Find is practically O(1)). Space: parent/rank arrays O(V), edge list O(E).',
-          )}
-        />
-      </InfoSection>
-    </InfoModal>
+      <MstComparisonTable />
+    </ConceptModal>
   );
 }
