@@ -59,3 +59,16 @@ describe('Floyd-Warshall', () => {
     expectLangIndependent(generateFloydWarshallSteps('ko'), steps);
   });
 });
+
+describe('Floyd-Warshall negative cycles', () => {
+  it('reports a negative cycle reachable through the diagonal', () => {
+    // 0 → 1 → 2 → 0 sums to -1
+    const steps = generateFloydWarshallSteps('en', { n: 3, edges: [[0, 1, 1], [1, 2, -3], [2, 0, 1]] });
+    expect(steps.at(-1)!.type).toBe('NEGATIVE_CYCLE');
+  });
+
+  it('does not report a cycle when all cycles are non-negative', () => {
+    const steps = generateFloydWarshallSteps('en', { n: 3, edges: [[0, 1, 1], [1, 2, -1], [2, 0, 1]] });
+    expect(steps.at(-1)!.type).toBe('DONE');
+  });
+});

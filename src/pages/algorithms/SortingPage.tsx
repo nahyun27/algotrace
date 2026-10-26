@@ -6,6 +6,7 @@ import AlgorithmLayout from '../../components/algorithm/AlgorithmLayout';
 import AlgorithmHeader from '../../components/algorithm/AlgorithmHeader';
 import StepBanner from '../../components/algorithm/StepBanner';
 import { usePlayback } from '../../components/algorithm/usePlayback';
+import { useUrlState } from '../../components/algorithm/useUrlState';
 import { Badge, Button, SegmentedControl, cn, type Tone } from '../../components/ui';
 import { toneSoft, toneText } from '../../components/ui/tone';
 import SortingArrayCanvas from '../../algorithms/sorting/ArrayCanvas';
@@ -64,7 +65,7 @@ const MARKER_TONE: Partial<Record<SortStepType, Tone>> = {
 export default function SortingPage() {
   const { lang } = useLang();
   const tr = useTr();
-  const [algorithm, setAlgorithm] = useState<SortAlgorithm>('bubble');
+  const [algorithm, setAlgorithm] = useUrlState<SortAlgorithm>('algo', Object.keys(SORT_GENERATORS) as SortAlgorithm[], 'bubble');
   const [isAlgoModalOpen, setAlgoModalOpen] = useState(false);
   const [isCompareModalOpen, setCompareModalOpen] = useState(false);
   const [inputArray, setInputArray] = useState<number[]>(DEFAULT_ARRAY);

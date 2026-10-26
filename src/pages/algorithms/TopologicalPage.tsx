@@ -5,6 +5,7 @@ import AlgorithmLayout from '../../components/algorithm/AlgorithmLayout';
 import AlgorithmHeader from '../../components/algorithm/AlgorithmHeader';
 import StepBanner from '../../components/algorithm/StepBanner';
 import { usePlayback } from '../../components/algorithm/usePlayback';
+import { useUrlState } from '../../components/algorithm/useUrlState';
 import { SegmentedControl, type Tone } from '../../components/ui';
 import QueueStackDisplay from '../../algorithms/bfsdfs/QueueStackDisplay';
 import type { BaseStep, DataItem } from '../../algorithms/bfsdfs/types';
@@ -36,8 +37,8 @@ const STEP_TONE: Record<KahnStepType | DFSTopoStepType, Tone> = {
 export default function TopologicalPage() {
   const { lang } = useLang();
   const tr = useTr();
-  const [algoMode, setAlgoMode] = useState<TopoAlgoMode>('Kahn');
-  const [example, setExample] = useState<TopoExampleId>('dag');
+  const [algoMode, setAlgoMode] = useUrlState<TopoAlgoMode>('algo', ['Kahn', 'DFS'], 'Kahn');
+  const [example, setExample] = useUrlState<TopoExampleId>('example', Object.keys(TOPO_EXAMPLES) as TopoExampleId[], 'dag');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { edges, N } = TOPO_EXAMPLES[example];
