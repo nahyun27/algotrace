@@ -24,6 +24,8 @@ interface ArrayViewProps {
   /** Show the index row (default: when there are at most 20 elements) */
   showIndices?: boolean;
   legend?: LegendItem[];
+  /** cells only: narrower cells below the sm breakpoint so ~11 cells fit a phone screen */
+  compact?: boolean;
   className?: string;
 }
 
@@ -38,6 +40,7 @@ export default function ArrayView({
   pointers = [],
   range,
   showIndices,
+  compact = false,
   legend,
   className,
 }: ArrayViewProps) {
@@ -94,7 +97,8 @@ export default function ArrayView({
                   animate={{ scale: state === 'current' ? 1.08 : 1, y: state === 'current' ? -3 : 0 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 28 }}
                   className={cn(
-                    'w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-xl border-2 flex items-center justify-center font-mono font-bold text-sm sm:text-base tabular-nums transition-colors duration-200',
+                    'shrink-0 border-2 flex items-center justify-center font-mono font-bold sm:text-base tabular-nums transition-colors duration-200',
+                    compact ? 'w-7 h-9 sm:w-12 sm:h-12 text-xs rounded-lg sm:rounded-xl' : 'w-10 h-10 sm:w-12 sm:h-12 text-sm rounded-xl',
                     outOfRange(idx) && 'opacity-35',
                   )}
                   style={{ backgroundColor: c.fill, borderColor: c.stroke, color: c.text }}
@@ -114,7 +118,7 @@ export default function ArrayView({
               key={idx}
               className={cn(
                 'flex flex-col items-center text-center',
-                variant === 'bars' ? 'flex-1 max-w-[48px]' : 'w-10 sm:w-12 shrink-0',
+                variant === 'bars' ? 'flex-1 max-w-[48px]' : compact ? 'w-7 sm:w-12 shrink-0' : 'w-10 sm:w-12 shrink-0',
               )}
             >
               {withIndices && <span className="text-[11px] font-mono text-hint tabular-nums">{idx}</span>}
